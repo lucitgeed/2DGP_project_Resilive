@@ -20,29 +20,28 @@ class Community:
 
 
 
+##
 def reset_world():
     global running
+    
     running = True
 
-    global community
-    community = Community()
     
 
 
 
 def update_world():
-    community.update()
     pass
 
 
 def render_world():
     clear_canvas()
-    community.draw()
     update_canvas()
 
 
 
 
+##
 open_canvas()
 
 
