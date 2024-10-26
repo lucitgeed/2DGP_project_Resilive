@@ -4,7 +4,7 @@ from pico2d import*
 class Lilly:
 
     def __init__(self):
-        self.x, self.y = 400,90  #테스트를 위한 임시값
+        self.x, self.y = 50,90  #테스트를 위한 임시값
 
         self.frame = 0
         self.image = load_image("lilly_idle_Sheet.png")
@@ -33,7 +33,7 @@ def reset_world():
     lilly = Lilly()
     world.append(lilly)
 
-    print("lilly append")
+#    print("appended")
 
     pass
 
@@ -41,15 +41,17 @@ def reset_world():
 def update_world():
     for objt in world:
         objt.update()
-        print("objt")
+#        print("objt")
     pass
 
 
 def render_world():
     clear_canvas()
-    #
+
+    for objt in world:
+        objt.draw()
+        
     update_canvas()
-    print("renderworld")
 
 
 
@@ -62,8 +64,8 @@ reset_world()
 while running:
     
     update_world()
-#    render_world()
-    delay(0.04)
+    render_world()
+    delay(0.08)
     pass
 
 
