@@ -1,5 +1,4 @@
 from random import random
-
 from pico2d import*
 
 
@@ -32,7 +31,7 @@ class Eyes:
 
 
 
-
+#뭐가 많이 안되니까 일단 미뤄뒀다가 다음에 해보자고..
 class Community:
     image = None
 
@@ -71,17 +70,13 @@ def reset_world():
     global running
     
     global lilly
-    global group
     
     running = True
     world = []
 
     lilly = Lilly()
-#    community = Community()
-    group = [Community() for i in range(5)]
 
     world.append(lilly)
-    world += group
     pass
 
 
@@ -93,10 +88,8 @@ def update_world():
 
 def render_world():
     clear_canvas()
-
     for objt in world:
         objt.draw()
-        
     update_canvas()
     pass
 
@@ -111,7 +104,8 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
         else:
-            lilly.handle_event(event)
+            if event.type in (SDL_KEYDOWN, SDL_KEYUP):
+                lilly.handle_event(event)
 
 
 
@@ -122,14 +116,11 @@ def handle_events():
 open_canvas()
 
 reset_world()
-
 while running:
-    
+    handle_events()
     update_world()
     render_world()
     delay(0.09)
     pass
-
-
 
 close_canvas()
