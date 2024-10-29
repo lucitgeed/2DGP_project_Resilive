@@ -1,67 +1,9 @@
-from random import random
 from pico2d import*
 
-
-class Lilly:
-    image = None
-
-    def __init__(self):
-        self.x, self.y = 50,90  #테스트를 위한 임시값
-        
-        self.frame = 0
-        if Lilly.image == None:
-            Lilly.image = load_image("lilly_idle_Sheet.png")
-
-    def update(self):
-        self.frame = (self.frame+1) % 5
-
-    def handle_event(self, event):
-        pass
-
-    def draw(self):
-        self.image.clip_draw(self.frame*128,0, 128,128, self.x,self.y)
-        
-
-
-
-class Eyes:
-    pass
-
-
-
+from lilly import Lilly
 
 
 #뭐가 많이 안되니까 일단 미뤄뒀다가 다음에 해보자고..
-class Community:
-    image = None
-
-    def __init__(self):
-        self.x, self.y = random.randint(50,750, 50), random.randint(200,650, 100)
-        self.frame= random.randint(0,7)
-        if Community.image == None:
-            Community.image = load_image("community_idle_Sheet.png")
-
-    def update(self):
-        self.frame = (self.frame+1) %7
-        self.x = self.x + random.randint(-10, 10)
-
-    def handle_event(self, event):
-        pass
-
-    def draw(self):
-        self.image.clip_draw(self.frame*128,0, 128,128, self.x, self.y, 70,70)
-        #임시위치
-        #랜덤값 추가로 설정할 것
-
-
-
-        
-
-
-
-
-
-
 
 
 ##
@@ -94,7 +36,6 @@ def render_world():
     pass
 
 
-
 def handle_events():
     global running
     events = get_events()
@@ -110,8 +51,6 @@ def handle_events():
 
 
 
-
-
 ##
 open_canvas()
 
@@ -120,7 +59,7 @@ while running:
     handle_events()
     update_world()
     render_world()
-    delay(0.09)
+    delay(0.01)
     pass
 
 close_canvas()
