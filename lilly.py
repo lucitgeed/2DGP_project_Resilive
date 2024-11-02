@@ -1,4 +1,6 @@
 from pico2d import load_image
+from StateMachine import State_Machine
+
 
 
 class Lilly:
@@ -13,10 +15,12 @@ class Lilly:
         if Lilly.image == None:
             Lilly.image = load_image("lilly_idle_Sheet.png")
 
-        self.state_macnine.start(Idle)
+        self.state_machine = State_Machine(self)
+        self.state_machine.start(Idle)
 
     def update(self):
         self.frame = (self.frame+1) % 5
+        self.state_machine.update()
 
     def handle_event(self, event):
         pass
@@ -35,4 +39,10 @@ class Idle:
     def exit():
         pass
     @staticmethod
-    def 
+    def do():
+        pass
+    @staticmethod
+    def draw():
+        pass
+
+
