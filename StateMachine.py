@@ -1,4 +1,4 @@
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_d, SDL_KEYUP, SDLK_a, SDLK_UP
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_d, SDL_KEYUP, SDLK_a, SDLK_UP, SDLK_LSHIFT
 
 from dataclasses import asdict
 from multiprocessing.connection import answer_challenge
@@ -56,17 +56,15 @@ class StateMachine:
 def start_event(e):
     return e[0] == 'Start'
 
-
 def space_down(e):
     return (e[0] == 'Input'
             and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
-
 
 def time_out(e):
     pass
 
 
-#def for Run
+#def for Walk
 def right_down(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d)
 def right_up(e):
@@ -76,3 +74,10 @@ def left_down(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a)
 def left_up(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYUP and e[1].key == SDLK_a)
+
+
+#def for Run
+def shift_down(e):
+    return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LSHIFT)
+def shift_up(e):
+    return (e[0] == 'Input' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LSHIFT)

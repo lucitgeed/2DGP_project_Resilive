@@ -1,4 +1,4 @@
-from pico2d import load_image, get_time,SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT
+from pico2d import load_image, get_time, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, delay
 from StateMachine import*
 
 
@@ -7,7 +7,6 @@ class Lilly:
 
     def __init__(self):
         self.x, self.y = 50,90  #테스트를 위한 임시값
-#        self.action = 0
 
         if Lilly.image == None:
             Lilly.imageIdle = load_image("lilly_idle_Sheet.png")
@@ -19,8 +18,10 @@ class Lilly:
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
             {
-                Idle:{right_down:Walk, right_up:Walk, left_down:Walk, left_up:Walk},
-                Walk:{right_down:Idle, right_up:Idle, left_down:Idle, left_up:Idle}
+                Idle:{right_down:Walk, right_up:Walk, left_down:Walk, left_up:Walk, shift_down:Idle},
+                Walk:{right_down:Idle, right_up:Idle, left_down:Idle, left_up:Idle,
+                      shift_down:Run},
+                Run:{shift_up:Walk, right_up:Idle, left_up:Idle}
 
 
             }
@@ -30,7 +31,7 @@ class Lilly:
         self.state_machine.update()
 
     def handle_event(self, event):
-        self.state_machine.add_event(
+        self.state_machine.add_events(
             ('Input', event)
         )
 
@@ -58,48 +59,74 @@ class Idle:
     @staticmethod
     def do(lilly):
         lilly.frame= (lilly.frame + 1) % 5
+        delay(0.07)
         pass
 
     @staticmethod
     def draw(lilly):
-        print('             idle clipdraw 시작')
-        lilly.imageIdle.clip_draw(lilly.frame * 128, 0, 128, 128, lilly.x, lilly.y)
-        print('             idle clipdraw 종료')
+        if lilly.face_dir == 1:
+            lilly.imageIdle.clip_draw(lilly.frame * 128, 0, 128, 128, lilly.x, lilly.y, 100,100)
+        elif lilly.face_dir == -1:
+            lilly.imageIdle.clip_composite_draw(lilly.frame * 128, 0, 128, 128,
+                                                0,'h', lilly.x, lilly.y, 100, 100)
 
 
 
 class Walk:
     @staticmethod
-    def enter():
-        pass
+    def enter(lilly, e):
+        if right_down(e) or left_up(e):
+            lilly.face_dir = 1
+            lilly.dir = 1
+        elif left_down(e) or right_up(e):
+            lilly.face_dir = -1
+            lilly.dir = -1
+
     @staticmethod
-    def exit():
+    def exit(lilly,e):
         pass
+
     @staticmethod
-    def do():
-        pass
+    def do(lilly):
+        lilly.frame = (lilly.frame+1) % 10
+        lilly.x += lilly.dir * 2
+
+
     @staticmethod
-    def draw():
-        pass
+    def draw(lilly):
+        if lilly.face_dir == -1:
+            lilly.imageWalk.clip_draw(lilly.frame*128,0, 128,128, lilly.x, lilly.y, 100,100)
+        elif lilly.face_dir == 1:
+            lilly.imageWalk.clip_composite_draw(lilly.frame * 128, 0, 128, 128, 0,'h', lilly.x, lilly.y, 100, 100)
 
 
 
 
 class Run:
     @staticmethod
-    def enter():
-        pass
+    def enter(lilly, e):
+        if shift_down(e):      #???????????????
+            if right_down(e) or left_up(e):
+                lilly.face_dir = 1
+                lilly.dir = 1
+            elif left_down(e) or right_up(e):
+                lilly.face_dir = -1
+                lilly.dir = -1
+
     @staticmethod
-    def exit():
-        pass
-    @staticmethod
-    def do():
-        pass
-    @staticmethod
-    def draw():
+    def exit(lilly, e):
         pass
 
-
+    @staticmethod
+    def do(lilly, e):
+        lilly.frame = (lilly.frame+1) % 10
+        lilly.x += lilly.dir * 5
+    @staticmethod
+    def draw(lilly, e):
+        if lilly.face_dir == -1:
+            lilly.imageWalk.clip_draw(lilly.frame * 128, 0, 128, 128, lilly.x, lilly.y, 100, 100)
+        elif lilly.face_dir == 1:
+            lilly.imageWalk.clip_composite_draw(lilly.frame * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 100, 100)
 
 
 class Jump:
