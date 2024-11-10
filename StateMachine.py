@@ -61,7 +61,8 @@ def space_down(e):
             and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
 
 def time_out(e):
-    pass
+    return e[0] == 'Time_Out'
+
 
 
 #def for Walk

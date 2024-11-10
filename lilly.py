@@ -6,12 +6,12 @@ class Lilly:
     image = None
 
     def __init__(self):
-        self.x, self.y = 50,90  #테스트를 위한 임시값
+        self.x, self.y = 50,80  #테스트를 위한 임시값
 
         if Lilly.image == None:
             Lilly.imageIdle = load_image("lilly_idle_Sheet.png")
             Lilly.imageRun = load_image("lilly_run_Sheet.png")
-            Lilly.imageJump = load_image("lilly_jump_Sheet.png")
+            Lilly.imageJump = load_image("lilly_jump-Sheet.png")
             Lilly.imageWalk = load_image("lilly_walk_Sheet.png")
 
         self.state_machine = StateMachine(self)
@@ -25,7 +25,7 @@ class Lilly:
                       space_down:Jump},
                 Run:{shift_up:Walk, right_up:Idle, left_up:Idle,
                      space_down:Jump},
-                Jump:{},
+                Jump:{time_out:Idle},
                 Caught:{}
             }
         )
@@ -132,19 +132,47 @@ class Run:
             lilly.imageRun.clip_composite_draw(lilly.frame * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 70,70)
 
 
+
 class Jump:
     @staticmethod
-    def enter():
-        pass
+    def enter(lilly, e):
+        if start_event(e) or lilly.face_dir == 1:
+            lilly.dir = 1
+        elif lilly.face_dir == -1:
+            lilly.dir = -1
+        lilly.frame = 0
+
+        lilly.highest = 0
+        lilly.temp = lilly.y
+
     @staticmethod
-    def exit():
+    def exit(lilly, e):
+        print(f'lilly.x is {lilly.x}')
+        print(f'lilly.dir is {lilly.dir}')
+        print(f'lilly.face_dir is {lilly.face_dir}')
         pass
+
     @staticmethod
-    def do():
-        pass
+    def do(lilly):
+        lilly.frame = (lilly.frame + 1) % 18
+        lilly.x += lilly.dir * 3
+
+        if 0 <= lilly.highest <= 49:
+            lilly.y += 1 * 5
+            lilly.highest += 1 * 5
+        elif lilly.highest == 50:
+            lilly.y -= 1 * 5
+
+        if lilly.y == lilly.temp:
+            lilly.state_machine.add_events(('Time_Out', 0))
+        delay(0.06)
+
     @staticmethod
-    def draw():
-        pass
+    def draw(lilly):
+        if lilly.face_dir == -1:
+            lilly.imageJump.clip_draw(lilly.frame * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
+        elif lilly.face_dir == 1:
+            lilly.imageJump.clip_composite_draw(lilly.frame * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 70,70)
 
 
 
