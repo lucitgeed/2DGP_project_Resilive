@@ -1,9 +1,9 @@
 from pico2d import*
 
+import game_world
+from community import Community
 from lilly import Lilly
 
-
-#뭐가 많이 안되니까 일단 미뤄뒀다가 다음에 해보자고..
 
 
 ##
@@ -12,26 +12,26 @@ def reset_world():
     global running
     
     global lilly
+    global community
     
     running = True
-    world = []
 
     lilly = Lilly()
+    game_world.add_object(lilly,0)
 
-    world.append(lilly)
+    community = [Community() for i in range(5)]
+    game_world.add_objts(community, 1)
     pass
 
 
 def update_world():
-    for objt in world:
-        objt.update()
+    game_world.update()
     pass
 
 
 def render_world():
     clear_canvas()
-    for objt in world:
-        objt.draw()
+    game_world.render()
     update_canvas()
     pass
 

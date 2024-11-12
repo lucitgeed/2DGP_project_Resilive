@@ -68,9 +68,9 @@ class Idle:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == 1:
-            lilly.imageIdle.clip_draw(lilly.frame * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
+            lilly.imageIdle.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
         elif lilly.face_dir == -1:
-            lilly.imageIdle.clip_composite_draw(lilly.frame * 128, 0, 128, 128,
+            lilly.imageIdle.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128,
                                                 0,'h', lilly.x, lilly.y, 70,70)
 
 
@@ -153,6 +153,10 @@ class Jump:
         print(f'lilly.x is {lilly.x}')
         print(f'lilly.dir is {lilly.dir}')
         print(f'lilly.face_dir is {lilly.face_dir}')
+        if right_down(e):
+            lilly.dir = 1
+        if left_down(e):
+            lilly.dir = -1
         pass
 
     @staticmethod
@@ -175,9 +179,10 @@ class Jump:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageJump.clip_draw(lilly.frame * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
+            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
         elif lilly.face_dir == 1:
-            lilly.imageJump.clip_composite_draw(lilly.frame * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 70,70)
+            lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 70,70)
+
 
 
 

@@ -1,33 +1,60 @@
-from random import random
-
+import random
 from pico2d import load_image
+from StateMachine import StateMachine
 
 
 class Community:
     image = None
-
     def __init__(self):
-        self.x, self.y = random.randint(50,750, 50), random.randint(200,650, 100)
-        self.frame= random.randint(0,7)
+        self.x, self.y = random.randint(50,750), random.randint(200,650)
+
         if Community.image == None:
-            Community.image = load_image("community_idle_Sheet.png")
+            Community.imageIdle = load_image("community_idle_Sheet.png")
+
+        self.state_machine = StateMachine(self)
+        self.state_machine.start(Idle)
+        self.state_machine.set_transitions(
+            {
+#                Idle:{find_lilly:Chase}
+            }
+        )
 
     def update(self):
-        self.frame = (self.frame+1) %7
-        self.x = self.x + random.randint(-10, 10)
+        self.state_machine.update()
 
-    def handle_event(self, event):
+    def handle_event(self):
         pass
 
     def draw(self):
-        self.image.clip_draw(self.frame*128,0, 128,128, self.x, self.y, 70,70)
+        self.state_machine.draw()
+
+
+
+#####
+class Idle:
+    @staticmethod
+    def enter(cmity,event):
+        cmity.frame = (random.randint(0, 7))
+
+        pass
+
+    @staticmethod
+    def exit(cmity):
+        pass
+
+    @staticmethod
+    def do(cmity):
+        cmity.frame = (cmity.frame + 1) % 7
+        cmity.x = cmity.x + random.randint(-20, 20)
+
+    @staticmethod
+    def draw(cmity):
+        cmity.imageIdle.clip_draw(int(cmity.frame) * 128, 0, 128, 128, cmity.x, cmity.y, 70, 70)
         #임시위치
         #랜덤값 추가로 설정할 것
 
 
 
-class Idle:
-    pass
 
 
 class Find:
@@ -35,6 +62,19 @@ class Find:
 
 
 class Chase:
+    pass
+
+
+class Jump:
+    pass
+
+
+
+class TryAttack:
+    pass
+
+
+class AttackSuccess:
     pass
 
 
