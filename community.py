@@ -35,7 +35,7 @@ class Idle:
     @staticmethod
     def enter(cmity,event):
         cmity.frame = (random.randint(0, 7))
-
+        cmity.face_dir = (random.randint(-1,0))                                             #여기서만 방향 -1은 왼쪽, 0은 오른쪽
         pass
 
     @staticmethod
@@ -45,13 +45,19 @@ class Idle:
     @staticmethod
     def do(cmity):
         cmity.frame = (cmity.frame + 1) % 7
-        cmity.x = cmity.x + random.randint(-20, 20)
+
+        if cmity.face_dir == 0:
+            cmity.x = cmity.x + random.randint(0, 10)
+        elif cmity.face_dir == -1:
+            cmity.x = cmity.x - random.randint(0, 10)
+
 
     @staticmethod
     def draw(cmity):
-        cmity.imageIdle.clip_draw(int(cmity.frame) * 128, 0, 128, 128, cmity.x, cmity.y, 70, 70)
-        #임시위치
-        #랜덤값 추가로 설정할 것
+        if cmity.face_dir == 0:
+            cmity.imageIdle.clip_composite_draw(int(cmity.frame) * 128, 0, 128, 128, 0,'h', cmity.x, cmity.y, 70,70)
+        elif cmity.face_dir == -1:
+            cmity.imageIdle.clip_draw(int(cmity.frame) * 128, 0, 128, 128, cmity.x, cmity.y, 70, 70)
 
 
 

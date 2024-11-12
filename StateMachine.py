@@ -52,17 +52,11 @@ class StateMachine:
 
 
 
-#####
+##################
 def start_event(e):
     return e[0] == 'Start'
-
-def space_down(e):
-    return (e[0] == 'Input'
-            and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
-
 def time_out(e):
     return e[0] == 'Time_Out'
-
 
 
 #def for Walk
@@ -83,8 +77,20 @@ def shift_down(e):
 def shift_up(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LSHIFT)
 
+
 #def for Jump
 def space_down(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
-def space_up(e):
-    return (e[0] == 'Input' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE)
+#def space_up(e):
+#    return (e[0] == 'Input' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE)
+def jump_whenMoving(e):
+    return (e[0] == 'Jump_whenMoving' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
+def jump_whenRun(e):
+    return (e[0] == 'Jump_whenRun' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
+
+def landed_whenIdle(e):
+    return e[0] == 'Landed_whenIdle'
+def landed_whenWalk(e):
+    return e[0] == 'Landed_whenWalk'
+def landed_whenRun(e):
+    return e[0] == 'Landed_whenRun'

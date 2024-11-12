@@ -22,10 +22,14 @@ class Lilly:
                       space_down:Jump},
                 Walk:{right_down:Idle, right_up:Idle, left_down:Idle, left_up:Idle,
                       shift_down:Run,
-                      space_down:Jump},
+
+                      jump_whenMoving:Jump},
+
                 Run:{shift_up:Walk, right_up:Idle, left_up:Idle,
-                     space_down:Jump},
-                Jump:{time_out:Idle, space_up:Jump, left_down:Walk, right_down:Walk},
+                     right_down:Run, left_down:Run,
+                     jump_whenMoving:Jump},
+                Jump:{landed_whenIdle:Idle, landed_whenWalk:Walk, landed_whenRun:Run,
+                      space_down:Jump, right_down:Jump, left_down:Jump},
                 Caught:{}
             }
         )
@@ -72,6 +76,7 @@ class Idle:
         elif lilly.face_dir == -1:
             lilly.imageIdle.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128,
                                                 0,'h', lilly.x, lilly.y, 70,70)
+
 
 
 
@@ -122,6 +127,13 @@ class Run:
     def do(lilly):
         lilly.frame = (lilly.frame+1) % 8
         lilly.x += lilly.dir * 5
+
+
+        
+
+
+
+
         delay(0.04)
 
     @staticmethod
@@ -133,36 +145,32 @@ class Run:
 
 
 
+
 class Jump:
     @staticmethod
     def enter(lilly, e):
-        if left_down(e):
-            print(f'lilly e is {e}')
+        if space_down(e):
+            lilly.dir = 0
+        elif jump_whenMoving(e) or right_down(e):
+            lilly.face_dir = 1
+            lilly.dir = 3
+        elif jump_whenMoving(e) or left_down(e):
+            lilly.face_dir = -1
+            lilly.dir = -3
 
-        if start_event(e) or lilly.face_dir == 1:
-            lilly.dir = 1
-        elif lilly.face_dir == -1:
-            lilly.dir = -1
         lilly.frame = 0
-
         lilly.highest = 0
         lilly.temp = lilly.y
 
     @staticmethod
     def exit(lilly, e):
-        print(f'lilly.x is {lilly.x}')
-        print(f'lilly.dir is {lilly.dir}')
-        print(f'lilly.face_dir is {lilly.face_dir}')
-        if right_down(e):
-            lilly.dir = 1
-        if left_down(e):
-            lilly.dir = -1
         pass
 
     @staticmethod
     def do(lilly):
         lilly.frame = (lilly.frame + 1) % 18
-        lilly.x += lilly.dir * 3
+
+        lilly.x += lilly.dir* 1
 
         if 0 <= lilly.highest <= 49:
             lilly.y += 1 * 5
@@ -173,7 +181,6 @@ class Jump:
         if lilly.y == lilly.temp:
             lilly.dir = 0
             lilly.face_dir = 1
-            lilly.state_machine.add_events(('Time_Out', 0))
         delay(0.06)
 
     @staticmethod
