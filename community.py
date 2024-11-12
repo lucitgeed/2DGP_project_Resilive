@@ -23,3 +23,20 @@ class Community:
         self.image.clip_draw(self.frame*128,0, 128,128, self.x, self.y, 70,70)
         #임시위치
         #랜덤값 추가로 설정할 것
+
+
+
+class Idle:
+    pass
+
+
+class Find:
+    pass
+
+
+class Chase:
+    pass
+
+
+#class 충돌:
+#    pass

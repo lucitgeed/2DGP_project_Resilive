@@ -25,7 +25,7 @@ class Lilly:
                       space_down:Jump},
                 Run:{shift_up:Walk, right_up:Idle, left_up:Idle,
                      space_down:Jump},
-                Jump:{time_out:Idle},
+                Jump:{time_out:Idle, space_up:Jump, left_down:Walk, right_down:Walk},
                 Caught:{}
             }
         )
@@ -120,7 +120,7 @@ class Run:
 
     @staticmethod
     def do(lilly):
-        lilly.frame = (lilly.frame+1) % 10
+        lilly.frame = (lilly.frame+1) % 8
         lilly.x += lilly.dir * 5
         delay(0.04)
 
@@ -136,6 +136,9 @@ class Run:
 class Jump:
     @staticmethod
     def enter(lilly, e):
+        if left_down(e):
+            print(f'lilly e is {e}')
+
         if start_event(e) or lilly.face_dir == 1:
             lilly.dir = 1
         elif lilly.face_dir == -1:
@@ -164,6 +167,8 @@ class Jump:
             lilly.y -= 1 * 5
 
         if lilly.y == lilly.temp:
+            lilly.dir = 0
+            lilly.face_dir = 1
             lilly.state_machine.add_events(('Time_Out', 0))
         delay(0.06)
 
