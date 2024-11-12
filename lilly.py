@@ -47,7 +47,7 @@ class Lilly:
 
 
 
-#####
+###########
 class Idle:
     @staticmethod
     def enter(lilly, e):
@@ -97,7 +97,13 @@ class Walk:
     @staticmethod
     def do(lilly):
         lilly.frame = (lilly.frame+1) % 10
-        lilly.x += lilly.dir * 2
+
+        if 25 <= lilly.x <= 800 - 25:
+            lilly.x += lilly.dir * 2
+        elif lilly.x < 25:
+            lilly.x = 25
+        elif lilly.x > 800 - 25:
+            lilly.x = 800 - 25
         delay(0.04)
 
     @staticmethod
@@ -126,14 +132,13 @@ class Run:
     @staticmethod
     def do(lilly):
         lilly.frame = (lilly.frame+1) % 8
-        lilly.x += lilly.dir * 5
 
-
-        
-
-
-
-
+        if 25 <= lilly.x <= 800-25:
+            lilly.x += lilly.dir * 5
+        elif lilly.x < 25:
+            lilly.x = 25
+        elif lilly.x > 800-25:
+            lilly.x = 800-25
         delay(0.04)
 
     @staticmethod
@@ -159,8 +164,9 @@ class Jump:
             lilly.dir = -3
 
         lilly.frame = 0
-        lilly.highest = 0
-        lilly.temp = lilly.y
+
+        highest = 0
+        temp = lilly.y
 
     @staticmethod
     def exit(lilly, e):
@@ -170,17 +176,34 @@ class Jump:
     def do(lilly):
         lilly.frame = (lilly.frame + 1) % 18
 
-        lilly.x += lilly.dir* 1
+        for i in range(0, 100,5):
+            t = i/100
 
-        if 0 <= lilly.highest <= 49:
-            lilly.y += 1 * 5
-            lilly.highest += 1 * 5
-        elif lilly.highest == 50:
-            lilly.y -= 1 * 5
+            
 
-        if lilly.y == lilly.temp:
-            lilly.dir = 0
-            lilly.face_dir = 1
+
+        if 25 <= lilly.x <= 800 - 25:
+            lilly.x += lilly.dir * 1
+        elif lilly.x < 25:
+            lilly.x = 25
+        elif lilly.x > 800 - 25:
+            lilly.x = 800 - 25
+
+
+        if 50 <= lilly.y <= 550:
+            if 0 <= highest <= 49:
+                lilly.y += 1 * 5
+                lilly.highest += 1 * 5
+            elif lilly.highest == 50:
+                lilly.y -= 1 * 5
+
+            if lilly.y == lilly.temp:
+                lilly.dir = 0
+                lilly.face_dir = 1
+        elif lilly.y < 50:
+            lilly.y =50
+        elif lilly.y > 550:
+            lilly.y = 550
         delay(0.06)
 
     @staticmethod

@@ -81,8 +81,8 @@ def shift_up(e):
 #def for Jump
 def space_down(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
-#def space_up(e):
-#    return (e[0] == 'Input' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE)
+def space_up(e):
+    return (e[0] == 'Input' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE)
 def jump_whenMoving(e):
     return (e[0] == 'Jump_whenMoving' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
 def jump_whenRun(e):

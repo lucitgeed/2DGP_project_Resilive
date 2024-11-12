@@ -6,7 +6,7 @@ from StateMachine import StateMachine
 class Community:
     image = None
     def __init__(self):
-        self.x, self.y = random.randint(50,750), random.randint(200,650)
+        self.x, self.y = random.randint(50,750), random.randint(200,550)
 
         if Community.image == None:
             Community.imageIdle = load_image("community_idle_Sheet.png")
@@ -30,12 +30,12 @@ class Community:
 
 
 
-#####
+###########
 class Idle:
     @staticmethod
     def enter(cmity,event):
         cmity.frame = (random.randint(0, 7))
-        cmity.face_dir = (random.randint(-1,0))                                             #여기서만 방향 -1은 왼쪽, 0은 오른쪽
+        cmity.face_dir = (random.randint(-1,0))                     #여기서만 방향 -1은 왼쪽, 0은 오른쪽
         pass
 
     @staticmethod
@@ -46,11 +46,17 @@ class Idle:
     def do(cmity):
         cmity.frame = (cmity.frame + 1) % 7
 
-        if cmity.face_dir == 0:
-            cmity.x = cmity.x + random.randint(0, 10)
-        elif cmity.face_dir == -1:
-            cmity.x = cmity.x - random.randint(0, 10)
-
+        if 25 <= cmity.x <= 800 - 25:
+            if cmity.face_dir == 0:
+                cmity.x = cmity.x + random.randint(0, 10)
+            elif cmity.face_dir == -1:
+                cmity.x = cmity.x - random.randint(0, 10)
+        elif cmity.x < 25:
+            cmity.x = 25
+            cmity.face_dir = 0
+        elif cmity.x > 800 - 25:
+            cmity.x = 800 - 25
+            cmity.face_dir = -1
 
     @staticmethod
     def draw(cmity):
