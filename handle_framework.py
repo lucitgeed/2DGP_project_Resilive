@@ -1,3 +1,5 @@
+import time
+
 from game_world import world
 
 running = None
@@ -13,10 +15,18 @@ def run(mode):
     mode_stack = [mode]
     mode.init_mode()
 
+    global frame_time
+    frame_time = 0.0
+    start_time = time.time()
+
     while(running):
         mode_stack[-1].handle_events()
         mode_stack[-1].update()
         mode_stack[-1].draw()
+
+        frame_time = time.time() - start_time
+        frame_rate = 1.0/ frame_time
+        start_time += frame_time
 
     while(len(mode_stack) > 0):
         mode_stack[-1].finish()
@@ -48,12 +58,9 @@ def pop_mode():                     #현재상태를 종료하고 이전상태�
     global mode_stack
     if (len(mode_stack) > 0):
         mode_stack[-1].finish()
-        print(f'                Debug: Finish {mode_stack[-1]}')
-        print(f'                Debug: Pop {mode_stack}')
         mode_stack.pop()
 
     if (len(mode_stack) > 0):
-        print(f'                Debug: Resume to {mode_stack[-1]}')
         mode_stack[-1].resume()
     pass
 
@@ -64,5 +71,20 @@ def quit():
     pass
 
 
+##for mode_play -> mode_menu -> mode_title -> mode_play
+def back_to_frstbeginning(mode):
+    global mode_stack
+
+    while(len(mode_stack) > 0):
+        print(f'{len(mode_stack)}')
+        print(f'          In mode_stack : {mode_stack}')
+        print(f'           mode_stack[-1] : {mode_stack[-1]}')
+        mode_stack[-1].finish()
+        mode_stack.pop
+
+    mode_stack.append(mode)
+    mode.init_mode()
+
+    #왜이러는거야진짜로
 
 

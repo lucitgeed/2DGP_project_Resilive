@@ -1,5 +1,26 @@
+from ast import Param
+
 from pico2d import load_image, get_time, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, delay
+
+import handle_framework
 from StateMachine import*
+
+
+
+PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm
+# set lilly speed
+RUN_SPEED_KM_per_H = 15.0
+RUN_SPEED_M_per_M = (RUN_SPEED_KM_per_H * 1000.0 / 60.0)
+RUN_SPEED_M_per_S = RUN_SPEED_M_per_M / 60.0
+RUN_SPEED_PPS = RUN_SPEED_M_per_S * PIXEL_per_METER
+
+WALK_SPEED_KM_per_H = 10.0
+WALK_SPEED_M_per_M = (WALK_SPEED_KM_per_H * 1000.0 / 60.0)
+WALK_SPEED_M_per_S = WALK_SPEED_M_per_M / 60.0
+WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
+
+
+
 
 
 class Lilly:
@@ -65,7 +86,7 @@ class Idle:
 
     @staticmethod
     def do(lilly):
-        lilly.frame= (lilly.frame + 1) % 5
+        lilly.frame = (lilly.frame + 1) % 5
         delay(0.07)
         pass
 
@@ -99,12 +120,12 @@ class Walk:
         lilly.frame = (lilly.frame+1) % 10
 
         if 25 <= lilly.x <= 800 - 25:
-            lilly.x += lilly.dir * 2
+            lilly.x += lilly.dir * WALK_SPEED_PPS * handle_framework.frame_time
         elif lilly.x < 25:
             lilly.x = 25
         elif lilly.x > 800 - 25:
             lilly.x = 800 - 25
-        delay(0.04)
+#        delay(0.04)
 
     @staticmethod
     def draw(lilly):
@@ -134,12 +155,12 @@ class Run:
         lilly.frame = (lilly.frame+1) % 8
 
         if 25 <= lilly.x <= 800-25:
-            lilly.x += lilly.dir * 5
+            lilly.x += lilly.dir * RUN_SPEED_PPS * handle_framework.frame_time
         elif lilly.x < 25:
             lilly.x = 25
         elif lilly.x > 800-25:
             lilly.x = 800-25
-        delay(0.04)
+#        delay(0.04)
 
     @staticmethod
     def draw(lilly):
