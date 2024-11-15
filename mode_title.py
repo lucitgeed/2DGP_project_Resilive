@@ -1,5 +1,5 @@
 from pico2d import load_image, get_events, clear_canvas, update_canvas
-from sdl2 import SDL_KEYDOWN, SDL_QUIT, SDLK_ESCAPE, SDL_KEYUP, SDLK_KP_ENTER
+from sdl2 import SDL_KEYDOWN, SDL_QUIT, SDLK_ESCAPE, SDL_KEYUP, SDLK_KP_ENTER, SDLK_RETURN
 
 import handle_framework
 import lilly
@@ -20,7 +20,7 @@ def handle_events():
             handle_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             handle_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_KP_ENTER:
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_RETURN:
             handle_framework.change_mode(mode_play)
     pass
 
