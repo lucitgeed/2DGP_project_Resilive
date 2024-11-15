@@ -17,3 +17,10 @@ def run(start_mode):
         mode_stack[-1].finish()
         mode_stack.pop()
     pass
+
+
+
+def quit():
+    global running
+    running = False
+    pass
