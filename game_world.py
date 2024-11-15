@@ -24,3 +24,10 @@ def remove_objt(objt):
     for layer in world:
         if objt in layer:
             world.remove(objt)
+            return
+
+
+def clear():
+    for layer in world:
+        layer.clear()
+    pass
