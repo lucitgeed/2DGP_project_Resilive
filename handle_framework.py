@@ -1,4 +1,4 @@
-
+from game_world import world
 
 running = None
 mode_stack = None
@@ -34,8 +34,35 @@ def change_mode(mode):
     pass
 
 
+def push_mode(mode):
+    global mode_stack
+    if (len(mode_stack) > 0):
+        mode_stack[-1].pause()
+    mode_stack.append(mode)
+    mode.init_mode()
+    pass
+
+
+
+def pop_mode():                     #현재상태를 종료하고 이전상태로 돌아가는거
+    global mode_stack
+    if (len(mode_stack) > 0):
+        mode_stack[-1].finish()
+        print(f'                Debug: Finish {mode_stack[-1]}')
+        print(f'                Debug: Pop {mode_stack}')
+        mode_stack.pop()
+
+    if (len(mode_stack) > 0):
+        print(f'                Debug: Resume to {mode_stack[-1]}')
+        mode_stack[-1].resume()
+    pass
+
 
 def quit():
     global running
     running = False
     pass
+
+
+
+

@@ -4,6 +4,7 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_KEYUP
 import game_world
 import handle_framework
 import lilly
+import mode_menu
 from community import Community
 from lilly import Lilly
 
@@ -31,7 +32,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             handle_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-#            handle_framework.change_mode(mode_menu)
+            handle_framework.push_mode(mode_menu)
             pass
         else:
             if event.type in (SDL_KEYDOWN, SDL_KEYUP):
