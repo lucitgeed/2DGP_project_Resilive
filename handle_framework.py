@@ -1,5 +1,10 @@
 
 
+running = None
+mode_stack = None
+
+
+
 def run(start_mode):
     global running
     running = True
@@ -24,3 +29,7 @@ def quit():
     global running
     running = False
     pass
+
+
+def change_mode(mode_play):
+    return None
