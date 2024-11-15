@@ -174,36 +174,37 @@ class Jump:
 
     @staticmethod
     def do(lilly):
-        lilly.frame = (lilly.frame + 1) % 18
+        startx, starty = lilly.x, lilly.y
+        finishx, finishy = lilly.x + 3, lilly.y
+        sx,sy = startx,starty+100
+        fx,fy = finishx,finishy+100
+
+#        lilly.frame = (lilly.frame + 1) % 18
 
         for i in range(0, 100,5):
+            lilly.frame = (lilly.frame + 1) % 18
+
             t = i/100
-
-            
-
-
-        if 25 <= lilly.x <= 800 - 25:
-            lilly.x += lilly.dir * 1
-        elif lilly.x < 25:
-            lilly.x = 25
-        elif lilly.x > 800 - 25:
-            lilly.x = 800 - 25
+            Ax = (1-t)*startx + t * sx
+            Ay = (1-t)*starty + t * sy
+            Bx = (1-t)*finishx + t * fx
+            By = (1-t)*finishy + t * fy
+            print(f'                    Ax is {Ax}')
 
 
-        if 50 <= lilly.y <= 550:
-            if 0 <= highest <= 49:
-                lilly.y += 1 * 5
-                lilly.highest += 1 * 5
-            elif lilly.highest == 50:
-                lilly.y -= 1 * 5
+            if 25 <= lilly.x <= 800 - 25:
+                lilly.x = (1-t) * Ax + t * Bx
+            elif lilly.x < 25:
+                lilly.x = 25
+            elif lilly.x > 800 - 25:
+                lilly.x = 800 - 25
 
-            if lilly.y == lilly.temp:
-                lilly.dir = 0
-                lilly.face_dir = 1
-        elif lilly.y < 50:
-            lilly.y =50
-        elif lilly.y > 550:
-            lilly.y = 550
+            if 50 <= lilly.y <= 550:
+                lilly.y = (1-t) * Ay + t * By
+            elif lilly.y < 50:
+                lilly.y =50
+            elif lilly.y > 550:
+                lilly.y = 550
         delay(0.06)
 
     @staticmethod
