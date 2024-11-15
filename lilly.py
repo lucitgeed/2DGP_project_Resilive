@@ -9,15 +9,24 @@ from StateMachine import*
 
 PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm
 # set lilly speed
-RUN_SPEED_KM_per_H = 15.0
+RUN_SPEED_KM_per_H = 17.0
 RUN_SPEED_M_per_M = (RUN_SPEED_KM_per_H * 1000.0 / 60.0)
 RUN_SPEED_M_per_S = RUN_SPEED_M_per_M / 60.0
 RUN_SPEED_PPS = RUN_SPEED_M_per_S * PIXEL_per_METER
 
-WALK_SPEED_KM_per_H = 10.0
+WALK_SPEED_KM_per_H = 6.5
 WALK_SPEED_M_per_M = (WALK_SPEED_KM_per_H * 1000.0 / 60.0)
 WALK_SPEED_M_per_S = WALK_SPEED_M_per_M / 60.0
 WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
+# set frame flip speed
+TIME_per_Idle_ACTION = 0.8
+Idle_ACTION_per_TIME = 1.0 / TIME_per_Idle_ACTION
+
+TIME_per_Walk_ACTION = 0.8
+Walk_ACTION_per_TIME = 1.0 / TIME_per_Walk_ACTION
+
+TIME_per_Run_ACTION = 0.6
+Run_ACTION_per_TIME = 1.0 / TIME_per_Run_ACTION
 
 
 
@@ -27,8 +36,7 @@ class Lilly:
     image = None
 
     def __init__(self):
-        self.x, self.y = 50,80  #테스트를 위한 임시값
-
+        self.x, self.y = 50,80
         if Lilly.image == None:
             Lilly.imageIdle = load_image("lilly_idle_Sheet.png")
             Lilly.imageRun = load_image("lilly_run_Sheet.png")
@@ -86,8 +94,7 @@ class Idle:
 
     @staticmethod
     def do(lilly):
-        lilly.frame = (lilly.frame + 1) % 5
-        delay(0.07)
+        lilly.frame = (lilly.frame + 5 * Idle_ACTION_per_TIME * handle_framework.frame_time) % 5
         pass
 
     @staticmethod
@@ -117,7 +124,7 @@ class Walk:
 
     @staticmethod
     def do(lilly):
-        lilly.frame = (lilly.frame+1) % 10
+        lilly.frame = (lilly.frame+ 10 * Walk_ACTION_per_TIME * handle_framework.frame_time) % 10
 
         if 25 <= lilly.x <= 800 - 25:
             lilly.x += lilly.dir * WALK_SPEED_PPS * handle_framework.frame_time
@@ -130,9 +137,9 @@ class Walk:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageWalk.clip_draw(lilly.frame*128,0, 128,128, lilly.x, lilly.y, 70,70)
+            lilly.imageWalk.clip_draw(int(lilly.frame)*128,0, 128,128, lilly.x, lilly.y, 70,70)
         elif lilly.face_dir == 1:
-            lilly.imageWalk.clip_composite_draw(lilly.frame * 128, 0, 128, 128, 0,'h', lilly.x, lilly.y, 70,70)
+            lilly.imageWalk.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0,'h', lilly.x, lilly.y, 70,70)
 
 
 
@@ -152,7 +159,7 @@ class Run:
 
     @staticmethod
     def do(lilly):
-        lilly.frame = (lilly.frame+1) % 8
+        lilly.frame = (lilly.frame+ 8* Run_ACTION_per_TIME * handle_framework.frame_time) % 8
 
         if 25 <= lilly.x <= 800-25:
             lilly.x += lilly.dir * RUN_SPEED_PPS * handle_framework.frame_time
@@ -160,14 +167,13 @@ class Run:
             lilly.x = 25
         elif lilly.x > 800-25:
             lilly.x = 800-25
-#        delay(0.04)
 
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageRun.clip_draw(lilly.frame * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
+            lilly.imageRun.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
         elif lilly.face_dir == 1:
-            lilly.imageRun.clip_composite_draw(lilly.frame * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 70,70)
+            lilly.imageRun.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 70,70)
 
 
 

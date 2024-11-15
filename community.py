@@ -3,6 +3,13 @@ from pico2d import load_image
 from StateMachine import StateMachine
 
 
+
+# set community speed
+IDLE_SPEED_KMPH = 16.0      #조금 빠른가?
+
+
+
+
 class Community:
     image = None
     def __init__(self):
