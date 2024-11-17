@@ -32,6 +32,18 @@ def render():
 #--------------------
 def collided(a,b):
     aleft, abottom, aright, atop = a.get_boundingbox()
+    bl, bb, br, bt = b.get_aggrobox()
+
+    if br < aleft: return False
+    if aright < bl: return False
+    if bt < abottom: return False
+    if atop < bb: return False
+
+    return True
+    pass
+
+def collided_todeath(a,b):
+    aleft, abottom, aright, atop = a.get_boundingbox()
     bl, bb, br, bt = b.get_boundingbox()
 
     if br < aleft: return False
@@ -41,6 +53,7 @@ def collided(a,b):
 
     return True
     pass
+
 
 def handle_collisions():
     for crashgroup, pairs in collision_pairs.items():

@@ -51,10 +51,18 @@ class Community:
         self.state_machine.draw()
 
         draw_rectangle(*self.get_boundingbox())
+        draw_rectangle(*self.get_aggrobox())
 
 
     def get_boundingbox(self):
-        return (self.x-30, self.y-30, self.x+30,self.y+25)
+        return (self.x-40, self.y-40, self.x+40,self.y+35)
+
+    def get_aggrobox(self):
+        if self.face_dir == 1:
+            return (self.x-50, self.y-90, self.x+110,self.y+110)
+        else:
+            return (self.x-110, self.y-90, self.x+50,self.y+110)
+
 
     def handle_self_collision(self,crashgroup, other):
         pass

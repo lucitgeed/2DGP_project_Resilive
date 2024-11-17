@@ -84,7 +84,10 @@ class Lilly:
         pass
 
     def handle_self_collision(self, crashgroup, other):
-        pass
+        if crashgroup == 'lilly:community':
+            pass
+        if crashgroup == 'lilly:cmity_aggro':
+            pass
 
 
 
