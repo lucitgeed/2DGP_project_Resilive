@@ -7,6 +7,7 @@ import lilly
 import mode_menu
 from community import Community
 from eyelid import Eyelid
+from eyepupil import Eyepupil
 from lilly import Lilly
 
 
@@ -24,6 +25,9 @@ def init_mode():
 
 #    community = [Community() for i in range(5)]
 #    game_world.add_objts(community, 2)
+
+    eyePUPILS = [Eyepupil() for i in range(10)]
+    game_world.add_objts(eyePUPILS, 0)
 
 
 

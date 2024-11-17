@@ -1,6 +1,6 @@
 import random
 
-from pico2d import load_image
+from pico2d import load_image, draw_rectangle
 
 import handle_framework
 from StateMachine import StateMachine
@@ -41,17 +41,17 @@ class Eyelid:
 
     def draw(self):
         self.state_machine.draw()
+
+        draw_rectangle(*self.get_boundingbox())
         pass
 
     #=================
     def get_boundingbox(self):
-        pass
-
-    def get_aggrobox(self):
+        return (self.x-self.size/3, self.y-self.size/3, self.x+self.size/3,self.y+self.size/3)
         pass
 
     #------------------------
-    def handle_self_collision(self):
+    def handle_self_collision(self, crashgroup, other):
         pass
 
 
