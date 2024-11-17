@@ -1,12 +1,23 @@
 import random
 from pico2d import load_image
+
+import handle_framework
 from StateMachine import StateMachine
 
 
 
+PIXEL_per_METER = 10.0 / 1
 # set community speed
-IDLE_SPEED_KMPH = 16.0      #조금 빠른가?
+IDLE_SPEED_KMPH = random.uniform(10.0, 11.0)
+IDLE_SPEED_MPS = (IDLE_SPEED_KMPH * 1000.0 / 60.0) / 60.0
+IDLE_SPEED_PPS = IDLE_SPEED_MPS * PIXEL_per_METER
 
+CHASE_SPEED_KMPH = 16.0      #조금 빠른가?
+CHASE_SPEED_MPS = (CHASE_SPEED_KMPH*1000.0 / 60.0) / 60.0
+CHASE_SPEED_PPS = CHASE_SPEED_MPS * PIXEL_per_METER
+
+
+# for frame flip speed
 
 
 
@@ -14,6 +25,7 @@ class Community:
     image = None
     def __init__(self):
         self.x, self.y = random.randint(50,750), random.randint(200,550)
+        self.face_dir = random.choice([-1,1])
 
         if Community.image == None:
             Community.imageIdle = load_image("community_idle_Sheet.png")
@@ -42,8 +54,6 @@ class Idle:
     @staticmethod
     def enter(cmity,event):
         cmity.frame = (random.randint(0, 7))
-        cmity.face_dir = (random.randint(-1,0))                     #여기서만 방향 -1은 왼쪽, 0은 오른쪽
-        pass
 
     @staticmethod
     def exit(cmity):
@@ -53,21 +63,15 @@ class Idle:
     def do(cmity):
         cmity.frame = (cmity.frame + 1) % 7
 
-        if 25 <= cmity.x <= 800 - 25:
-            if cmity.face_dir == 0:
-                cmity.x = cmity.x + random.randint(0, 10)
-            elif cmity.face_dir == -1:
-                cmity.x = cmity.x - random.randint(0, 10)
-        elif cmity.x < 25:
-            cmity.x = 25
-            cmity.face_dir = 0
-        elif cmity.x > 800 - 25:
-            cmity.x = 800 - 25
+        cmity.x += cmity.face_dir * IDLE_SPEED_PPS * handle_framework.frame_time
+        if cmity.x < 300:
+            cmity.face_dir = 1
+        elif cmity.x > 800 - 300:
             cmity.face_dir = -1
 
     @staticmethod
     def draw(cmity):
-        if cmity.face_dir == 0:
+        if cmity.face_dir == 1:
             cmity.imageIdle.clip_composite_draw(int(cmity.frame) * 128, 0, 128, 128, 0,'h', cmity.x, cmity.y, 70,70)
         elif cmity.face_dir == -1:
             cmity.imageIdle.clip_draw(int(cmity.frame) * 128, 0, 128, 128, cmity.x, cmity.y, 70, 70)
