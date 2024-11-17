@@ -120,7 +120,3 @@ class TryAttack:
 
 class AttackSuccess:
     pass
-
-
-#class 충돌:
-#    pass
