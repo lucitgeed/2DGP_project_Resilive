@@ -81,15 +81,13 @@ class Idle:
 
 
 
+class Chase:
+
+    pass
 
 
 class Find:
     pass
-
-
-class Chase:
-    pass
-
 
 class Jump:
     pass

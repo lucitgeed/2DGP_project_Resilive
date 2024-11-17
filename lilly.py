@@ -76,6 +76,16 @@ class Lilly:
 
 
 
+    def get_boundingbox(self):
+        pass
+
+    def handle_self_collision(self):
+        pass
+
+
+
+
+
 ###########
 class Idle:
     @staticmethod
