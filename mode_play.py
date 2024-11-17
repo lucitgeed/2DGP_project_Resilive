@@ -17,17 +17,17 @@ def init_mode():
     lilly = Lilly()
     game_world.add_object(lilly,0)
 
-    community = [Community() for i in range(5)]
-    game_world.add_objts(community, 1)
+#    community = [Community() for i in range(5)]
+#    game_world.add_objts(community, 1)
 
 
 
     #collision info
-    game_world.add_collision_info('lilly:community',lilly, None)
-    game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
-    for cmity in community:
-        game_world.add_collision_info('lilly:community', None, cmity)
-        game_world.add_collision_info('lilly:cmity_aggro', None, cmity)
+#    game_world.add_collision_info('lilly:community',lilly, None)
+#    game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
+#    for cmity in community:
+#        game_world.add_collision_info('lilly:community', None, cmity)
+#        game_world.add_collision_info('lilly:cmity_aggro', None, cmity)
 
     pass
 

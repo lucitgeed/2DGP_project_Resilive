@@ -29,6 +29,9 @@ Walk_ACTION_per_TIME = 1.0 / TIME_per_Walk_ACTION
 TIME_per_Run_ACTION = 0.6
 Run_ACTION_per_TIME = 1.0 / TIME_per_Run_ACTION
 
+TIME_per_Jump_ACTION = 0.8
+Jump_ACTION_per_TIME = 1.0 / TIME_per_Run_ACTION
+
 
 
 
