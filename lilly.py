@@ -19,6 +19,9 @@ WALK_SPEED_KM_per_H = 6.5
 WALK_SPEED_M_per_M = (WALK_SPEED_KM_per_H * 1000.0 / 60.0)
 WALK_SPEED_M_per_S = WALK_SPEED_M_per_M / 60.0
 WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
+
+JUMP_SPEED_MPS = 1.5
+JUMP_SPEED_PPS  = JUMP_SPEED_MPS * PIXEL_per_METER
 # set frame flip speed
 TIME_per_Idle_ACTION = 0.8
 Idle_ACTION_per_TIME = 1.0 / TIME_per_Idle_ACTION
@@ -52,17 +55,16 @@ class Lilly:
         self.state_machine.set_transitions(
             {
                 Idle:{right_down:Walk, right_up:Walk, left_down:Walk, left_up:Walk, shift_down:Idle,
-                      space_down:Jump},
+                      space_down:Jump_STILL},
                 Walk:{right_down:Idle, right_up:Idle, left_down:Idle, left_up:Idle,
                       shift_down:Run,
-
-                      jump_whenMoving:Jump},
-
+                      space_down:Jump_andMOVE},
                 Run:{shift_up:Walk, right_up:Idle, left_up:Idle,
                      right_down:Run, left_down:Run,
-                     jump_whenMoving:Jump},
-                Jump:{landed_whenIdle:Idle, landed_whenWalk:Walk, landed_whenRun:Run,
-                      space_down:Jump, right_down:Jump, left_down:Jump},
+                     space_down:Jump_andMOVE},
+                Jump_STILL:{space_up:Jump_STILL, landed:Idle},
+                Jump_andMOVE:{space_up:Jump_andMOVE,
+                              landed:Run},
                 Caught:{}
             }
         )
@@ -198,15 +200,68 @@ class Run:
 
 
 
-class Jump:
+class Jump_STILL:
     @staticmethod
     def enter(lilly, e):
-        if space_down(e):
-            lilly.dir = 0
-        elif jump_whenMoving(e) or right_down(e):
+        lilly.frame = 0
+
+        highest = 0
+        temp = lilly.y
+
+    @staticmethod
+    def exit(lilly, e):
+        pass
+
+    @staticmethod
+    def do(lilly):
+        lilly.frame = (lilly.frame + 18* Jump_ACTION_per_TIME*handle_framework.frame_time) % 18
+
+        startx, starty = lilly.x, lilly.y
+        finishx, finishy = lilly.x + 3, lilly.y
+        sx,sy = startx,starty+100
+        fx,fy = finishx,finishy+100
+
+        for i in range(0, 100,5):
+
+            t = i/100
+            Ax = (1-t)*startx + t * sx
+            Ay = (1-t)*starty + t * sy
+            Bx = (1-t)*finishx + t * fx
+            By = (1-t)*finishy + t * fy
+
+
+            if 25 <= lilly.x <= 800 - 25:
+                lilly.x = (1-t) * Ax + t * Bx
+            elif lilly.x < 25:
+                lilly.x = 25
+            elif lilly.x > 800 - 25:
+                lilly.x = 800 - 25
+
+            if 50 <= lilly.y <= 550:
+                lilly.y = (1-t) * Ay + t * By
+            elif lilly.y < 50:
+                lilly.y =50
+            elif lilly.y > 550:
+                lilly.y = 550
+
+    @staticmethod
+    def draw(lilly):
+        if lilly.face_dir == -1:
+            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
+        elif lilly.face_dir == 1:
+            lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
+
+
+
+
+class Jump_andMOVE:
+    @staticmethod
+    def enter(lilly, e):
+        if space_down(e):pass
+        elif  right_down(e):
             lilly.face_dir = 1
             lilly.dir = 3
-        elif jump_whenMoving(e) or left_down(e):
+        elif left_down(e):
             lilly.face_dir = -1
             lilly.dir = -3
 
@@ -221,15 +276,14 @@ class Jump:
 
     @staticmethod
     def do(lilly):
+        lilly.frame = (lilly.frame + 18* Jump_ACTION_per_TIME*handle_framework.frame_time) % 18
+
         startx, starty = lilly.x, lilly.y
         finishx, finishy = lilly.x + 3, lilly.y
         sx,sy = startx,starty+100
         fx,fy = finishx,finishy+100
 
-#        lilly.frame = (lilly.frame + 1) % 18
-
         for i in range(0, 100,5):
-            lilly.frame = (lilly.frame + 1) % 18
 
             t = i/100
             Ax = (1-t)*startx + t * sx
@@ -260,6 +314,21 @@ class Jump:
         elif lilly.face_dir == 1:
             lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
 
+
+
+class Crawl:
+    @staticmethod
+    def enter():
+        pass
+    @staticmethod
+    def exit():
+        pass
+    @staticmethod
+    def do():
+        pass
+    @staticmethod
+    def draw():
+        pass
 
 
 

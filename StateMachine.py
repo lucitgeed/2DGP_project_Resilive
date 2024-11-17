@@ -83,14 +83,10 @@ def space_down(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
 def space_up(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE)
-def jump_whenMoving(e):
-    return (e[0] == 'Jump_whenMoving' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
-def jump_whenRun(e):
-    return (e[0] == 'Jump_whenRun' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE)
 
-def landed_whenIdle(e):
-    return e[0] == 'Landed_whenIdle'
-def landed_whenWalk(e):
-    return e[0] == 'Landed_whenWalk'
-def landed_whenRun(e):
-    return e[0] == 'Landed_whenRun'
+def landed(e):
+    return e[0] == 'Landed'         #충돌체크하면 land
+
+#def for Crawl
+def ctrl_down(e):
+    return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN)

@@ -6,6 +6,7 @@ import handle_framework
 import lilly
 import mode_menu
 from community import Community
+from eyelid import Eyelid
 from lilly import Lilly
 
 
@@ -15,10 +16,14 @@ def init_mode():
 
 
     lilly = Lilly()
-    game_world.add_object(lilly,0)
+    game_world.add_object(lilly,1)
+
+
+    eyeLIDS = [Eyelid() for i in range(5)]
+    game_world.add_objts(eyeLIDS, 0)
 
 #    community = [Community() for i in range(5)]
-#    game_world.add_objts(community, 1)
+#    game_world.add_objts(community, 2)
 
 
 

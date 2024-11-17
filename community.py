@@ -102,15 +102,53 @@ class Idle:
 
 
 class Chase:
+    @staticmethod
+    def enter():
+        pass
+    @staticmethod
+    def exit():
+        pass
+    @staticmethod
+    def do():
+        pass
+    @staticmethod
+    def draw():
+        pass
 
+
+
+class Jump:
+    @staticmethod
+    def enter():
+        pass
+    @staticmethod
+    def exit():
+        pass
+    @staticmethod
+    def do():
+        pass
+    @staticmethod
+    def draw():
+        pass
     pass
+
 
 
 class Find:
-    pass
+    @staticmethod
+    def enter():
+        pass
+    @staticmethod
+    def exit():
+        pass
+    @staticmethod
+    def do():
+        pass
+    @staticmethod
+    def draw():
+        pass
 
-class Jump:
-    pass
+
 
 
 
