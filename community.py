@@ -1,5 +1,5 @@
 import random
-from pico2d import load_image
+from pico2d import load_image, draw_rectangle
 
 import handle_framework
 from StateMachine import StateMachine
@@ -49,6 +49,15 @@ class Community:
 
     def draw(self):
         self.state_machine.draw()
+
+        draw_rectangle(*self.get_boundingbox())
+
+
+    def get_boundingbox(self):
+        return (self.x-30, self.y-30, self.x+30,self.y+25)
+
+    def handle_self_collision(self,crashgroup, other):
+        pass
 
 
 

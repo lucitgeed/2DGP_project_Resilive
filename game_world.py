@@ -31,12 +31,28 @@ def render():
             objt.draw()
 #--------------------
 def collided(a,b):
-    aleft, abottom, aright, atop =
+    aleft, abottom, aright, atop = a.get_boundingbox()
+    bl, bb, br, bt = b.get_boundingbox()
+
+    if br < aleft: return False
+    if aright < bl: return False
+    if bt < abottom: return False
+    if atop < bb: return False
+
+    return True
     pass
 
 def handle_collisions():
-    pass
+    for crashgroup, pairs in collision_pairs.items():
+        for a in pairs[0]:
+            for b in pairs[1]:
+                if collided(a,b):
 
+                    print(f'            {crashgroup} has collided')
+
+                    a.handle_self_collision(crashgroup,b)
+                    b.handle_self_collision(crashgroup,a)
+    pass
 
 
 ######################

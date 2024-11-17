@@ -19,13 +19,21 @@ def init_mode():
     lilly = Lilly()
     game_world.add_object(lilly,0)
 
+
+
     community = [Community() for i in range(5)]
     game_world.add_objts(community, 1)
+
+    #collision info
+    game_world.add_collision_info('lilly:community',lilly, None)
+    for cmity in community:
+        game_world.add_collision_info('lilly:community', None, cmity)
+
     pass
 
 
 
-####################
+########################
 def handle_events():
     events = get_events()
     for event in events:
@@ -41,6 +49,7 @@ def handle_events():
 
 def update():
     game_world.update()
+    game_world.handle_collisions()
     pass
 
 

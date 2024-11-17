@@ -1,6 +1,7 @@
 from ast import Param
 
-from pico2d import load_image, get_time, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, delay
+from pico2d import load_image, get_time, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, delay, \
+    draw_rectangle
 
 import handle_framework
 from StateMachine import*
@@ -74,12 +75,15 @@ class Lilly:
     def draw(self):
         self.state_machine.draw()
 
+        draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
 
 
     def get_boundingbox(self):
+        return (self.x-25, self.y-40,
+                self.x+17, self.y+35)
         pass
 
-    def handle_self_collision(self):
+    def handle_self_collision(self, crashgroup, other):
         pass
 
 
@@ -110,10 +114,10 @@ class Idle:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == 1:
-            lilly.imageIdle.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
+            lilly.imageIdle.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
         elif lilly.face_dir == -1:
             lilly.imageIdle.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128,
-                                                0,'h', lilly.x, lilly.y, 70,70)
+                                                0,'h', lilly.x, lilly.y, 80,80)
 
 
 
@@ -147,9 +151,9 @@ class Walk:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageWalk.clip_draw(int(lilly.frame)*128,0, 128,128, lilly.x, lilly.y, 70,70)
+            lilly.imageWalk.clip_draw(int(lilly.frame)*128,0, 128,128, lilly.x, lilly.y, 80,80)
         elif lilly.face_dir == 1:
-            lilly.imageWalk.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0,'h', lilly.x, lilly.y, 70,70)
+            lilly.imageWalk.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0,'h', lilly.x, lilly.y, 80,80)
 
 
 
@@ -181,9 +185,9 @@ class Run:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageRun.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
+            lilly.imageRun.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
         elif lilly.face_dir == 1:
-            lilly.imageRun.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 70,70)
+            lilly.imageRun.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
 
 
 
@@ -226,7 +230,6 @@ class Jump:
             Ay = (1-t)*starty + t * sy
             Bx = (1-t)*finishx + t * fx
             By = (1-t)*finishy + t * fy
-            print(f'                    Ax is {Ax}')
 
 
             if 25 <= lilly.x <= 800 - 25:
@@ -247,9 +250,9 @@ class Jump:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 70,70)
+            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
         elif lilly.face_dir == 1:
-            lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 70,70)
+            lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
 
 
 
