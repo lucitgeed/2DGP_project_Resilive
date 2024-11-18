@@ -10,13 +10,15 @@ from eyelid import Eyelid
 from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
-from stage_ground import Ground_One
+from stage_ground import Ground_One, StageOne
 
 
 def init_mode():
     global lilly
     global community
 
+    stage_one = StageOne()
+    game_world.add_object(stage_one,0)
 
     lilly = Lilly()
     game_world.add_object(lilly,1)

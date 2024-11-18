@@ -33,9 +33,17 @@ class Ground_One:
 
 
 
+class StageOne:
+    def __init__(self):
+        self.image = load_image('stage_one.png')
 
+    def draw(self):
+        self.image.draw(400,300, 800,600)
 
+    def update(self):
+        pass
 
+#########################################################
 class Ground_two:
     pass
 
