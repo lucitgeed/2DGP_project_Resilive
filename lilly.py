@@ -59,15 +59,14 @@ class Lilly:
 
                 Walk:{right_down:Idle, right_up:Idle, left_down:Idle, left_up:Idle,
                       shift_down:Run,
-                      space_down:Jump_andMOVE, landed:Walk},
+                      space_down:Jump_andMOVE},
 
                 Run:{shift_up:Walk, right_up:Idle, left_up:Idle,
                      right_down:Run, left_down:Run,
-                     space_down:Jump_andMOVE, landed:Run},
+                     space_down:Jump_andMOVE},
 
                 Jump_STILL:{landed:Idle},
-                Jump_andMOVE:{space_up:Jump_andMOVE,
-                              landed:Run},
+                Jump_andMOVE:{landed:Idle, right_down:Jump_andMOVE, left_down:Jump_andMOVE},
                 Caught:{}
             }
         )
@@ -157,6 +156,8 @@ class Walk:
         elif left_down(e) or right_up(e):
             lilly.face_dir = -1
             lilly.dir = -1
+        if landed(e):
+            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
 
     @staticmethod
     def exit(lilly,e):
@@ -192,6 +193,8 @@ class Run:
                 lilly.dir = 1
             elif lilly.face_dir == -1:
                 lilly.dir = -1
+        if landed(e):
+            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
 
     @staticmethod
     def exit(lilly, e):
@@ -271,18 +274,16 @@ class Jump_STILL:
 class Jump_andMOVE:
     @staticmethod
     def enter(lilly, e):
-        if space_down(e):pass
-        elif  right_down(e):
-            lilly.face_dir = 1
-            lilly.dir = 3
-        elif left_down(e):
-            lilly.face_dir = -1
-            lilly.dir = -3
-
         lilly.frame = 0
+        lilly.head_dir = 1
+        lilly.jump_vel_dir = 1
+        game_world.add_collision_info('lilly:tempground', lilly, None)
 
-        highest = 0
-        temp = lilly.y
+        if right_down(e) or left_up(e):
+            lilly.dir = 1
+        elif left_down(e) or right_up(e):
+            lilly.dir = -1
+
 
     @staticmethod
     def exit(lilly, e):
@@ -292,40 +293,28 @@ class Jump_andMOVE:
     def do(lilly):
         lilly.frame = (lilly.frame + 18* Jump_ACTION_per_TIME*handle_framework.frame_time) % 18
 
-        startx, starty = lilly.x, lilly.y
-        finishx, finishy = lilly.x + 3, lilly.y
-        sx,sy = startx,starty+100
-        fx,fy = finishx,finishy+100
+        if 25 <= lilly.x <= 800 - 25:
+            lilly.x += lilly.dir * JUMP_SPEED_PPS * handle_framework.frame_time
+        elif lilly.x < 25:
+            lilly.x = 25
+        elif lilly.x > 800 - 25:
+            lilly.x = 800 - 25
 
-        for i in range(0, 100,5):
+        if 50 <= lilly.y <= 550:
+            lilly.y += lilly.jump_vel_dir * JUMP_SPEED_PPS * handle_framework.frame_time
 
-            t = i/100
-            Ax = (1-t)*startx + t * sx
-            Ay = (1-t)*starty + t * sy
-            Bx = (1-t)*finishx + t * fx
-            By = (1-t)*finishy + t * fy
-
-
-            if 25 <= lilly.x <= 800 - 25:
-                lilly.x = (1-t) * Ax + t * Bx
-            elif lilly.x < 25:
-                lilly.x = 25
-            elif lilly.x > 800 - 25:
-                lilly.x = 800 - 25
-
-            if 50 <= lilly.y <= 550:
-                lilly.y = (1-t) * Ay + t * By
-            elif lilly.y < 50:
-                lilly.y =50
-            elif lilly.y > 550:
-                lilly.y = 550
-        delay(0.06)
+            if int(lilly.y) == 250:
+                lilly.jump_vel_dir = -1
+        elif lilly.y < 50:
+            lilly.y = 50
+        elif lilly.y > 550:
+            lilly.y = 550
 
     @staticmethod
     def draw(lilly):
-        if lilly.face_dir == -1:
+        if lilly.dir == -1:
             lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
-        elif lilly.face_dir == 1:
+        elif lilly.dir == 1:
             lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
 
 
