@@ -90,3 +90,4 @@ def landed(e):
 #def for Crawl
 def ctrl_down(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN)
+

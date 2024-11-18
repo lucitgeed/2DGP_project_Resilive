@@ -3,10 +3,10 @@ from ast import Param
 from pico2d import load_image, get_time, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, delay, \
     draw_rectangle
 
+import game_world
 import handle_framework
 from StateMachine import*
-
-
+from game_world import remove_collision_objt
 
 PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm
 # set lilly speed
@@ -20,7 +20,7 @@ WALK_SPEED_M_per_M = (WALK_SPEED_KM_per_H * 1000.0 / 60.0)
 WALK_SPEED_M_per_S = WALK_SPEED_M_per_M / 60.0
 WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
 
-JUMP_SPEED_MPS = 1.5
+JUMP_SPEED_MPS = 15
 JUMP_SPEED_PPS  = JUMP_SPEED_MPS * PIXEL_per_METER
 # set frame flip speed
 TIME_per_Idle_ACTION = 0.8
@@ -32,8 +32,8 @@ Walk_ACTION_per_TIME = 1.0 / TIME_per_Walk_ACTION
 TIME_per_Run_ACTION = 0.6
 Run_ACTION_per_TIME = 1.0 / TIME_per_Run_ACTION
 
-TIME_per_Jump_ACTION = 0.8
-Jump_ACTION_per_TIME = 1.0 / TIME_per_Run_ACTION
+TIME_per_Jump_ACTION = 2
+Jump_ACTION_per_TIME = 1.0 / TIME_per_Jump_ACTION
 
 
 
@@ -43,7 +43,7 @@ class Lilly:
     image = None
 
     def __init__(self):
-        self.x, self.y = 50,80
+        self.x, self.y = 50,105
         if Lilly.image == None:
             Lilly.imageIdle = load_image("lilly_idle_Sheet.png")
             Lilly.imageRun = load_image("lilly_run_Sheet.png")
@@ -56,13 +56,16 @@ class Lilly:
             {
                 Idle:{right_down:Walk, right_up:Walk, left_down:Walk, left_up:Walk, shift_down:Idle,
                       space_down:Jump_STILL},
+
                 Walk:{right_down:Idle, right_up:Idle, left_down:Idle, left_up:Idle,
                       shift_down:Run,
-                      space_down:Jump_andMOVE},
+                      space_down:Jump_andMOVE, landed:Walk},
+
                 Run:{shift_up:Walk, right_up:Idle, left_up:Idle,
                      right_down:Run, left_down:Run,
-                     space_down:Jump_andMOVE},
-                Jump_STILL:{space_up:Jump_STILL, landed:Idle},
+                     space_down:Jump_andMOVE, landed:Run},
+
+                Jump_STILL:{landed:Idle},
                 Jump_andMOVE:{space_up:Jump_andMOVE,
                               landed:Run},
                 Caught:{}
@@ -93,25 +96,35 @@ class Lilly:
             pass
         if crashgroup == 'lilly:cmity_aggro':
             pass
+        if crashgroup == 'lilly:tempground':
+            self.state_machine.add_events(('Landed',0))
+            game_world.remove_collision_objt(self)
+#           self.state_machine.cur_state.handle_self_collision(crashgroup, other)
 
 
 
 
 
-###########
+#############
 class Idle:
     @staticmethod
     def enter(lilly, e):
-        if start_event(e) or  right_up(e) or left_down(e):
+
+        if start_event(e) or right_up(e) or left_down(e):
             lilly.face_dir = 1
         elif left_up(e) or right_down(e):
             lilly.face_dir = -1
+        if landed(e):
+            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
+
+            pass
 
         lilly.frame = 0
         lilly.dir = 0
 
     @staticmethod
     def exit(lilly, e):
+
         pass
 
     @staticmethod
@@ -126,6 +139,11 @@ class Idle:
         elif lilly.face_dir == -1:
             lilly.imageIdle.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128,
                                                 0,'h', lilly.x, lilly.y, 80,80)
+
+    #-------
+    @staticmethod
+    def handle_self_collision(lilly):
+        pass
 
 
 
@@ -204,9 +222,9 @@ class Jump_STILL:
     @staticmethod
     def enter(lilly, e):
         lilly.frame = 0
-
-        highest = 0
-        temp = lilly.y
+        lilly.head_dir = 1
+        lilly.jump_vel_dir = 1
+        game_world.add_collision_info('lilly:tempground', lilly, None)
 
     @staticmethod
     def exit(lilly, e):
@@ -216,33 +234,24 @@ class Jump_STILL:
     def do(lilly):
         lilly.frame = (lilly.frame + 18* Jump_ACTION_per_TIME*handle_framework.frame_time) % 18
 
-        startx, starty = lilly.x, lilly.y
-        finishx, finishy = lilly.x + 3, lilly.y
-        sx,sy = startx,starty+100
-        fx,fy = finishx,finishy+100
+        if 25 <= lilly.x <= 800 - 25:
+            pass
+        elif lilly.x < 25:
+            lilly.x = 25
+        elif lilly.x > 800 - 25:
+            lilly.x = 800 - 25
 
-        for i in range(0, 100,5):
+        if 50 <= lilly.y <= 550:
+            lilly.y +=lilly.jump_vel_dir * JUMP_SPEED_PPS *  handle_framework.frame_time
 
-            t = i/100
-            Ax = (1-t)*startx + t * sx
-            Ay = (1-t)*starty + t * sy
-            Bx = (1-t)*finishx + t * fx
-            By = (1-t)*finishy + t * fy
+            if int(lilly.y) == 250:
+                lilly.jump_vel_dir = -1
+        elif lilly.y < 50:
+            lilly.y =50
+        elif lilly.y > 550:
+            lilly.y = 550
 
 
-            if 25 <= lilly.x <= 800 - 25:
-                lilly.x = (1-t) * Ax + t * Bx
-            elif lilly.x < 25:
-                lilly.x = 25
-            elif lilly.x > 800 - 25:
-                lilly.x = 800 - 25
-
-            if 50 <= lilly.y <= 550:
-                lilly.y = (1-t) * Ay + t * By
-            elif lilly.y < 50:
-                lilly.y =50
-            elif lilly.y > 550:
-                lilly.y = 550
 
     @staticmethod
     def draw(lilly):
@@ -250,6 +259,11 @@ class Jump_STILL:
             lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
         elif lilly.face_dir == 1:
             lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
+
+    #--------
+    @staticmethod
+    def handle_self_collision(lilly):
+        lilly.state_machine.add_events(('Landed', 0))
 
 
 

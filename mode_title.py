@@ -1,6 +1,7 @@
 from pico2d import load_image, get_events, clear_canvas, update_canvas
 from sdl2 import SDL_KEYDOWN, SDL_QUIT, SDLK_ESCAPE, SDL_KEYUP, SDLK_KP_ENTER, SDLK_RETURN
 
+import game_world
 import handle_framework
 import lilly
 import mode_play

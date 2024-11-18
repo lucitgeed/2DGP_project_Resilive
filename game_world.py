@@ -1,4 +1,4 @@
-world = [ [] for _ in range(4)]
+world = [ [] for _ in range(5)]
 collision_pairs = {}
 
 
@@ -60,6 +60,19 @@ def handle_collisions():
         for a in pairs[0]:
             for b in pairs[1]:
                 if collided(a,b):
+
+                    print(f'            {crashgroup} has collided')
+
+                    a.handle_self_collision(crashgroup,b)
+                    b.handle_self_collision(crashgroup,a)
+    pass
+
+
+def handle_death_collisions():
+    for crashgroup, pairs in collision_pairs.items():
+        for a in pairs[0]:
+            for b in pairs[1]:
+                if collided_todeath(a,b):
 
                     print(f'            {crashgroup} has collided')
 

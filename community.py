@@ -103,16 +103,16 @@ class Idle:
 
 class Chase:
     @staticmethod
-    def enter():
+    def enter(cmity,event):
         pass
     @staticmethod
-    def exit():
+    def exit(cmity):
         pass
     @staticmethod
-    def do():
+    def do(cmity):
         pass
     @staticmethod
-    def draw():
+    def draw(cmity):
         pass
 
 

@@ -8,7 +8,9 @@ import mode_menu
 from community import Community
 from eyelid import Eyelid
 from eyepupil import Eyepupil
+from game_world import add_object
 from lilly import Lilly
+from stage_ground import Ground_One
 
 
 def init_mode():
@@ -20,15 +22,19 @@ def init_mode():
     game_world.add_object(lilly,1)
 
 
-    eyeLIDS = [Eyelid() for i in range(5)]
-    game_world.add_objts(eyeLIDS, 0)
+#    eyeLIDS = [Eyelid() for i in range(5)]
+#    game_world.add_objts(eyeLIDS, 1)
 
 #    community = [Community() for i in range(5)]
 #    game_world.add_objts(community, 2)
 
-    eyePUPILS = [Eyepupil() for i in range(10)]
-    game_world.add_objts(eyePUPILS, 0)
+#    eyePUPILS = [Eyepupil() for i in range(10)]
+#    game_world.add_objts(eyePUPILS, 1)
 
+    tempground = Ground_One()
+    game_world,add_object(tempground,0)
+
+    game_world.add_collision_info('lilly:tempground', None, tempground)
 
 
     #collision info
@@ -37,6 +43,7 @@ def init_mode():
 #    for cmity in community:
 #        game_world.add_collision_info('lilly:community', None, cmity)
 #        game_world.add_collision_info('lilly:cmity_aggro', None, cmity)
+
 
     pass
 
@@ -58,7 +65,9 @@ def handle_events():
 
 def update():
     game_world.update()
+    game_world.handle_death_collisions()
     game_world.handle_collisions()
+
     pass
 
 
