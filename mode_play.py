@@ -24,11 +24,11 @@ def init_mode():
     game_world.add_object(lilly,1)
 
 
-#    eyeLIDS = [Eyelid() for i in range(5)]
-#    game_world.add_objts(eyeLIDS, 1)
+    eyeLIDS = [Eyelid() for i in range(5)]
+    game_world.add_objts(eyeLIDS, 1)
 
-#    community = [Community() for i in range(5)]
-#    game_world.add_objts(community, 2)
+    community = [Community() for i in range(5)]
+    game_world.add_objts(community, 2)
 
 #    eyePUPILS = [Eyepupil() for i in range(10)]
 #    game_world.add_objts(eyePUPILS, 1)
