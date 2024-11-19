@@ -17,18 +17,22 @@ def init_mode():
     global lilly
     global community
 
-    stage_one = StageOne()
-    game_world.add_object(stage_one,0)
+#    stage_one = StageOne()
+#    game_world.add_object(stage_one,0)
 
     lilly = Lilly()
     game_world.add_object(lilly,1)
 
+    game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
 
-    eyeLIDS = [Eyelid() for i in range(5)]
-    game_world.add_objts(eyeLIDS, 1)
 
-    community = [Community() for i in range(5)]
+#    eyeLIDS = [Eyelid() for i in range(5)]
+#    game_world.add_objts(eyeLIDS, 1)
+
+    community = [Community() for _ in range(5)]
     game_world.add_objts(community, 2)
+    for c in community:
+        game_world.add_collision_info('lilly:cmity_aggro', None, c)
 
 #    eyePUPILS = [Eyepupil() for i in range(10)]
 #    game_world.add_objts(eyePUPILS, 1)
@@ -64,11 +68,14 @@ def handle_events():
             if event.type in (SDL_KEYDOWN, SDL_KEYUP):
                 lilly.handle_event(event)
 
+                for c in community:
+                    c.handle_event()
+
 
 def update():
     game_world.update()
-    game_world.handle_death_collisions()
     game_world.handle_collisions()
+    game_world.handle_death_collisions()
 
     pass
 

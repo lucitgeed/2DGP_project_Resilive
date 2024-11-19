@@ -57,6 +57,11 @@ def start_event(e):
     return e[0] == 'Start'
 def time_out(e):
     return e[0] == 'Time_Out'
+def in_time(e):
+    return e[0] == 'In_Time'
+
+def caughtby_cmity(e):
+    return e[0] == 'communityCaught'
 
 
 #def for Walk
@@ -91,3 +96,9 @@ def landed(e):
 def ctrl_down(e):
     return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN)
 
+
+
+########################################################################
+#def for community
+def spot_lilly(e):
+    return e[0] == 'CollisionEvent'

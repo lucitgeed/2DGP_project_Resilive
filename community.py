@@ -2,9 +2,8 @@ import random
 from pico2d import load_image, draw_rectangle
 
 import handle_framework
-from StateMachine import StateMachine
-
-
+from StateMachine import StateMachine, spot_lilly
+from lilly import Caught
 
 PIXEL_per_METER = 10.0 / 1
 # set community speed
@@ -27,17 +26,19 @@ Idle_ACTION_per_TIME = 1.0 / TIME_per_Idle_ACTION
 class Community:
     image = None
     def __init__(self):
-        self.x, self.y = random.randint(50,750), random.randint(200,550)
+        self.x, self.y = random.randint(50,750), random.randint(200,300)
         self.face_dir = random.choice([-1,1])
 
         if Community.image == None:
             Community.imageIdle = load_image("community_idle_Sheet.png")
+            Community.imageChase = load_image("community_chase-Sheet.png")
 
         self.state_machine = StateMachine(self)
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
             {
-#                Idle:{find_lilly:Chase}
+                Idle:{spot_lilly:Chase},
+                Chase:{}
             }
         )
 
@@ -67,6 +68,7 @@ class Community:
         if crashgroup == 'lilly:community':
             pass
         if crashgroup == 'lilly:cmity_aggro':
+            self.state_machine.start(Chase)
             pass
         pass
 
@@ -79,7 +81,7 @@ class Idle:
         cmity.frame = (random.randint(0, 21))
 
     @staticmethod
-    def exit(cmity):
+    def exit(cmity, e):
         pass
 
     @staticmethod
@@ -104,15 +106,28 @@ class Idle:
 class Chase:
     @staticmethod
     def enter(cmity,event):
+        cmity.frame = 0
         pass
     @staticmethod
-    def exit(cmity):
+    def exit(cmity, e):
         pass
     @staticmethod
     def do(cmity):
+        cmity.frame = (cmity.frame + 7 * Idle_ACTION_per_TIME * handle_framework.frame_time) % 7
+        cmity.x += cmity.face_dir * CHASE_SPEED_PPS * handle_framework.frame_time
+
+        if cmity.x < 25:
+            cmity.face_dir = 1
+        elif cmity.x > 800 - 25:
+            cmity.face_dir = -1
+
         pass
     @staticmethod
     def draw(cmity):
+        if cmity.face_dir == 1:
+            cmity.imageChase.clip_composite_draw(int(cmity.frame) * 128, 0, 128, 128, 0,'h', cmity.x, cmity.y, 70,70)
+        elif cmity.face_dir == -1:
+            cmity.imageChase.clip_draw(int(cmity.frame) * 128, 0, 128, 128, cmity.x, cmity.y, 70, 70)
         pass
 
 
@@ -134,7 +149,7 @@ class Jump:
 
 
 
-class Find:
+class Spot:
     @staticmethod
     def enter():
         pass

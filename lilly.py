@@ -10,7 +10,9 @@ from game_world import remove_collision_objt
 
 PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm
 # set lilly speed
-RUN_SPEED_KM_per_H = 17.0
+#RUN_SPEED_KM_per_H = 17.0
+RUN_SPEED_KM_per_H = 50.0
+
 RUN_SPEED_M_per_M = (RUN_SPEED_KM_per_H * 1000.0 / 60.0)
 RUN_SPEED_M_per_S = RUN_SPEED_M_per_M / 60.0
 RUN_SPEED_PPS = RUN_SPEED_M_per_S * PIXEL_per_METER
@@ -55,19 +57,23 @@ class Lilly:
         self.state_machine.set_transitions(
             {
                 Idle:{right_down:Walk, right_up:Walk, left_down:Walk, left_up:Walk, shift_down:Idle,
-                      space_down:Jump_STILL},
+                      space_down:Jump_STILL,
+                      caughtby_cmity:Caught},
 
                 Walk:{right_down:Idle, right_up:Idle, left_down:Idle, left_up:Idle,
                       shift_down:Run,
-                      space_down:Jump_andMOVE},
+                      space_down:Jump_andMOVE,
+                      caughtby_cmity:Caught},
 
                 Run:{shift_up:Walk, right_up:Idle, left_up:Idle,
                      right_down:Run, left_down:Run,
-                     space_down:Jump_andMOVE},
+                     space_down:Jump_andMOVE,
+                     caughtby_cmity:Caught},
 
-                Jump_STILL:{landed:Idle},
+                Jump_STILL:{landed:Idle,spot_lilly:Jump_STILL},
                 Jump_andMOVE:{landed:Idle, right_down:Jump_andMOVE, left_down:Jump_andMOVE},
-                Caught:{}
+
+                Caught:{time_out:Dead,in_time:Idle}
             }
         )
 
@@ -115,11 +121,12 @@ class Idle:
             lilly.face_dir = -1
         if landed(e):
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
-
             pass
 
         lilly.frame = 0
         lilly.dir = 0
+
+        game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
 
     @staticmethod
     def exit(lilly, e):
@@ -159,6 +166,8 @@ class Walk:
         if landed(e):
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
 
+        game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
+
     @staticmethod
     def exit(lilly,e):
         pass
@@ -189,12 +198,18 @@ class Run:
     @staticmethod
     def enter(lilly, e):
         if shift_down(e):      #????????????
-            if lilly.face_dir == 1:
+            if right_down(e) or left_up(e):
+                lilly.face_dir == 1
                 lilly.dir = 1
-            elif lilly.face_dir == -1:
+            elif left_down(e) or right_up(e):
+                lilly.face_dir == -1
                 lilly.dir = -1
         if landed(e):
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
+
+
+        game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
+
 
     @staticmethod
     def exit(lilly, e):
@@ -227,6 +242,7 @@ class Jump_STILL:
         lilly.frame = 0
         lilly.head_dir = 1
         lilly.jump_vel_dir = 1
+
         game_world.add_collision_info('lilly:tempground', lilly, None)
 
     @staticmethod
@@ -275,8 +291,8 @@ class Jump_andMOVE:
     @staticmethod
     def enter(lilly, e):
         lilly.frame = 0
-        lilly.head_dir = 1
         lilly.jump_vel_dir = 1
+
         game_world.add_collision_info('lilly:tempground', lilly, None)
 
         if right_down(e) or left_up(e):
@@ -348,3 +364,8 @@ class Caught:
     @staticmethod
     def draw():
         pass
+
+
+
+class Dead:
+    pass
