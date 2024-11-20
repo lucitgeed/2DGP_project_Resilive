@@ -24,6 +24,7 @@ def init_mode():
     game_world.add_object(lilly,1)
 
     game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
+#    game_world.add_collision_info('lilly:cmity_attck', lilly, None)
 
 
 #    eyeLIDS = [Eyelid() for i in range(5)]
@@ -33,6 +34,7 @@ def init_mode():
     game_world.add_objts(community, 2)
     for c in community:
         game_world.add_collision_info('lilly:cmity_aggro', None, c)
+#        game_world.add_collision_info('lilly:cmity_attck', None, c)
 
 #    eyePUPILS = [Eyepupil() for i in range(10)]
 #    game_world.add_objts(eyePUPILS, 1)
@@ -74,6 +76,7 @@ def handle_events():
 
 def update():
     game_world.update()
+
     game_world.handle_collisions()
     game_world.handle_death_collisions()
 

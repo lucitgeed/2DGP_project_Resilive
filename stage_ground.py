@@ -38,7 +38,7 @@ class StageOne:
         self.image = load_image('stage_one.png')
 
     def draw(self):
-        self.image.draw(400,300, 800,600)
+        self.image.draw(400,300, 1200,900)
 
     def update(self):
         pass

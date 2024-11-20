@@ -14,11 +14,11 @@ IDLE_SPEED_PPS = IDLE_SPEED_MPS * PIXEL_per_METER
 class Eyepupil:
     image = None
 
-    def __init__(self):
+    def __init__(self,lidx, lidy):
         self.size = random.randint(10,40)
         self.dir = random.choice([-1,1])
         self.frame = 0
-        self.x, self.y = random.randint(50,750),random.randint(350,550)
+        self.x, self.y = random.randint(lidx - self.size ,750),random.randint(350,550)
 
         if Eyepupil.image == None:
             Eyepupil.imageIDLE = load_image('eyepupil_idle.png')

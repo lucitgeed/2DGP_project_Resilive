@@ -89,21 +89,30 @@ class Lilly:
         self.state_machine.draw()
 
         draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
+        draw_rectangle(*self.get_aggrobox())
 
-
+    #-----------------
     def get_boundingbox(self):
         return (self.x-25, self.y-40,
                 self.x+17, self.y+35)
         pass
+
+    def get_aggrobox(self):
+        return (self.x-45, self.y-60,
+                self.x+37, self.y+55)
 
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:community':
             pass
         if crashgroup == 'lilly:cmity_aggro':
             pass
+        if crashgroup == 'lilly:cmity_attack':
+            pass
+
         if crashgroup == 'lilly:tempground':
             self.state_machine.add_events(('Landed',0))
-            game_world.remove_collision_objt(self)
+            game_world.remove_a_collision_objt('lilly:tempground', self)
+#            game_world.remove_collision_objt(self)
 #           self.state_machine.cur_state.handle_self_collision(crashgroup, other)
 
 
@@ -115,18 +124,18 @@ class Idle:
     @staticmethod
     def enter(lilly, e):
 
-        if start_event(e) or right_up(e) or left_down(e):
+        if start_event(e) or right_up(e):
             lilly.face_dir = 1
-        elif left_up(e) or right_down(e):
+        elif left_up(e):
             lilly.face_dir = -1
+        elif left_down(e) or right_down(e):pass
+
         if landed(e):
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
             pass
 
         lilly.frame = 0
         lilly.dir = 0
-
-        game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
 
     @staticmethod
     def exit(lilly, e):
@@ -163,10 +172,9 @@ class Walk:
         elif left_down(e) or right_up(e):
             lilly.face_dir = -1
             lilly.dir = -1
+
         if landed(e):
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
-
-        game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
 
     @staticmethod
     def exit(lilly,e):
@@ -206,10 +214,6 @@ class Run:
                 lilly.dir = -1
         if landed(e):
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
-
-
-        game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
-
 
     @staticmethod
     def exit(lilly, e):
@@ -280,9 +284,9 @@ class Jump_STILL:
             lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
 
     #--------
-    @staticmethod
-    def handle_self_collision(lilly):
-        lilly.state_machine.add_events(('Landed', 0))
+#    @staticmethod
+#    def handle_self_collision(lilly):
+#        lilly.state_machine.add_events(('Landed', 0))
 
 
 
