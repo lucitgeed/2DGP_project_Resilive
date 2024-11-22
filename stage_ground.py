@@ -44,6 +44,37 @@ class StageOne:
     def update(self):
         pass
 
+
+
+class ShiftObjt1:
+    image = None
+    def __init__(self):
+        game_world.add_collision_info("lilly:shiftobjt1", None, self)
+
+        self.x, self.y = 400,300
+        if ShiftObjt1.image == None:
+            ShiftObjt1.image = load_image("shift_objt1.png")
+
+    def update(self):
+#        game_world.update()
+        pass
+
+    def handle_event(self, event):pass
+
+    def draw(self):
+        self.image.draw(400, 200, 500,250)
+        draw_rectangle(*self.get_boundingbox())
+
+    #------------------------
+    def get_boundingbox(self):
+        return (self.x-250, self.y-110,self.x+250, self.y+115)
+    def get_aggrobox(self):
+        return (self.x-250, self.y-110,self.x+250, self.y+115)
+
+    def handle_self_collision(self, crashgroup, other):
+        pass
+
+
 #########################################################
 class Ground_two:
     pass

@@ -10,7 +10,7 @@ from eyelid import Eyelid
 from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
-from stage_ground import Ground_One, StageOne
+from stage_ground import Ground_One, StageOne, ShiftObjt1
 
 
 def init_mode():
@@ -25,6 +25,7 @@ def init_mode():
 
     game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
 #    game_world.add_collision_info('lilly:cmity_attck', lilly, None)
+
 
 
 #    eyeLIDS = [Eyelid() for i in range(5)]
@@ -44,6 +45,10 @@ def init_mode():
 
     game_world.add_collision_info('lilly:tempground', None, tempground)
 
+    shiftobjt1 = ShiftObjt1()
+    game_world.add_object(shiftobjt1, 2)
+
+
 
     #collision info
 #    game_world.add_collision_info('lilly:community',lilly, None)
@@ -51,6 +56,8 @@ def init_mode():
 #    for cmity in community:
 #        game_world.add_collision_info('lilly:community', None, cmity)
 #        game_world.add_collision_info('lilly:cmity_aggro', None, cmity)
+
+    game_world.add_collision_info("lilly:shiftobjt1", lilly, None)
 
 
     pass
