@@ -45,7 +45,7 @@ class Lilly:
     image = None
 
     def __init__(self):
-        self.x, self.y = 50,105
+        self.x, self.y = 50,120
         if Lilly.image == None:
             Lilly.imageIdle = load_image("lilly_idle_Sheet.png")
             Lilly.imageRun = load_image("lilly_run_Sheet.png")
@@ -314,7 +314,7 @@ class Jump_andMOVE:
         lilly.frame = (lilly.frame + 18* Jump_ACTION_per_TIME*handle_framework.frame_time) % 18
 
         if 25 <= lilly.x <= 800 - 25:
-            lilly.x += lilly.dir * JUMP_SPEED_PPS * handle_framework.frame_time
+            lilly.x += lilly.dir * JUMP_SPEED_PPS * handle_framework.frame_time /3*2
         elif lilly.x < 25:
             lilly.x = 25
         elif lilly.x > 800 - 25:

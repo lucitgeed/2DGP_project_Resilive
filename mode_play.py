@@ -27,10 +27,10 @@ def init_mode():
 #    game_world.add_collision_info('lilly:cmity_attck', lilly, None)
 
 
-    eyeLIDS = [Eyelid() for i in range(5)]
-    game_world.add_objts(eyeLIDS, 1)
+#    eyeLIDS = [Eyelid() for i in range(5)]
+#    game_world.add_objts(eyeLIDS, 1)
 
-    community = [Community() for _ in range(5)]
+    community = [Community() for _ in range(3)]
     game_world.add_objts(community, 2)
     for c in community:
         game_world.add_collision_info('lilly:cmity_aggro', None, c)
