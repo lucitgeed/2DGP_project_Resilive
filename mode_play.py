@@ -17,8 +17,8 @@ def init_mode():
     global lilly
     global community
 
-#    stage_one = StageOne()
-#    game_world.add_object(stage_one,0)
+    stage_one = StageOne()
+    game_world.add_object(stage_one,0)
 
     lilly = Lilly()
     game_world.add_object(lilly,1)
@@ -27,8 +27,8 @@ def init_mode():
 #    game_world.add_collision_info('lilly:cmity_attck', lilly, None)
 
 
-#    eyeLIDS = [Eyelid() for i in range(5)]
-#    game_world.add_objts(eyeLIDS, 1)
+    eyeLIDS = [Eyelid() for i in range(5)]
+    game_world.add_objts(eyeLIDS, 1)
 
     community = [Community() for _ in range(5)]
     game_world.add_objts(community, 2)
