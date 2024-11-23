@@ -24,6 +24,7 @@ WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
 
 JUMP_SPEED_MPS = 15
 JUMP_SPEED_PPS  = JUMP_SPEED_MPS * PIXEL_per_METER
+
 # set frame flip speed
 TIME_per_Idle_ACTION = 0.8
 Idle_ACTION_per_TIME = 1.0 / TIME_per_Idle_ACTION
@@ -93,13 +94,10 @@ class Lilly:
 
     #-----------------
     def get_boundingbox(self):
-        return (self.x-25, self.y-40,
-                self.x+17, self.y+35)
-        pass
+        return (self.x-25, self.y-40, self.x+17, self.y+35)
 
     def get_aggrobox(self):
-        return (self.x-45, self.y-60,
-                self.x+37, self.y+55)
+        return (self.x-45, self.y-60,self.x+37, self.y+55)
 
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:community':

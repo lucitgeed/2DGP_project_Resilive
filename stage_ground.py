@@ -3,8 +3,14 @@ from tkinter import image_names
 from pico2d import load_image, draw_rectangle
 
 import game_world
+import handle_framework
+
+# set frame flip speed
+TIME_per_WATER_ACTION = 2
+WATER_ACTION_per_TIME = 1.0 / TIME_per_WATER_ACTION
 
 
+#=============
 class Ground_One:
     image = None
     def __init__(self):
@@ -34,6 +40,7 @@ class Ground_One:
 
 
 
+#=============
 class StageOne:
     def __init__(self):
         self.image = load_image('stage_one_back.png')
@@ -46,6 +53,7 @@ class StageOne:
 
 
 
+#=============
 class ShiftObjt1:
     image = None
     def __init__(self):
@@ -73,6 +81,40 @@ class ShiftObjt1:
 
     def handle_self_collision(self, crashgroup, other):
         pass
+
+
+#=============
+class ObstacleWater:
+    image = None
+    def __init__(self):
+        self.frame = 0
+        self.x, self.y = 400,64
+        if ObstacleWater.image == None:
+            ObstacleWater.image = load_image("obstacle_water-Sheet.png")
+
+    def update(self):
+#        game_world.update()
+        pass
+
+    def handle_event(self, event):pass
+
+    def draw(self):
+        self.frame = (self.frame + 5*WATER_ACTION_per_TIME* handle_framework.frame_time)%5
+        self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.x, self.y)
+        draw_rectangle(*self.get_boundingbox())
+
+    #------------------------
+    def get_boundingbox(self):
+        return (self.x-64, self.y-64,self.x+64, self.y+64)
+    def get_aggrobox(self):
+        return (self.x-64, self.y-64,self.x+64, self.y+64)
+
+    def handle_self_collision(self, crashgroup, other):
+        pass
+
+
+
+
 
 
 #########################################################

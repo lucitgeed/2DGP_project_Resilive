@@ -10,18 +10,34 @@ from eyelid import Eyelid
 from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
-from stage_ground import Ground_One, StageOne, ShiftObjt1
+from stage_ground import Ground_One, StageOne, ShiftObjt1, ObstacleWater
 
 
 def init_mode():
     global lilly
     global community
 
+
+    lilly = Lilly()
+    game_world.add_object(lilly,3)
+
+
+
     stage_one = StageOne()
     game_world.add_object(stage_one,0)
 
-    lilly = Lilly()
-    game_world.add_object(lilly,1)
+
+    tempground = Ground_One()
+    game_world,add_object(tempground,1)
+    game_world.add_collision_info('lilly:tempground', None, tempground)
+
+
+#    shiftobjt1 = ShiftObjt1()
+#    game_world.add_object(shiftobjt1, 2)
+    game_world.add_collision_info("lilly:shiftobjt1", lilly, None)
+
+
+
 
     game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
 #    game_world.add_collision_info('lilly:cmity_attck', lilly, None)
@@ -29,24 +45,29 @@ def init_mode():
 
 
 #    eyeLIDS = [Eyelid() for i in range(5)]
-#    game_world.add_objts(eyeLIDS, 1)
+#    game_world.add_objts(eyeLIDS, 3)
+
+
 
     community = [Community() for _ in range(3)]
-    game_world.add_objts(community, 2)
-    for c in community:
-        game_world.add_collision_info('lilly:cmity_aggro', None, c)
+#    game_world.add_objts(community, 3)
+#    for c in community:
+#        game_world.add_collision_info('lilly:cmity_aggro', None, c)
+
+
 #        game_world.add_collision_info('lilly:cmity_attck', None, c)
 
+
+
 #    eyePUPILS = [Eyepupil() for i in range(10)]
-#    game_world.add_objts(eyePUPILS, 1)
+#    game_world.add_objts(eyePUPILS, 4)
 
-    tempground = Ground_One()
-    game_world,add_object(tempground,0)
 
-    game_world.add_collision_info('lilly:tempground', None, tempground)
 
-    shiftobjt1 = ShiftObjt1()
-    game_world.add_object(shiftobjt1, 2)
+
+    water = ObstacleWater()
+    game_world.add_object(water, 4)
+    game_world.add_collision_info('lilly:water', lilly, water)
 
 
 
@@ -56,8 +77,6 @@ def init_mode():
 #    for cmity in community:
 #        game_world.add_collision_info('lilly:community', None, cmity)
 #        game_world.add_collision_info('lilly:cmity_aggro', None, cmity)
-
-    game_world.add_collision_info("lilly:shiftobjt1", lilly, None)
 
 
     pass
