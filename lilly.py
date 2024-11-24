@@ -74,7 +74,7 @@ class Lilly:
                 Jump_STILL:{landed:Idle,spot_lilly:Jump_STILL},
                 Jump_andMOVE:{landed:Idle, right_down:Jump_andMOVE, left_down:Jump_andMOVE},
 
-                Caught:{time_out:Dead,in_time:Idle}
+#                Caught:{time_out:Dead,in_time:Idle}
             }
         )
 
@@ -112,6 +112,11 @@ class Lilly:
             game_world.remove_a_collision_objt('lilly:tempground', self)
 #            game_world.remove_collision_objt(self)
 #           self.state_machine.cur_state.handle_self_collision(crashgroup, other)
+
+        if crashgroup == 'lilly:water':
+            game_world.remove_collision_objt(self)
+            game_world.remove_objt(self)
+            pass
 
 
 
@@ -366,8 +371,3 @@ class Caught:
     @staticmethod
     def draw():
         pass
-
-
-
-class Dead:
-    pass

@@ -25,7 +25,7 @@ def run(mode):
         mode_stack[-1].draw()
 
         frame_time = time.time() - start_time
-        frame_rate = 1.0/ frame_time
+#        frame_rate = 1.0/ frame_time
         start_time += frame_time
 
     while(len(mode_stack) > 0):

@@ -110,9 +110,35 @@ class ObstacleWater:
         return (self.x-64, self.y-64,self.x+64, self.y+64)
 
     def handle_self_collision(self, crashgroup, other):
+        if crashgroup == 'lilly:water':
+            game_world.remove_collision_objt(self)
+
+            drowned = Drown(self.x, self.y)
+            game_world.add_object(drowned, 5)
         pass
 
 
+
+class Drown:
+    image = None
+    def __init__(self, x, y):
+        self.frame = 0
+        ############
+        self.x, self.y = x, y
+        ###########lilly위치에 맞춰 수정 요함
+        if Drown.image == None:
+            Drown.image = load_image("lilly_drown-Sheet.png")
+
+    def update(self):pass
+
+    def handle_event(self, event):pass
+
+    def draw(self):
+        if self.frame == 14:
+            pass
+        self.frame = (self.frame + 15 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 15
+        self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.x, self.y)
+        pass
 
 
 

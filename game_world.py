@@ -1,4 +1,4 @@
-world = [ [] for _ in range(6)]
+world = [ [] for _ in range(7)]
 collision_pairs = {}
 
 
@@ -109,8 +109,15 @@ def handle_death_collisions():
 def remove_objt(objt):
     for layer in world:
         if objt in layer:
-            world.remove(objt)
+
+
+#           자. 이러면 어떨까!?!
+            layer.remove(objt)
+#            world.remove(objt)
+
             return
+
+
 #------------------------------
 def remove_collision_objt(objt):
     for pairs in collision_pairs.values():
