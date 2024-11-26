@@ -25,7 +25,10 @@ WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
 JUMP_SPEED_MPS = 15
 JUMP_SPEED_PPS  = JUMP_SPEED_MPS * PIXEL_per_METER
 
-CR
+CRAWL_SPEED_KM_per_H= 6
+CRAWL_SPEED_M_per_M = (CRAWL_SPEED_KM_per_H * 1000.0 / 60.0)
+CRAWL_SPEED_M_per_s = CRAWL_SPEED_M_per_M / 60.0
+CRAWL_SPEED_PPS = CRAWL_SPEED_M_per_s * PIXEL_per_METER
 
 # set frame flip speed
 TIME_per_Idle_ACTION = 0.8
@@ -39,6 +42,9 @@ Run_ACTION_per_TIME = 1.0 / TIME_per_Run_ACTION
 
 TIME_per_Jump_ACTION = 2
 Jump_ACTION_per_TIME = 1.0 / TIME_per_Jump_ACTION
+
+TIME_per_Crawl_ACTION = 1.5
+Crawl_ACTION_per_TIME = 1.0 / TIME_per_Crawl_ACTION
 
 
 
@@ -54,6 +60,7 @@ class Lilly:
             Lilly.imageRun = load_image("lilly_run_Sheet.png")
             Lilly.imageJump = load_image("lilly_jump-Sheet.png")
             Lilly.imageWalk = load_image("lilly_walk_Sheet.png")
+            Lilly.imageCrawl = load_image("lilly_crawl-Sheet.png")
 
         self.state_machine = StateMachine(self)
         self.state_machine.start(Idle)
@@ -61,20 +68,25 @@ class Lilly:
             {
                 Idle:{right_down:Walk, right_up:Walk, left_down:Walk, left_up:Walk, shift_down:Idle,
                       space_down:Jump_STILL,
-                      caughtby_cmity:Caught},
+                      caughtby_cmity:Caught,
+                      ctrl_down:Crawl},
 
                 Walk:{right_down:Idle, right_up:Idle, left_down:Idle, left_up:Idle,
                       shift_down:Run,
                       space_down:Jump_andMOVE,
-                      caughtby_cmity:Caught},
+                      caughtby_cmity:Caught,
+                      ctrl_down:Crawl},
 
                 Run:{shift_up:Walk, right_up:Idle, left_up:Idle,
                      right_down:Run, left_down:Run,
                      space_down:Jump_andMOVE,
-                     caughtby_cmity:Caught},
+                     caughtby_cmity:Caught,
+                     ctrl_down:Crawl},
 
                 Jump_STILL:{landed:Idle,spot_lilly:Jump_STILL},
                 Jump_andMOVE:{landed:Idle, right_down:Jump_andMOVE, left_down:Jump_andMOVE},
+
+                Crawl:{ctrl_down:Crawl, right_down:Crawl, left_down:Crawl, right_up:Crawl, left_up:Crawl, ctrl_up:Idle}
 
 #                Caught:{time_out:Dead,in_time:Idle}
             }
@@ -348,16 +360,46 @@ class Crawl:
     @staticmethod
     def enter(lilly, e):
         lilly.frame = 0
+        if ctrl_down(e):
+            lilly.boxdevide = 2
+
+        if right_down(e):
+            lilly.face_dir = 1
+            lilly.dir = 1
+        elif left_up(e):
+            lilly.face_dir = -1
+            lilly.dir = 0
+        elif left_down(e):
+            lilly.face_dir = -1
+            lilly.dir = -1
+        elif right_up(e):
+            lilly.face_dir = 1
+            lilly.dir = 0
         pass
+
     @staticmethod
     def exit(lilly, e):
+        if ctrl_up(e):
+            pass
         pass
+
     @staticmethod
     def do(lilly):
+        lilly.frame = (lilly.frame + 7* Crawl_ACTION_per_TIME * handle_framework.frame_time) % 7
+
+        if 25 <= lilly.x <= 800-25:
+            lilly.x += lilly.dir * CRAWL_SPEED_PPS * handle_framework.frame_time
+        elif lilly.x < 25:
+            lilly.x = 25
+        elif lilly.x > 800-25:
+            lilly.x = 800-25
         pass
     @staticmethod
     def draw(lilly):
-        pass
+        if lilly.face_dir == -1:
+            lilly.imageCrawl.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
+        elif lilly.face_dir == 1:
+            lilly.imageCrawl.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
 
 
 

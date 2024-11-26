@@ -1,4 +1,4 @@
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_d, SDL_KEYUP, SDLK_a, SDLK_UP, SDLK_LSHIFT
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_d, SDL_KEYUP, SDLK_a, SDLK_UP, SDLK_LSHIFT, SDLK_LCTRL
 
 from dataclasses import asdict
 from multiprocessing.connection import answer_challenge
@@ -92,10 +92,12 @@ def space_up(e):
 def landed(e):
     return e[0] == 'Landed'         #충돌체크하면 land
 
+
 #def for Crawl
 def ctrl_down(e):
-    return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN)
-
+    return (e[0] == 'Input' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LCTRL)
+def ctrl_up(e):
+    return (e[0] == 'Input' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LCTRL)
 
 
 ########################################################################
