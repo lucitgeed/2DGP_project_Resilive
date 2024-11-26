@@ -4,6 +4,7 @@ from pico2d import load_image, draw_rectangle
 
 import game_world
 import handle_framework
+import lilly
 
 # set frame flip speed
 TIME_per_WATER_ACTION = 2
@@ -136,9 +137,25 @@ class Drown:
     def draw(self):
         if self.frame == 14:
             pass
+
         self.frame = (self.frame + 15 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 15
-        self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.x, self.y)
+
+#        if lilly.face_dir == -1:
+        self.image.clip_draw(int(self.frame)*128,0,
+                             128,128,
+                             self.x, self.y)
+#        elif lilly.face_dir == 1:
+#        self.image.clip_composite_draw(int(self.frame)*128,0,
+#                                       128,128,
+#                                       0,'h',
+#                                       self.x,self.y)
+
+#        if mode_play.lilly.face_dir == -1:
+#            Drown.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.x, self.y)
+#        elif mode_play.lilly.face_dir == 1:
+#            Drown.image.clip_composite_draw(int(self.frame) * 128, 0, 128, 128, 0, 'h',self.x, self.y)
         pass
+
 
 
 

@@ -51,10 +51,13 @@ Crawl_ACTION_per_TIME = 1.0 / TIME_per_Crawl_ACTION
 
 
 class Lilly:
+    face_dir = None
     image = None
 
     def __init__(self):
         self.x, self.y = 50,120
+        self.face_dir = 1
+
         if Lilly.image == None:
             Lilly.imageIdle = load_image("lilly_idle_Sheet.png")
             Lilly.imageRun = load_image("lilly_run_Sheet.png")
@@ -66,7 +69,7 @@ class Lilly:
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
             {
-                Idle:{right_down:Walk, right_up:Walk, left_down:Walk, left_up:Walk, shift_down:Idle,
+                Idle:{right_down:Walk, right_up:Idle, left_down:Walk, left_up:Idle, shift_down:Idle,
                       space_down:Jump_STILL,
                       caughtby_cmity:Caught,
                       ctrl_down:Crawl},
@@ -141,11 +144,14 @@ class Idle:
     @staticmethod
     def enter(lilly, e):
 
-        if start_event(e) or right_up(e):
+        if start_event(e):
             lilly.face_dir = 1
+        elif right_up(e):
+            lilly.face_dir = 1
+            lilly.dir = 0
         elif left_up(e):
             lilly.face_dir = -1
-        elif left_down(e) or right_down(e):pass
+            lilly.dir = 0
 
         if landed(e):
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
@@ -183,12 +189,17 @@ class Idle:
 class Walk:
     @staticmethod
     def enter(lilly, e):
-        if right_down(e) or left_up(e):
+        if right_down(e):
             lilly.face_dir = 1
             lilly.dir = 1
-        elif left_down(e) or right_up(e):
+        elif right_up(e):
+            lilly.dir = 0
+
+        elif left_down(e):
             lilly.face_dir = -1
             lilly.dir = -1
+        elif left_up(e):
+            lilly.dir = 0
 
         if landed(e):
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
@@ -222,13 +233,18 @@ class Walk:
 class Run:
     @staticmethod
     def enter(lilly, e):
-        if shift_down(e):      #????????????
-            if right_down(e) or left_up(e):
-                lilly.face_dir == 1
-                lilly.dir = 1
-            elif left_down(e) or right_up(e):
-                lilly.face_dir == -1
-                lilly.dir = -1
+        if right_down(e):
+            lilly.face_dir = 1
+            lilly.dir = 1
+        elif right_up(e):
+            lilly.dir = 0
+        elif left_down(e):
+            lilly.face_dir = -1
+            lilly.dir = -1
+        elif left_up(e):
+            lilly.dir = 0
+
+
         if landed(e):
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
 
@@ -416,3 +432,7 @@ class Caught:
     @staticmethod
     def draw():
         pass
+
+
+def face_dir():
+    return None
