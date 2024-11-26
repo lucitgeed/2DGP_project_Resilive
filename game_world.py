@@ -109,12 +109,7 @@ def handle_death_collisions():
 def remove_objt(objt):
     for layer in world:
         if objt in layer:
-
-
-#           자. 이러면 어떨까!?!
             layer.remove(objt)
-#            world.remove(objt)
-
             return
 
 

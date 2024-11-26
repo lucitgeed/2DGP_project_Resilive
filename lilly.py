@@ -25,6 +25,8 @@ WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
 JUMP_SPEED_MPS = 15
 JUMP_SPEED_PPS  = JUMP_SPEED_MPS * PIXEL_per_METER
 
+CR
+
 # set frame flip speed
 TIME_per_Idle_ACTION = 0.8
 Idle_ACTION_per_TIME = 1.0 / TIME_per_Idle_ACTION
@@ -344,16 +346,17 @@ class Jump_andMOVE:
 
 class Crawl:
     @staticmethod
-    def enter():
+    def enter(lilly, e):
+        lilly.frame = 0
         pass
     @staticmethod
-    def exit():
+    def exit(lilly, e):
         pass
     @staticmethod
-    def do():
+    def do(lilly):
         pass
     @staticmethod
-    def draw():
+    def draw(lilly):
         pass
 
 
