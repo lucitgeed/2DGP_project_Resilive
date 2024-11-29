@@ -16,7 +16,7 @@ from stage_ground import Ground_One, StageOne, ShiftObjt1, ObstacleWater
 def init_mode():
     global lilly
     global community
-    global stage_one
+    global stage_one, tempground
 
 
     lilly = Lilly()
@@ -32,7 +32,7 @@ def init_mode():
     game_world,add_object(tempground,1)
     game_world.add_collision_info('lilly:tempground', None, tempground)
 
-    lilly.get_GF_info(tempground)
+    lilly.get_GF_info(tempground.width, tempground.height)
 #    lilly.get_BG_info(stage_one.width, stage_one.height)
 
 

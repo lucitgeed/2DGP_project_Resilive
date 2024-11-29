@@ -15,38 +15,36 @@ WATER_ACTION_per_TIME = 1.0 / TIME_per_WATER_ACTION
 class Ground_One:
     image = None
     def __init__(self,lilly):
-#        self.x, self.y = 400,300
         if Ground_One.image == None:
             Ground_One.image = load_image("stage_1-Sheet.png")
 
         self.width, self.height = self.image.w, self.image.h
 
-        print(f"Image Width: {self.width}, Image Height: {self.height}")
+#        print(f"Image Width: {self.width}, Image Height: {self.height}")
         delay(0.5)
 
 
         self.canvas_w = get_canvas_width()
         self.canvas_h = get_canvas_height()
 
-        print(f"Canvas Width: {self.canvas_w}, Canvas Height: {self.canvas_h}")
+#        print(f"Canvas Width: {self.canvas_w}, Canvas Height: {self.canvas_h}")
 
 
-        self.lilly_x = lilly.x
-        self.lilly_y = lilly.y
-        print(f"Lilly X: {self.lilly_x}, Lilly Y: {self.lilly_y}")
+        self.lilly = lilly
+        print(f"Lilly X: {self.lilly.x}, Lilly Y: {self.lilly.y}")
 
 
     def update(self):
         self.window_left = clamp(0,
-                                 int(self.lilly_x) - self.canvas_w // 2,
+                                 int(self.lilly.x) - self.canvas_w // 2,
                                  self.width - self.canvas_w - 1
                                  )
         self.window_bottom = clamp(0,
-                                   int(self.lilly_y) - self.canvas_h // 2,
+                                   int(self.lilly.y) - self.canvas_h // 2,
                                    self.height - self.canvas_h - 1
                                    )
 
-        print(f"Window Left: {self.window_left}, Window Bottom: {self.window_bottom}")
+#        print(f"Window Left: {self.window_left}, Window Bottom: {self.window_bottom}")
 
         pass
 
@@ -55,8 +53,9 @@ class Ground_One:
     def draw(self):
 #        self.image.clip_draw(0 * 128, 0, 128, 22, self.x, self.y, 300,30)
 #        self.image.draw(400, 300, 6000,600)
-        print(f"Window Left: {self.window_left}, Window Bottom: {self.window_bottom}")
-        print(f"Canvas Width: {self.canvas_w}, Canvas Height: {self.canvas_h}")
+
+#        print(f"Window Left: {self.window_left}, Window Bottom: {self.window_bottom}")
+#        print(f"Canvas Width: {self.canvas_w}, Canvas Height: {self.canvas_h}")
 
         self.image.clip_draw_to_origin(
             self.window_left, self.window_bottom,
@@ -90,8 +89,8 @@ class StageOne:
         self.window_left = 0
         self.window_bottom = 0
 
-        self.lilly_x = lilly.x
-        self.lilly_y = lilly.y
+        self.lilly = lilly
+
         pass
 
     def draw(self):
@@ -104,11 +103,11 @@ class StageOne:
 
     def update(self):
         self.window_left = clamp(0,
-                                 int(self.lilly_x) - self.canvas_w // 2,
+                                 int(self.lilly.x) - self.canvas_w // 2,
                                  self.width - self.canvas_w - 1
                                  )
         self.window_bottom = clamp(0,
-                                   int(self.lilly_y) - self.canvas_h // 2,
+                                   int(self.lilly.y) - self.canvas_h // 2,
                                    self.height - self.canvas_h - 1
                                    )
         pass
