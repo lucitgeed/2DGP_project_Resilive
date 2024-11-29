@@ -60,7 +60,8 @@ class Ground_One:
         self.image.clip_draw_to_origin(
             self.window_left, self.window_bottom,
             self.canvas_w, self.canvas_h,
-            0, 0
+            0, 0,
+            6500, 650
             )
 
 #        draw_rectangle(*self.get_boundingbox())
