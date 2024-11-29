@@ -1,7 +1,7 @@
 from ast import Param
 
 from pico2d import load_image, get_time, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDLK_LEFT, SDLK_RIGHT, delay, \
-    draw_rectangle
+    draw_rectangle, clamp
 
 import game_world
 import handle_framework
@@ -51,7 +51,6 @@ Crawl_ACTION_per_TIME = 1.0 / TIME_per_Crawl_ACTION
 
 
 class Lilly:
-    face_dir = None
     image = None
 
     def __init__(self):
@@ -70,33 +69,43 @@ class Lilly:
         self.state_machine.set_transitions(
             {
                 Idle:{right_down:Walk, right_up:Idle, left_down:Walk, left_up:Idle, shift_down:Idle,
-                      space_down:Jump_STILL,
+                      space_down:Jump,
                       caughtby_cmity:Caught,
                       ctrl_down:Crawl},
 
                 Walk:{right_down:Idle, right_up:Idle, left_down:Idle, left_up:Idle,
                       shift_down:Run,
-                      space_down:Jump_andMOVE,
+                      space_down:Jump,
                       caughtby_cmity:Caught,
                       ctrl_down:Crawl},
 
                 Run:{shift_up:Walk, right_up:Idle, left_up:Idle,
                      right_down:Run, left_down:Run,
-                     space_down:Jump_andMOVE,
+                     space_down:Jump,
                      caughtby_cmity:Caught,
                      ctrl_down:Crawl},
 
-                Jump_STILL:{landed:Idle,spot_lilly:Jump_STILL},
+                Jump:{right_down:Jump_andMOVE, left_down:Jump_andMOVE},
                 Jump_andMOVE:{landed:Idle, right_down:Jump_andMOVE, left_down:Jump_andMOVE},
 
-                Crawl:{ctrl_down:Crawl, right_down:Crawl, left_down:Crawl, right_up:Crawl, left_up:Crawl, ctrl_up:Idle}
+                Crawl:{ctrl_down:Crawl, right_down:Crawl, left_down:Crawl, right_up:Crawl, left_up:Crawl,
+                       space_down:Jump, ctrl_up:Idle}
 
 #                Caught:{time_out:Dead,in_time:Idle}
             }
         )
 
+
     def update(self):
         self.state_machine.update()
+
+        self.x = clamp(25,
+                       self.x,
+                       self.groundfloor_w - 20)
+        self.y = clamp(10,
+                       self.y,
+                       self.groundfloor_h - 10)
+
 
     def handle_event(self, event):
         self.state_machine.add_events(
@@ -134,6 +143,15 @@ class Lilly:
             game_world.remove_collision_objt(self)
             game_world.remove_objt(self)
             pass
+
+#-----------------------------------------------------
+    def get_BG_info(self, background_w, background_h):
+        self.background_w = background_w
+        self.background_h = background_h
+
+    def get_GF_info(self, groundfloor_w, groundfloor_h):
+        self.groundfloor_w = groundfloor_w
+        self.groundfloor_h = groundfloor_h
 
 
 
@@ -212,12 +230,7 @@ class Walk:
     def do(lilly):
         lilly.frame = (lilly.frame+ 10 * Walk_ACTION_per_TIME * handle_framework.frame_time) % 10
 
-        if 25 <= lilly.x <= 800 - 25:
-            lilly.x += lilly.dir * WALK_SPEED_PPS * handle_framework.frame_time
-        elif lilly.x < 25:
-            lilly.x = 25
-        elif lilly.x > 800 - 25:
-            lilly.x = 800 - 25
+        lilly.x += lilly.dir * WALK_SPEED_PPS * handle_framework.frame_time
 #        delay(0.04)
 
     @staticmethod
@@ -256,12 +269,7 @@ class Run:
     def do(lilly):
         lilly.frame = (lilly.frame+ 8* Run_ACTION_per_TIME * handle_framework.frame_time) % 8
 
-        if 25 <= lilly.x <= 800-25:
-            lilly.x += lilly.dir * RUN_SPEED_PPS * handle_framework.frame_time
-        elif lilly.x < 25:
-            lilly.x = 25
-        elif lilly.x > 800-25:
-            lilly.x = 800-25
+        lilly.x += lilly.dir * RUN_SPEED_PPS * handle_framework.frame_time
 
     @staticmethod
     def draw(lilly):
@@ -273,7 +281,7 @@ class Run:
 
 
 
-class Jump_STILL:
+class Jump:
     @staticmethod
     def enter(lilly, e):
         lilly.frame = 0
@@ -322,8 +330,6 @@ class Jump_STILL:
 #        lilly.state_machine.add_events(('Landed', 0))
 
 
-
-
 class Jump_andMOVE:
     @staticmethod
     def enter(lilly, e):
@@ -336,7 +342,6 @@ class Jump_andMOVE:
             lilly.dir = 1
         elif left_down(e) or right_up(e):
             lilly.dir = -1
-
 
     @staticmethod
     def exit(lilly, e):
@@ -372,6 +377,7 @@ class Jump_andMOVE:
 
 
 
+
 class Crawl:
     @staticmethod
     def enter(lilly, e):
@@ -403,13 +409,8 @@ class Crawl:
     def do(lilly):
         lilly.frame = (lilly.frame + 7* Crawl_ACTION_per_TIME * handle_framework.frame_time) % 7
 
-        if 25 <= lilly.x <= 800-25:
-            lilly.x += lilly.dir * CRAWL_SPEED_PPS * handle_framework.frame_time
-        elif lilly.x < 25:
-            lilly.x = 25
-        elif lilly.x > 800-25:
-            lilly.x = 800-25
-        pass
+        lilly.x += lilly.dir * CRAWL_SPEED_PPS * handle_framework.frame_time
+
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
@@ -433,6 +434,3 @@ class Caught:
     def draw():
         pass
 
-
-def face_dir():
-    return None
