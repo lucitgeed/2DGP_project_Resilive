@@ -144,6 +144,11 @@ class Lilly:
             game_world.remove_objt(self)
             pass
 
+        if crashgroup == 'lilly:eyelid':
+            game_world.remove_a_collision_objt('lilly:eyelid', self)
+            game_world.remove_objt(self)
+            self.state_machine.add_events(('Death',0))
+
 #-----------------------------------------------------
     def get_BG_info(self, background_w, background_h):
         self.background_w = background_w
@@ -333,7 +338,7 @@ class Jump:
 class Jump_andMOVE:
     @staticmethod
     def enter(lilly, e):
-        lilly.frame = 0
+#        lilly.frame = 0
         lilly.jump_vel_dir = 1
 
         game_world.add_collision_info('lilly:tempground', lilly, None)

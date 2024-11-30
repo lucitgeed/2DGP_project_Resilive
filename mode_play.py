@@ -13,6 +13,20 @@ from lilly import Lilly
 from stage_ground import Ground_One, StageOne, ShiftObjt1, ObstacleWater
 
 
+#for parallax scrolling
+background_near = None
+background_middle = None
+
+camera_x = 0
+camera_y = 0
+
+#set scroll speed
+SCROLL_SPEED_NEAR = 100
+SCROLL_SPEED_MIDDLE = 50
+
+
+
+
 def init_mode():
     global lilly
     global community
