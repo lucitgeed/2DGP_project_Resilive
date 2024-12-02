@@ -9,6 +9,7 @@ from StateMachine import*
 from game_world import remove_collision_objt
 
 PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm
+LILLY_SIZE = 80
 # set lilly speed
 #RUN_SPEED_KM_per_H = 17.0
 RUN_SPEED_KM_per_H = 50.0
@@ -198,10 +199,10 @@ class Idle:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == 1:
-            lilly.imageIdle.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
+            lilly.imageIdle.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
         elif lilly.face_dir == -1:
             lilly.imageIdle.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128,
-                                                0,'h', lilly.x, lilly.y, 80,80)
+                                                0,'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 
     #-------
     @staticmethod
@@ -243,9 +244,9 @@ class Walk:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageWalk.clip_draw(int(lilly.frame)*128,0, 128,128, lilly.x, lilly.y, 80,80)
+            lilly.imageWalk.clip_draw(int(lilly.frame)*128,0, 128,128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
         elif lilly.face_dir == 1:
-            lilly.imageWalk.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0,'h', lilly.x, lilly.y, 80,80)
+            lilly.imageWalk.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0,'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 
 
 
@@ -281,9 +282,9 @@ class Run:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageRun.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
+            lilly.imageRun.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
         elif lilly.face_dir == 1:
-            lilly.imageRun.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
+            lilly.imageRun.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 
 
 
@@ -323,9 +324,9 @@ class Jump:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
+            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
         elif lilly.face_dir == 1:
-            lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
+            lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 
     #--------
 #    @staticmethod
@@ -374,9 +375,9 @@ class Jump_andMOVE:
     @staticmethod
     def draw(lilly):
         if lilly.dir == -1:
-            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
+            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
         elif lilly.dir == 1:
-            lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
+            lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 
 
 
@@ -417,9 +418,9 @@ class Crawl:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageCrawl.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, 80,80)
+            lilly.imageCrawl.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
         elif lilly.face_dir == 1:
-            lilly.imageCrawl.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, 80,80)
+            lilly.imageCrawl.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 
 
 
