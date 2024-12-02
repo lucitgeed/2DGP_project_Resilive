@@ -21,6 +21,7 @@ class Eyelid:
 
         if Eyelid.image == None:
             Eyelid.image = load_image('eyelid_blink_Sheet.png')
+            Eyelid.eyesimage = load_image('eyes-Sheet.png')
 
         self.state_machine = StateMachine(self)
         self.state_machine.start(APPEAR)
@@ -76,7 +77,7 @@ class APPEAR:
     @staticmethod
     def draw(lid):
         if lid.dir == 1:
-            lid.image.clip_draw(int(lid.frame) * 128, 0, 128, 128, lid.x, lid.y, lid.size,lid.size)
+            lid.eyesimage.clip_draw(int(lid.frame) * 128, 0, 128, 128, lid.x, lid.y, lid.size,lid.size)
         elif lid.dir == -1:
-            lid.image.clip_composite_draw(int(lid.frame) * 128,0, 128,128, 0,'h', lid.x,lid.y, lid.size,lid.size)
+            lid.eyesimage.clip_composite_draw(int(lid.frame) * 128,0, 128,128, 0,'h', lid.x,lid.y, lid.size,lid.size)
 

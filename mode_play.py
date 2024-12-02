@@ -62,8 +62,8 @@ def init_mode():
 
 
 
-#    eyeLIDS = [Eyelid() for i in range(5)]
-#    game_world.add_objts(eyeLIDS, 3)
+    eyeLIDS = [Eyelid() for _ in range(5)]
+    game_world.add_objts(eyeLIDS, 3)
 
 
 
