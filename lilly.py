@@ -56,6 +56,7 @@ class Lilly:
     def __init__(self):
         self.x, self.y = 50,120
         self.face_dir = 1
+        self.jump_vel = 0
 
         if Lilly.image == None:
             Lilly.imageIdle = load_image("lilly_idle_Sheet.png")
@@ -166,7 +167,6 @@ class Lilly:
 class Idle:
     @staticmethod
     def enter(lilly, e):
-
         if start_event(e):
             lilly.face_dir = 1
         elif right_up(e):
@@ -177,6 +177,8 @@ class Idle:
             lilly.dir = 0
 
         if landed(e):
+            lilly.jump_vel = 0
+#            lilly.y = 120
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
             pass
 
@@ -287,39 +289,35 @@ class Run:
 
 
 class Jump:
+    GRAVITY = -9.8 * PIXEL_per_METER
+
     @staticmethod
     def enter(lilly, e):
         lilly.frame = 0
         lilly.head_dir = 1
-        lilly.jump_vel_dir = 1
+
+#        lilly.jump_vel_dir = 1
+
+        lilly.jump_vel = JUMP_SPEED_PPS
 
         game_world.add_collision_info('lilly:tempground', lilly, None)
 
     @staticmethod
     def exit(lilly, e):
+        lilly.jump_vel = 0
         pass
 
     @staticmethod
     def do(lilly):
-        lilly.frame = (lilly.frame + 18* Jump_ACTION_per_TIME*handle_framework.frame_time) % 18
+        lilly.frame = (lilly.frame + 18 * Jump_ACTION_per_TIME*handle_framework.frame_time) % 18
 
-        if 25 <= lilly.x <= 800 - 25:
-            pass
-        elif lilly.x < 25:
-            lilly.x = 25
-        elif lilly.x > 800 - 25:
-            lilly.x = 800 - 25
+        lilly.y += lilly.jump_vel *  handle_framework.frame_time
 
-        if 50 <= lilly.y <= 550:
-            lilly.y +=lilly.jump_vel_dir * JUMP_SPEED_PPS *  handle_framework.frame_time
+        lilly.jump_vel += Jump.GRAVITY * handle_framework.frame_time
 
-            if int(lilly.y) == 250:
-                lilly.jump_vel_dir = -1
-        elif lilly.y < 50:
-            lilly.y =50
-        elif lilly.y > 550:
+
+        if lilly.y > 550:
             lilly.y = 550
-
 
 
     @staticmethod
