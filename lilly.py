@@ -90,8 +90,7 @@ class Lilly:
                      caughtby_cmity:Caught,
                      ctrl_down:Crawl},
 
-                Jump:{right_down:Jump_andMOVE, left_down:Jump_andMOVE, landed:Idle},
-                Jump_andMOVE:{landed:Idle, right_down:Jump_andMOVE, left_down:Jump_andMOVE},
+                Jump:{right_down:Jump, left_down:Jump, landed:Idle},
 
                 Crawl:{ctrl_down:Crawl, right_down:Crawl, left_down:Crawl, right_up:Crawl, left_up:Crawl,
                        space_down:Jump, ctrl_up:Idle}
@@ -133,9 +132,6 @@ class Lilly:
     #-----------------
     def get_boundingbox(self):
         return (self.x-25, self.y-40, self.x+17, self.y+35)
-
-    def get_aggrobox(self):
-        return (self.x-45, self.y-60,self.x+37, self.y+55)
 
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:community':
@@ -197,7 +193,8 @@ class Idle:
 
     @staticmethod
     def exit(lilly, e):
-
+        if space_down(e):
+            lilly.jumping = 1
         pass
 
     @staticmethod
@@ -241,6 +238,8 @@ class Walk:
 
     @staticmethod
     def exit(lilly,e):
+        if space_down(e):
+            lilly.jumping = 1
         pass
 
     @staticmethod
@@ -280,6 +279,8 @@ class Run:
 
     @staticmethod
     def exit(lilly, e):
+        if space_down(e):
+            lilly.jumping = 1
         pass
 
     @staticmethod
@@ -301,15 +302,29 @@ class Run:
 class Jump:
     @staticmethod
     def enter(lilly, e):
-        lilly.frame = 0
+        if lilly.jumping == 1:
+            lilly.frame = 0
 
-        lilly.jump_vel = JUMP_SPEED_PPS
+            lilly.jump_vel = JUMP_SPEED_PPS
 
-        game_world.add_collision_info('lilly:tempground', lilly, None)
+            game_world.add_collision_info('lilly:tempground', lilly, None)
+        else:
+            if right_down(e):
+                lilly.face_dir = 1
+                lilly.dir = 1
+            elif right_up(e):
+                lilly.dir = 0
+
+            elif left_down(e):
+                lilly.face_dir = -1
+                lilly.dir = -1
+            elif left_up(e):
+                lilly.dir = 0
+            pass
 
     @staticmethod
     def exit(lilly, e):
-        lilly.jump_vel = 0
+        lilly.jumping = 0
         pass
 
     @staticmethod
@@ -323,6 +338,8 @@ class Jump:
         if lilly.y > 550:
             lilly.y = 550
 
+        lilly.x += lilly.dir * WALK_SPEED_PPS * 0.5 * handle_framework.frame_time
+
 
     @staticmethod
     def draw(lilly):
@@ -335,53 +352,6 @@ class Jump:
 #    @staticmethod
 #    def handle_self_collision(lilly):
 #        lilly.state_machine.add_events(('Landed', 0))
-
-
-class Jump_andMOVE:
-    @staticmethod
-    def enter(lilly, e):
-#        lilly.frame = 0
-        lilly.jump_vel_dir = 1
-
-        game_world.add_collision_info('lilly:tempground', lilly, None)
-
-        if right_down(e) or left_up(e):
-            lilly.dir = 1
-        elif left_down(e) or right_up(e):
-            lilly.dir = -1
-
-    @staticmethod
-    def exit(lilly, e):
-        pass
-
-    @staticmethod
-    def do(lilly):
-        lilly.frame = (lilly.frame + 18* Jump_ACTION_per_TIME*handle_framework.frame_time) % 18
-
-        if 25 <= lilly.x <= 800 - 25:
-            lilly.x += lilly.dir * JUMP_SPEED_PPS * handle_framework.frame_time /3*2
-        elif lilly.x < 25:
-            lilly.x = 25
-        elif lilly.x > 800 - 25:
-            lilly.x = 800 - 25
-
-        if 50 <= lilly.y <= 550:
-            lilly.y += lilly.jump_vel_dir * JUMP_SPEED_PPS * handle_framework.frame_time
-
-            if int(lilly.y) == 250:
-                lilly.jump_vel_dir = -1
-        elif lilly.y < 50:
-            lilly.y = 50
-        elif lilly.y > 550:
-            lilly.y = 550
-
-    @staticmethod
-    def draw(lilly):
-        if lilly.dir == -1:
-            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
-        elif lilly.dir == 1:
-            lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
-
 
 
 
