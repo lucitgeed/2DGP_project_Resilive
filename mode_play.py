@@ -84,9 +84,9 @@ def init_mode():
 
 
 
-#    water = ObstacleWater(510,118)
-#    game_world.add_object(water, 4)
-#    game_world.add_collision_info('lilly:water', lilly, water)
+    water = ObstacleWater(lilly,210,58)
+    game_world.add_object(water, 4)
+    game_world.add_collision_info('lilly:water', lilly, water)
 
 
 
@@ -121,9 +121,7 @@ def update():
     game_world.update()
 
     game_world.handle_collisions()
-    #
-    game_world.handle_death_collisions()
-    #
+
     pass
 
 

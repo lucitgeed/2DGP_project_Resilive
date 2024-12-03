@@ -25,7 +25,7 @@ WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
 
 GRAVITY = -10
 JUMP_TIME = 4.5
-JUMP_SPEED_MPS = 5
+JUMP_SPEED_MPS = 5.5
 JUMP_SPEED_PPS  = JUMP_SPEED_MPS * PIXEL_per_METER
 
 CRAWL_SPEED_KM_per_H= 6
@@ -119,11 +119,9 @@ class Lilly:
     def draw(self):
         self.state_machine.draw()
 
-
 #        print(f'            Debug---lilly.x = {self.x}, lilly.y = {self.y}')
 
         draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
-#        draw_rectangle(*self.get_aggrobox())
 
     # -----------------
     def get_camera_position(self):
@@ -348,10 +346,6 @@ class Jump:
         elif lilly.face_dir == 1:
             lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 
-    #--------
-#    @staticmethod
-#    def handle_self_collision(lilly):
-#        lilly.state_machine.add_events(('Landed', 0))
 
 
 

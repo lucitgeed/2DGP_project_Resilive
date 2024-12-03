@@ -33,18 +33,6 @@ def render():
 def collided(a,b):                          #aggro & aggro
     aleft, abottom, aright, atop = a.get_boundingbox()
     
-    bl, bb, br, bt = b.get_aggrobox()
-
-    if br < aleft: return False
-    if aright < bl: return False
-    if bt < abottom: return False
-    if atop < bb: return False
-
-    return True
-    pass
-
-def collided_todeath(a,b):                  #bounding & bounding
-    aleft, abottom, aright, atop = a.get_boundingbox()
     bl, bb, br, bt = b.get_boundingbox()
 
     if br < aleft: return False
@@ -55,16 +43,6 @@ def collided_todeath(a,b):                  #bounding & bounding
     return True
     pass
 
-
-#def collided_toattack(a,b):                 #bounding & aggro
-#    aleft, abottom, aright, atop = a.get_boundingbox()
-#    bl, bb, br, bt = b.get_aggrobox()
-
-#    if br < aleft: return False
-#    if aright < bl: return False
-#    if bt < abottom: return False
-#    if atop < bb: return False
-#    return True
 
 
 def handle_collisions():
@@ -79,30 +57,6 @@ def handle_collisions():
                     b.handle_self_collision(crashgroup,a)
     pass
 
-
-def handle_death_collisions():
-    for crashgroup, pairs in collision_pairs.items():
-        for a in pairs[0]:
-            for b in pairs[1]:
-                if collided_todeath(a,b):
-
-                    print(f'            {crashgroup} has collided_to death')
-
-                    a.handle_self_collision(crashgroup,b)
-                    b.handle_self_collision(crashgroup,a)
-    pass
-
-
-#def handle_attack_collisions():
-#    for crashgroup, pairs in collision_pairs.items():
-#        for a in pairs[0]:
-#            for b in pairs[1]:
-#                if collided_toattack(a,b):
-
-#                    print(f'            {crashgroup} has collided_to attack')
-
-#                    a.handle_self_collision(crashgroup,b)
-#                    b.handle_self_collision(crashgroup,a)
 
 
 ######################

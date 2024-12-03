@@ -1,3 +1,5 @@
+import math
+
 from pico2d import load_image, draw_rectangle, get_canvas_width, get_canvas_height, clamp, delay
 
 import game_world
@@ -69,14 +71,12 @@ class Ground_One:
 
     #------------------------
     def get_boundingbox(self):
-        return (self.width-1280, self.height-60,self.width, self.height-50)
+        return (self.width-1280, self.height-60,self.width, self.height-52)
     def get_aggrobox(self):
-        return (self.width-1280, self.height-60,self.width, self.height-50)
+        return (self.width-1280, self.height-60,self.width, self.height-52)
 
     def handle_self_collision(self, crashgroup, other):
         pass
-
-
 
 
 #=============
@@ -155,13 +155,13 @@ class ShiftObjt1:
         pass
 
 
-
 #=============
 class ObstacleWater:
     image = None
-    def __init__(self, x, y):
+    def __init__(self, lilly, x, y):
         self.frame = 0
         self.x, self.y = x, y
+        self.lilly = lilly
         if ObstacleWater.image == None:
             ObstacleWater.image = load_image("obstacle_water-Sheet.png")
 
@@ -172,34 +172,35 @@ class ObstacleWater:
     def handle_event(self, event):pass
 
     def draw(self):
-        self.frame = (self.frame + 5*WATER_ACTION_per_TIME* handle_framework.frame_time)%5
+        self.frame = (self.frame + 5 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 5
         self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.x, self.y)
+
         draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
-        return (self.x-64, self.y-64,self.x+64, self.y+64)
+        return (self.x-64, self.y-64,self.x+64, self.y+23)
     def get_aggrobox(self):
-        return (self.x-64, self.y-64,self.x+64, self.y+64)
+        return (self.x-64, self.y-64,self.x+64, self.y+23)
 
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:water':
             game_world.remove_collision_objt(self)
 
-            drowned = Drown(self.x, self.y)
+            drowned = Drown(self.lilly,self.x,self.y)
             game_world.add_object(drowned, 5)
         pass
 
 
 
-
 class Drown:
     image = None
-    def __init__(self, x, y):
+    def __init__(self,lilly,x,y):
         self.frame = 0
-        ############
-        self.x, self.y = x, y
-        ###########lilly위치에 맞춰 수정 요함
+
+        self.lilly = lilly
+        self.x, self.y = x,y
+
         if Drown.image == None:
             Drown.image = load_image("lilly_drown-Sheet.png")
 
@@ -213,19 +214,9 @@ class Drown:
 
         self.frame = (self.frame + 15 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 15
 
-#        if lilly.face_dir == -1:
-        self.image.clip_draw(int(self.frame)*128,0,
-                             128,128,
-                             self.x, self.y)
-#        elif lilly.face_dir == 1:
-#        self.image.clip_composite_draw(int(self.frame)*128,0,
-#                                       128,128,
-#                                       0,'h',
-#                                       self.x,self.y)
-
-#        if mode_play.lilly.face_dir == -1:
-#            Drown.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.x, self.y)
-#        elif mode_play.lilly.face_dir == 1:
-#            Drown.image.clip_composite_draw(int(self.frame) * 128, 0, 128, 128, 0, 'h',self.x, self.y)
+        if self.lilly.face_dir == -1:
+            self.image.clip_draw(int(self.frame)*128,0, 128,128, self.x, self.y)
+        else:
+            self.image.clip_composite_draw(int(self.frame) * 128, 0, 128, 128, 0, 'h', self.x, self.y,128,128)
         pass
 
