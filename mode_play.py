@@ -38,8 +38,8 @@ def init_mode():
     game_world.add_object(lilly,3)
 
 
-    stage_one = StageOne(lilly)
-    game_world.add_object(stage_one,0)
+#    stage_one = StageOne(lilly)
+#    game_world.add_object(stage_one,0)
 
 
 
@@ -48,7 +48,7 @@ def init_mode():
     game_world.add_collision_info('lilly:tempground', None, tempground)
 
     lilly.get_GF_info(tempground.width, tempground.height)
-    lilly.get_BG_info(stage_one.width, stage_one.height)
+#    lilly.get_BG_info(stage_one.width, stage_one.height)
 
 
 #    shiftobjt1 = ShiftObjt1()

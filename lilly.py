@@ -43,7 +43,7 @@ Walk_ACTION_per_TIME = 1.0 / TIME_per_Walk_ACTION
 TIME_per_Run_ACTION = 0.6
 Run_ACTION_per_TIME = 1.0 / TIME_per_Run_ACTION
 
-TIME_per_Jump_ACTION = 2
+TIME_per_Jump_ACTION = 2.5
 Jump_ACTION_per_TIME = 1.0 / TIME_per_Jump_ACTION
 
 TIME_per_Crawl_ACTION = 1.5
@@ -90,7 +90,7 @@ class Lilly:
                      caughtby_cmity:Caught,
                      ctrl_down:Crawl},
 
-                Jump:{right_down:Jump_andMOVE, left_down:Jump_andMOVE},
+                Jump:{right_down:Jump_andMOVE, left_down:Jump_andMOVE, landed:Idle},
                 Jump_andMOVE:{landed:Idle, right_down:Jump_andMOVE, left_down:Jump_andMOVE},
 
                 Crawl:{ctrl_down:Crawl, right_down:Crawl, left_down:Crawl, right_up:Crawl, left_up:Crawl,
@@ -124,7 +124,7 @@ class Lilly:
 #        print(f'            Debug---lilly.x = {self.x}, lilly.y = {self.y}')
 
         draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
-        draw_rectangle(*self.get_aggrobox())
+#        draw_rectangle(*self.get_aggrobox())
 
     # -----------------
     def get_camera_position(self):

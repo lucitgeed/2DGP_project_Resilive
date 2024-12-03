@@ -65,13 +65,13 @@ class Ground_One:
 #            6500, 650
 #            )
 
-#        draw_rectangle(*self.get_boundingbox())
+        draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
-        return (self.width-400, self.height-300,self.width+400, self.height-225)
+        return (self.width-1280, self.height-60,self.width, self.height-50)
     def get_aggrobox(self):
-        return (self.width-400, self.height-300,self.width+400, self.height-225)
+        return (self.width-1280, self.height-60,self.width, self.height-50)
 
     def handle_self_collision(self, crashgroup, other):
         pass
