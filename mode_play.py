@@ -10,8 +10,8 @@ from eyelid import Eyelid
 from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
-from stage_ground import Ground_One, StageOne, ShiftObjt1, ObstacleWater
 
+from stageone_info import StageOne, Ground_One
 
 #for parallax scrolling
 background_near = None
@@ -95,8 +95,6 @@ def init_mode():
 #    for cmity in community:
 #        game_world.add_collision_info('lilly:community', None, cmity)
 #        game_world.add_collision_info('lilly:cmity_aggro', None, cmity)
-
-
     pass
 
 
@@ -122,13 +120,16 @@ def update():
     game_world.update()
 
     game_world.handle_collisions()
+    #
     game_world.handle_death_collisions()
-
+    #
     pass
 
 
 def draw():
     clear_canvas()
+
+
     game_world.render()
     update_canvas()
     pass

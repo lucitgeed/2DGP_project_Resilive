@@ -4,7 +4,6 @@ import game_world
 import handle_framework
 
 
-
 #set scroll speed
 SCROLL_SPEED_NEAR = 100
 SCROLL_SPEED_MIDDLE = 50
@@ -22,34 +21,27 @@ class Ground_One:
         if Ground_One.image == None:
             Ground_One.image = load_image("stage_1-Sheet.png")
 
-        self.width, self.height = self.image.w, self.image.h
+        self.width, self.height = 1280, 128
+        #delay(0.5)
+        self.scroll_speed = SCROLL_SPEED_NEAR
+        self.lilly = lilly
 
-#        print(f"Image Width: {self.width}, Image Height: {self.height}")
-        delay(0.5)
-
-
+        ####
         self.canvas_w = get_canvas_width()
         self.canvas_h = get_canvas_height()
-
-#        print(f"Canvas Width: {self.canvas_w}, Canvas Height: {self.canvas_h}")
-
-
-        self.lilly = lilly
-        print(f"Lilly X: {self.lilly.x}, Lilly Y: {self.lilly.y}")
+        ###
+#        print(f"Lilly X: {self.lilly.x}, Lilly Y: {self.lilly.y}")
 
 
     def update(self):
-        self.window_left = clamp(0,
-                                 int(self.lilly.x) - self.canvas_w // 2,
-                                 self.width - self.canvas_w - 1
-                                 )
-        self.window_bottom = clamp(0,
-                                   int(self.lilly.y) - self.canvas_h // 2,
-                                   self.height - self.canvas_h - 1
-                                   )
-
-#        print(f"Window Left: {self.window_left}, Window Bottom: {self.window_bottom}")
-
+#        self.window_left = clamp(0,
+#                                 int(self.lilly.x) - self.canvas_w // 2,
+#                                 self.width - self.canvas_w - 1
+#                                 )
+#        self.window_bottom = clamp(0,
+#                                   int(self.lilly.y) - self.canvas_h // 2,
+#                                   self.height - self.canvas_h - 1
+#                                   )
         pass
 
     def handle_event(self, event):pass
@@ -60,13 +52,17 @@ class Ground_One:
 
 #        print(f"Window Left: {self.window_left}, Window Bottom: {self.window_bottom}")
 #        print(f"Canvas Width: {self.canvas_w}, Canvas Height: {self.canvas_h}")
+        camera_x = self.lilly.x
+        clamp(0, camera_x, self.width)
 
-        self.image.clip_draw_to_origin(
-            self.window_left, self.window_bottom,
-            self.canvas_w, self.canvas_h,
-            0, 0,
-            6500, 650
-            )
+        self.image.clip_draw_to_origin(int(camera_x),0, 800, self.height,0,0,
+                                       6500,650)
+#        self.image.clip_draw_to_origin(
+#            self.window_left, self.window_bottom,
+#            self.canvas_w, self.canvas_h,
+#            0, 0,
+#            6500, 650
+#            )
 
 #        draw_rectangle(*self.get_boundingbox())
 
@@ -85,39 +81,47 @@ class Ground_One:
 #=============
 class StageOne:
     def __init__(self, lilly):
-        self.image = load_image('stage_one_back.png')
+        self.image = load_image('background1.png')
 
-        self.width, self.height = self.image.w, self.image.h
+        self.width, self.height = 920, 540
 
+        self.scroll_speed = SCROLL_SPEED_MIDDLE
+        self.lilly = lilly
+
+        ###
         self.canvas_w = get_canvas_width()
         self.canvas_h = get_canvas_height()
 
         self.window_left = 0
         self.window_bottom = 0
-
-        self.lilly = lilly
-
+        ###
         pass
 
     def draw(self):
-#        self.image.draw(400,300, 1200,900)
-        self.image.clip_draw_to_origin(
-            self.window_left, self.window_bottom,
-            self.canvas_w, self.canvas_h,
-            0,0
-        )
+        camera_x = self.lilly.x * 0.5
+        clamp(0,
+              camera_x,
+              self.width)
+
+        self.image.clip_draw_to_origin(int(camera_x), 0, 800, self.height,
+                                       0,128)
+
+#        self.image.clip_draw_to_origin(
+#            self.window_left, self.window_bottom,
+#            self.canvas_w, self.canvas_h,
+#            0,0
+#        )
 
     def update(self):
-        self.window_left = clamp(0,
-                                 int(self.lilly.x) - self.canvas_w // 2,
-                                 self.width - self.canvas_w - 1
-                                 )
-        self.window_bottom = clamp(0,
-                                   int(self.lilly.y) - self.canvas_h // 2,
-                                   self.height - self.canvas_h - 1
-                                   )
+#        self.window_left = clamp(0,
+#                                 int(self.lilly.x) - self.canvas_w // 2,
+#                                 self.width - self.canvas_w - 1
+#                                 )
+#        self.window_bottom = clamp(0,
+#                                   int(self.lilly.y) - self.canvas_h // 2,
+#                                   self.height - self.canvas_h - 1
+#                                   )
         pass
-
 
 
 #=============

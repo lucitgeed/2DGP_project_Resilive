@@ -57,6 +57,7 @@ class Lilly:
     def __init__(self):
         self.x, self.y = 50,120
         self.face_dir = 1
+
         self.jump_vel = 0
 
         if Lilly.image == None:
@@ -103,7 +104,7 @@ class Lilly:
 
         self.x = clamp(25,
                        self.x,
-                       self.groundfloor_w - 20)
+                       self.groundfloor_w - 25)
         self.y = clamp(10,
                        self.y,
                        self.groundfloor_h - 10)
@@ -119,6 +120,10 @@ class Lilly:
 
         draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
         draw_rectangle(*self.get_aggrobox())
+
+    # -----------------
+    def get_camera_position(self):
+        return self.x
 
     #-----------------
     def get_boundingbox(self):
