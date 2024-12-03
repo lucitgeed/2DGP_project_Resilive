@@ -19,7 +19,8 @@ class Ground_One:
     image = None
     def __init__(self,lilly):
         if Ground_One.image == None:
-            Ground_One.image = load_image("stage_1-Sheet.png")
+#            Ground_One.image = load_image("stage_1-Sheet.png")
+            Ground_One.image = load_image("stage1_ground-Sheet.png")
 
         self.width, self.height = 1280, 128
         #delay(0.5)
@@ -158,9 +159,9 @@ class ShiftObjt1:
 #=============
 class ObstacleWater:
     image = None
-    def __init__(self):
+    def __init__(self, x, y):
         self.frame = 0
-        self.x, self.y = 400,64
+        self.x, self.y = x, y
         if ObstacleWater.image == None:
             ObstacleWater.image = load_image("obstacle_water-Sheet.png")
 

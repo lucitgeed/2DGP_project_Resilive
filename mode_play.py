@@ -11,18 +11,19 @@ from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
 
-from stageone_info import StageOne, Ground_One
+from stageone_info import StageOne, Ground_One, ObstacleWater
+
 
 #for parallax scrolling
-background_near = None
-background_middle = None
+#background_near = None
+#background_middle = None
 
-camera_x = 0
-camera_y = 0
+#camera_x = 0
+#camera_y = 0
 
 #set scroll speed
-SCROLL_SPEED_NEAR = 100
-SCROLL_SPEED_MIDDLE = 50
+#SCROLL_SPEED_NEAR = 100
+#SCROLL_SPEED_MIDDLE = 50
 
 
 
@@ -62,8 +63,8 @@ def init_mode():
 
 
 
-    eyeLIDS = [Eyelid() for _ in range(5)]
-    game_world.add_objts(eyeLIDS, 3)
+#    eyeLIDS = [Eyelid() for _ in range(5)]
+#    game_world.add_objts(eyeLIDS, 3)
 
 
 
@@ -83,7 +84,7 @@ def init_mode():
 
 
 
-#    water = ObstacleWater()
+#    water = ObstacleWater(510,118)
 #    game_world.add_object(water, 4)
 #    game_world.add_collision_info('lilly:water', lilly, water)
 

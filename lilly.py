@@ -23,7 +23,9 @@ WALK_SPEED_M_per_M = (WALK_SPEED_KM_per_H * 1000.0 / 60.0)
 WALK_SPEED_M_per_S = WALK_SPEED_M_per_M / 60.0
 WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
 
-JUMP_SPEED_MPS = 15
+GRAVITY = -10
+JUMP_TIME = 4.5
+JUMP_SPEED_MPS = 5
 JUMP_SPEED_PPS  = JUMP_SPEED_MPS * PIXEL_per_METER
 
 CRAWL_SPEED_KM_per_H= 6
@@ -102,12 +104,12 @@ class Lilly:
     def update(self):
         self.state_machine.update()
 
-        self.x = clamp(25,
-                       self.x,
-                       self.groundfloor_w - 25)
-        self.y = clamp(10,
-                       self.y,
-                       self.groundfloor_h - 10)
+#        self.x = clamp(25,
+#                       self.x,
+#                       self.groundfloor_w - 25)
+#        self.y = clamp(10,
+#                       self.y,
+#                       self.groundfloor_h - 10)
 
 
     def handle_event(self, event):
@@ -117,6 +119,9 @@ class Lilly:
 
     def draw(self):
         self.state_machine.draw()
+
+
+#        print(f'            Debug---lilly.x = {self.x}, lilly.y = {self.y}')
 
         draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
         draw_rectangle(*self.get_aggrobox())
@@ -143,8 +148,7 @@ class Lilly:
         if crashgroup == 'lilly:tempground':
             self.state_machine.add_events(('Landed',0))
             game_world.remove_a_collision_objt('lilly:tempground', self)
-#            game_world.remove_collision_objt(self)
-#           self.state_machine.cur_state.handle_self_collision(crashgroup, other)
+            pass
 
         if crashgroup == 'lilly:water':
             game_world.remove_collision_objt(self)
@@ -295,14 +299,9 @@ class Run:
 
 
 class Jump:
-    GRAVITY = -9.8 * PIXEL_per_METER
-
     @staticmethod
     def enter(lilly, e):
         lilly.frame = 0
-        lilly.head_dir = 1
-
-#        lilly.jump_vel_dir = 1
 
         lilly.jump_vel = JUMP_SPEED_PPS
 
@@ -317,10 +316,9 @@ class Jump:
     def do(lilly):
         lilly.frame = (lilly.frame + 18 * Jump_ACTION_per_TIME*handle_framework.frame_time) % 18
 
-        lilly.y += lilly.jump_vel *  handle_framework.frame_time
+        lilly.y += 0.5 * (lilly.jump_vel + lilly.jump_vel) * (JUMP_TIME * handle_framework.frame_time)
 
-        lilly.jump_vel += Jump.GRAVITY * handle_framework.frame_time
-
+        lilly.jump_vel += GRAVITY * (JUMP_TIME * handle_framework.frame_time)
 
         if lilly.y > 550:
             lilly.y = 550
