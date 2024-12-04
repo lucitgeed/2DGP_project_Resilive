@@ -4,7 +4,7 @@ from pico2d import load_image, draw_rectangle, get_canvas_width, get_canvas_heig
 
 import game_world
 import handle_framework
-
+import mode_gameover
 
 #set scroll speed
 SCROLL_SPEED_NEAR = 100
@@ -209,10 +209,12 @@ class Drown:
     def handle_event(self, event):pass
 
     def draw(self):
-        if self.frame == 14:
+        if int(self.frame) == 14:
+            handle_framework.change_mode(mode_gameover)
             pass
 
         self.frame = (self.frame + 15 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 15
+        delay(0.02)
 
         if self.lilly.face_dir == -1:
             self.image.clip_draw(int(self.frame)*128,0, 128,128, self.x, self.y)
