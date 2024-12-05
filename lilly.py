@@ -25,7 +25,7 @@ WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
 
 GRAVITY = -10
 JUMP_TIME = 4.5
-JUMP_SPEED_MPS = 5.5
+JUMP_SPEED_MPS = 6
 JUMP_SPEED_PPS  = JUMP_SPEED_MPS * PIXEL_per_METER
 
 CRAWL_SPEED_KM_per_H= 6
@@ -57,7 +57,7 @@ class Lilly:
     image = None
 
     def __init__(self):
-        self.x, self.y = 50,120
+        self.x, self.y = 50,110
         self.cx = 0
         self.face_dir = 1
 
@@ -122,12 +122,7 @@ class Lilly:
         self.state_machine.add_events(('Input', event))
 
     def draw(self):
-
-
-        print(f'                    Debug - back.gf_cameraleft  : {self.ground.camera_left}')
         self.state_machine.draw()
-
-#        print(f'            Debug---lilly.x = {self.x}, lilly.y = {self.y}')
 
         draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
 
@@ -348,7 +343,7 @@ class Jump:
         if lilly.y > 550:
             lilly.y = 550
 
-        lilly.x += lilly.dir * WALK_SPEED_PPS * 0.5 * handle_framework.frame_time
+        lilly.x += lilly.dir * WALK_SPEED_PPS * 1 * handle_framework.frame_time
 
 
     @staticmethod

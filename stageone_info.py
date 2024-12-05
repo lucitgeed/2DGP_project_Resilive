@@ -35,8 +35,6 @@ class Ground_One:
         self.canvas_w = get_canvas_width()
         self.canvas_h = get_canvas_height()
         ###
-#        print(f"Lilly X: {self.lilly.x}, Lilly Y: {self.lilly.y}")
-
 
 
     def update(self):
@@ -48,9 +46,6 @@ class Ground_One:
                                 int(self.lilly.y) - self.canvas_h // 2,
                                 self.height - self.canvas_h - 1
                                 )
-
-        print(f'   Debug - Real camera_left  : {self.camera_left}')
-
         pass
 
     def handle_event(self, event):pass
@@ -66,7 +61,7 @@ class Ground_One:
 
     #------------------------
     def get_boundingbox(self):
-        return (self.width-1280, self.height-60,self.width, self.height-52)
+        return (self.width-8000, self.height-550,self.width, self.height-533)
 
     def handle_self_collision(self, crashgroup, other):
         pass
