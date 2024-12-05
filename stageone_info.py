@@ -19,16 +19,15 @@ WATER_ACTION_per_TIME = 1.0 / TIME_per_WATER_ACTION
 #=============
 class Ground_One:
     image = None
-    def __init__(self):
+    def __init__(self, lilly):
         if Ground_One.image == None:
 #            Ground_One.image = load_image("stage1_ground-Sheet.png")
             Ground_One.image = load_image("tg-Sheet.png")
 
         self.width, self.height = self.image.w, self.image.h
 
-#        self.lilly = lilly
+        self.lilly = lilly
 
-        self.lilly = None  # Lilly 객체는 초기화 이후 설정됨
         self.camera_left = 0
         self.camera_bottom = 0
 
@@ -41,15 +40,14 @@ class Ground_One:
 
 
     def update(self):
-        if self.lilly is not None:  # Lilly가 설정된 경우에만 값 갱신
-            self.camera_left = clamp(0,
-                                 int(self.lilly.x) - self.canvas_w // 2,
-                                 self.width - self.canvas_w - 1
-                                 )
-            self.camera_bottom = clamp(0,
-                                   int(self.lilly.y) - self.canvas_h // 2,
-                                   self.height - self.canvas_h - 1
-                                   )
+        self.camera_left = clamp(0,
+                                int(self.lilly.x) - self.canvas_w // 2,
+                                self.width - self.canvas_w - 1
+                                )
+        self.camera_bottom = clamp(0,
+                                int(self.lilly.y) - self.canvas_h // 2,
+                                self.height - self.canvas_h - 1
+                                )
 
         print(f'   Debug - Real camera_left  : {self.camera_left}')
 
@@ -73,9 +71,6 @@ class Ground_One:
     def handle_self_collision(self, crashgroup, other):
         pass
 
-    #------------------------
-    def set_lilly(self, lilly):
-        self.lilly = lilly
 
 
 
