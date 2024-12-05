@@ -12,7 +12,7 @@ PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm  그러니까 가로800은 곧
 LILLY_SIZE = 80
 # set lilly speed
 #RUN_SPEED_KM_per_H = 17.0
-RUN_SPEED_KM_per_H = 350.0
+RUN_SPEED_KM_per_H = 700.0
 
 RUN_SPEED_M_per_M = (RUN_SPEED_KM_per_H * 1000.0 / 60.0)
 RUN_SPEED_M_per_S = RUN_SPEED_M_per_M / 60.0

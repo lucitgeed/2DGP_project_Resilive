@@ -152,10 +152,15 @@ class ObstacleWater:
         self.frame = 0
         self.x, self.y = x, y
         self.lilly = lilly
+
+        self.cx, self.cy = 0,0
+
         if ObstacleWater.image == None:
             ObstacleWater.image = load_image("obstacle_water-Sheet.png")
 
     def update(self):
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
 #        game_world.update()
         pass
 
@@ -163,23 +168,25 @@ class ObstacleWater:
 
     def draw(self):
         self.frame = (self.frame + 5 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 5
-        self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.x, self.y)
+
+        self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.cx, self.cy, 132, 128)
 
         draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
-        return (self.x-64, self.y-64,self.x+64, self.y+23)
-    def get_aggrobox(self):
-        return (self.x-64, self.y-64,self.x+64, self.y+23)
+        return (self.cx-64, self.cy-64,self.cx+64, self.cy+23)
 
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:water':
             game_world.remove_collision_objt(self)
 
-            drowned = Drown(self.lilly,self.x,self.y)
+            drowned = Drown(self.lilly,self.cx,self.cy)
             game_world.add_object(drowned, 5)
         pass
+    #--------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam
 
 
 

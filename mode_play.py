@@ -44,11 +44,17 @@ def init_mode():
 
 
     tempground = Ground_One(lilly)
-    game_world,add_object(tempground,1)
+    game_world.add_object(tempground,1)
     game_world.add_collision_info('lilly:tempground', None, tempground)
 
 #    lilly.get_GF_info(tempground.width, tempground.height, tempground.camera_left, tempground.camera_bottom)
     lilly.get_GF_info(tempground)
+
+
+    water = ObstacleWater(lilly,3634,58)
+    water.get_GF_cam_info(tempground)
+    game_world.add_object(water,4)
+    game_world.add_collision_info('lilly:water', lilly, water)
 
 
 #    shiftobjt1 = ShiftObjt1()
