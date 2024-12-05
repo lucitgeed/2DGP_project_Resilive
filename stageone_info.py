@@ -19,15 +19,18 @@ WATER_ACTION_per_TIME = 1.0 / TIME_per_WATER_ACTION
 #=============
 class Ground_One:
     image = None
-    def __init__(self,lilly):
+    def __init__(self):
         if Ground_One.image == None:
-#            Ground_One.image = load_image("stage_1-Sheet.png")
-            Ground_One.image = load_image("stage1_ground-Sheet.png")
+#            Ground_One.image = load_image("stage1_ground-Sheet.png")
+            Ground_One.image = load_image("tg-Sheet.png")
 
-        self.width, self.height = 1280, 128
-        #delay(0.5)
-        self.scroll_speed = SCROLL_SPEED_NEAR
-        self.lilly = lilly
+        self.width, self.height = self.image.w, self.image.h
+
+#        self.lilly = lilly
+
+        self.lilly = None  # Lilly 객체는 초기화 이후 설정됨
+        self.camera_left = 0
+        self.camera_bottom = 0
 
         ####
         self.canvas_w = get_canvas_width()
@@ -36,47 +39,44 @@ class Ground_One:
 #        print(f"Lilly X: {self.lilly.x}, Lilly Y: {self.lilly.y}")
 
 
+
     def update(self):
-#        self.window_left = clamp(0,
-#                                 int(self.lilly.x) - self.canvas_w // 2,
-#                                 self.width - self.canvas_w - 1
-#                                 )
-#        self.window_bottom = clamp(0,
-#                                   int(self.lilly.y) - self.canvas_h // 2,
-#                                   self.height - self.canvas_h - 1
-#                                   )
+        if self.lilly is not None:  # Lilly가 설정된 경우에만 값 갱신
+            self.camera_left = clamp(0,
+                                 int(self.lilly.x) - self.canvas_w // 2,
+                                 self.width - self.canvas_w - 1
+                                 )
+            self.camera_bottom = clamp(0,
+                                   int(self.lilly.y) - self.canvas_h // 2,
+                                   self.height - self.canvas_h - 1
+                                   )
+
+        print(f'   Debug - Real camera_left  : {self.camera_left}')
+
         pass
 
     def handle_event(self, event):pass
 
     def draw(self):
-#        self.image.clip_draw(0 * 128, 0, 128, 22, self.x, self.y, 300,30)
-#        self.image.draw(400, 300, 6000,600)
-
-#        print(f"Window Left: {self.window_left}, Window Bottom: {self.window_bottom}")
-#        print(f"Canvas Width: {self.canvas_w}, Canvas Height: {self.canvas_h}")
-        camera_x = self.lilly.x
-        clamp(0, camera_x, self.width)
-
-        self.image.clip_draw_to_origin(int(camera_x),0, 800, self.height,0,0,
-                                       6500,650)
-#        self.image.clip_draw_to_origin(
-#            self.window_left, self.window_bottom,
-#            self.canvas_w, self.canvas_h,
-#            0, 0,
-#            6500, 650
-#            )
+        self.image.clip_draw_to_origin(
+            self.camera_left, self.camera_bottom,
+            self.canvas_w, self.canvas_h,
+            0, 0
+            )
 
         draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
         return (self.width-1280, self.height-60,self.width, self.height-52)
-    def get_aggrobox(self):
-        return (self.width-1280, self.height-60,self.width, self.height-52)
 
     def handle_self_collision(self, crashgroup, other):
         pass
+
+    #------------------------
+    def set_lilly(self, lilly):
+        self.lilly = lilly
+
 
 
 #=============

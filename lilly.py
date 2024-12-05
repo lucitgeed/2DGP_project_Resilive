@@ -8,11 +8,11 @@ import handle_framework
 from StateMachine import*
 from game_world import remove_collision_objt
 
-PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm
+PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm  그러니까 가로800은 곧8000cm라는 거지?
 LILLY_SIZE = 80
 # set lilly speed
 #RUN_SPEED_KM_per_H = 17.0
-RUN_SPEED_KM_per_H = 50.0
+RUN_SPEED_KM_per_H = 150.0
 
 RUN_SPEED_M_per_M = (RUN_SPEED_KM_per_H * 1000.0 / 60.0)
 RUN_SPEED_M_per_S = RUN_SPEED_M_per_M / 60.0
@@ -99,24 +99,30 @@ class Lilly:
             }
         )
 
+        self.camera_left = 0
+        self.camera_bottom = 0
+        self.ground = None  # Ground_One 객체는 초기화 이후 설정됨
+
 
     def update(self):
         self.state_machine.update()
 
-#        self.x = clamp(25,
-#                       self.x,
-#                       self.groundfloor_w - 25)
-#        self.y = clamp(10,
-#                       self.y,
-#                       self.groundfloor_h - 10)
+        self.x = clamp(17,
+                       self.x,
+                       self.ground.camera_left - 17)
+        self.y = clamp(35,
+                       self.y,
+                       self.ground.camera_bottom - 35)
+
 
 
     def handle_event(self, event):
-        self.state_machine.add_events(
-            ('Input', event)
-        )
+        self.state_machine.add_events(('Input', event))
 
     def draw(self):
+#        self.cx = self.x - self.gf_cw
+#        self.cy = self.y - self.gf_ch
+        print(f'                    Debug - back.gf_cameraleft  : {self.ground.camera_left}')
         self.state_machine.draw()
 
 #        print(f'            Debug---lilly.x = {self.x}, lilly.y = {self.y}')
@@ -159,9 +165,16 @@ class Lilly:
         self.background_w = background_w
         self.background_h = background_h
 
-    def get_GF_info(self, groundfloor_w, groundfloor_h):
-        self.groundfloor_w = groundfloor_w
-        self.groundfloor_h = groundfloor_h
+    def get_GF_info(self, groundfoolr):
+        self.ground = groundfoolr
+
+# -----------------------------------------------------
+    def set_ground(self, ground):
+        self.ground = ground
+    def get_camera_info(self):
+        if self.ground is not None:  # Ground_One이 설정된 경우에만 값 반환
+            return self.ground.camera_left, self.ground.camera_bottom
+        return None, None
 
 
 
@@ -203,10 +216,14 @@ class Idle:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == 1:
-            lilly.imageIdle.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
+            lilly.imageIdle.clip_draw(int(lilly.frame) * 128, 0, 128, 128,
+                                      lilly.x, lilly.y,
+                                      LILLY_SIZE,LILLY_SIZE)
         elif lilly.face_dir == -1:
             lilly.imageIdle.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128,
-                                                0,'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
+                                                0,'h',
+                                                lilly.x, lilly.y,
+                                                LILLY_SIZE,LILLY_SIZE)
 
     #-------
     @staticmethod
@@ -252,7 +269,8 @@ class Walk:
         if lilly.face_dir == -1:
             lilly.imageWalk.clip_draw(int(lilly.frame)*128,0, 128,128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
         elif lilly.face_dir == 1:
-            lilly.imageWalk.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0,'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
+            lilly.imageWalk.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0,'h',
+                                                lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 
 
 
@@ -290,9 +308,9 @@ class Run:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageRun.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
+            lilly.imageRun.clip_draw(int(lilly.frame) * 128, 0, 128, 128,lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
         elif lilly.face_dir == 1:
-            lilly.imageRun.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
+            lilly.imageRun.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h',  lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 
 
 
@@ -342,7 +360,7 @@ class Jump:
     @staticmethod
     def draw(lilly):
         if lilly.face_dir == -1:
-            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128, lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
+            lilly.imageJump.clip_draw(int(lilly.frame) * 128, 0, 128, 128,lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
         elif lilly.face_dir == 1:
             lilly.imageJump.clip_composite_draw(int(lilly.frame) * 128, 0, 128, 128, 0, 'h', lilly.x, lilly.y, LILLY_SIZE,LILLY_SIZE)
 

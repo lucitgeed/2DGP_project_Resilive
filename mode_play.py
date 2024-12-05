@@ -33,9 +33,19 @@ def init_mode():
     global community
     global stage_one, tempground
 
-
+    # 객체 초기 생성
     lilly = Lilly()
-    game_world.add_object(lilly,3)
+    ground_one = Ground_One()
+    # 객체 연결
+    lilly.set_ground(ground_one)
+    ground_one.set_lilly(lilly)
+    # 이제 서로의 값을 의존적으로 사용할 수 있음
+    ground_one.update()
+    camera_left, camera_bottom = lilly.get_camera_info()
+    print(f"Camera Left: {camera_left}, Camera Bottom: {camera_bottom}")
+
+    #    lilly = Lilly()
+#    game_world.add_object(lilly,3)
 
 
 #    stage_one = StageOne(lilly)
@@ -43,12 +53,12 @@ def init_mode():
 
 
 
-    tempground = Ground_One(lilly)
-    game_world,add_object(tempground,1)
-    game_world.add_collision_info('lilly:tempground', None, tempground)
+#    tempground = Ground_One(lilly)
+#    game_world,add_object(tempground,1)
+#    game_world.add_collision_info('lilly:tempground', None, tempground)
 
-    lilly.get_GF_info(tempground.width, tempground.height)
-#    lilly.get_BG_info(stage_one.width, stage_one.height)
+#    lilly.get_GF_info(tempground.width, tempground.height, tempground.camera_left, tempground.camera_bottom)
+#    lilly.get_GF_info(tempground)
 
 
 #    shiftobjt1 = ShiftObjt1()
@@ -84,9 +94,6 @@ def init_mode():
 
 
 
-    water = ObstacleWater(lilly,210,58)
-    game_world.add_object(water, 4)
-    game_world.add_collision_info('lilly:water', lilly, water)
 
 
 
