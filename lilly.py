@@ -343,7 +343,7 @@ class Jump:
         if lilly.y > 550:
             lilly.y = 550
 
-        lilly.x += lilly.dir * WALK_SPEED_PPS * 1 * handle_framework.frame_time
+        lilly.x += lilly.dir * JUMP_SPEED_PPS * 1 * handle_framework.frame_time
 
 
     @staticmethod
