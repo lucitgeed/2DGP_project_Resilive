@@ -73,6 +73,9 @@ class Ground_One:
 class Background1:
     def __init__(self):
         self.image = load_image('background1.png')
+        self.bgm = load_music('stage1_bgm.mp3')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
         pass
 
     def draw(self):
@@ -172,7 +175,7 @@ class Drown:
 
         if not Drown.water_sound:
 #            Drown.water_sound = load_wav('watersound.wav')
-#            Drown.water_sound.set_volume(30)
+#            Drown.water_sound.set_volume(20)
             pass
 
 
