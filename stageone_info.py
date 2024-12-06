@@ -1,6 +1,6 @@
 import math
 
-from pico2d import load_image, draw_rectangle, get_canvas_width, get_canvas_height, clamp, delay
+from pico2d import load_image, draw_rectangle, get_canvas_width, get_canvas_height, clamp, delay, load_music, load_wav
 
 import game_world
 import handle_framework
@@ -182,7 +182,7 @@ class ObstacleWater:
         if crashgroup == 'lilly:water':
             game_world.remove_collision_objt(self)
 
-            drowned = Drown(self.lilly,self.cx,self.cy)
+            drowned = Drown(self.lilly,self.cy)
             game_world.add_object(drowned, 5)
         pass
     #--------------------------
@@ -193,16 +193,24 @@ class ObstacleWater:
 
 class Drown:
     image = None
-    def __init__(self,lilly,x,y):
-        self.frame = 0
-
-        self.lilly = lilly
-        self.x, self.y = x,y
-
+    water_sound = None
+    def __init__(self,lilly,y):
         if Drown.image == None:
             Drown.image = load_image("lilly_drown-Sheet.png")
 
-    def update(self):pass
+        self.frame = 0
+        self.lilly = lilly
+        self.y = y
+
+        if not Drown.water_sound:
+#            Drown.water_sound = load_wav('watersound.wav')
+#            Drown.water_sound.set_volume(30)
+            pass
+
+
+    def update(self):
+#        self.water_sound.play()
+        pass
 
     def handle_event(self, event):pass
 
@@ -215,7 +223,7 @@ class Drown:
         delay(0.02)
 
         if self.lilly.face_dir == -1:
-            self.image.clip_draw(int(self.frame)*128,0, 128,128, self.x, self.y)
+            self.image.clip_draw(int(self.frame)*128,0, 128,128, self.lilly.cx+64, self.y)
         else:
             self.image.clip_composite_draw(int(self.frame) * 128, 0, 128, 128, 0, 'h', self.lilly.cx+64, self.y,128,128)
         pass
