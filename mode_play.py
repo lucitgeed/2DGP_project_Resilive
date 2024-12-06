@@ -11,7 +11,7 @@ from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
 
-from stageone_info import Ground_One, ObstacleWater, Background1
+from stageone_info import Ground_One, ObstacleWater, Background1, ShiftObjt1, Pipe, PipeStrong, PipeWeak
 
 
 #for parallax scrolling
@@ -37,15 +37,14 @@ def init_mode():
     lilly = Lilly()
     game_world.add_object(lilly,3)
 
-    background_one = Background1()
-    game_world.add_object(background_one, 0)
+#    background_one = Background1()
+#    game_world.add_object(background_one, 0)
 
 
     tempground = Ground_One(lilly)
     game_world.add_object(tempground,1)
     game_world.add_collision_info('lilly:tempground', None, tempground)
 
-#    lilly.get_GF_info(tempground.width, tempground.height, tempground.camera_left, tempground.camera_bottom)
     lilly.get_GF_info(tempground)
 
 
@@ -53,7 +52,7 @@ def init_mode():
     water.get_GF_cam_info(tempground)
 
     game_world.add_object(water,4)
-    game_world.add_collision_info('lilly:water', lilly, water)
+#    game_world.add_collision_info('lilly:water', lilly, water)
     #
     water2 = ObstacleWater(lilly, 5050-433, 58, 433)
     water3 = ObstacleWater(lilly, 5050, 58, 433)
@@ -71,13 +70,20 @@ def init_mode():
 #    game_world.add_collision_info('lilly:water', lilly,water3)
 #    game_world.add_collision_info('lilly:water', lilly,water4)
 
+    pipe1 = PipeStrong(3710,150, 256,256)
+    pipe1.get_GF_cam_info(tempground)
+    game_world.add_object(pipe1,5)
+    game_world.add_collision_info('lilly:pipe', lilly, pipe1)
+
+    pipe2 = PipeWeak(5000, 108, 512, 512)
+    pipe2.get_GF_cam_info(tempground)
+    game_world.add_object(pipe2, 5)
+    game_world.add_collision_info('lilly:pipe', lilly, pipe2)
 
 
-    #    shiftobjt1 = ShiftObjt1()
-#    game_world.add_object(shiftobjt1, 2)
-    game_world.add_collision_info("lilly:shiftobjt1", lilly, None)
-
-
+#    shift_1to2 = ShiftObjt1()
+#    game_world.add_object(shift_1to2, 2)
+#    game_world.add_collision_info("lilly:shift_1to2", lilly, None)
 
 
     game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
@@ -102,11 +108,6 @@ def init_mode():
 
 #    eyePUPILS = [Eyepupil() for i in range(10)]
 #    game_world.add_objts(eyePUPILS, 4)
-
-
-
-
-
 
 
     #collision info

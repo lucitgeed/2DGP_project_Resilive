@@ -5,6 +5,7 @@ from pico2d import load_image, get_time, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDL
 
 import game_world
 import handle_framework
+import mode_gameover
 from StateMachine import*
 from game_world import remove_collision_objt
 
@@ -55,13 +56,13 @@ Crawl_ACTION_per_TIME = 1.0 / TIME_per_Crawl_ACTION
 
 class Lilly:
     image = None
-
     def __init__(self):
         self.x, self.y = 50,110
         self.cx = 0
         self.face_dir = 1
 
         self.jump_vel = 0
+        self.in_sky = 1
 
         if Lilly.image == None:
             Lilly.imageIdle = load_image("lilly_idle_Sheet.png")
@@ -101,8 +102,6 @@ class Lilly:
         )
 
 
-
-
     def update(self):
         self.state_machine.update()
 
@@ -115,9 +114,10 @@ class Lilly:
 
         self.cx = self.x - self.ground.camera_left
         self.cy = self.y - self.ground.camera_bottom
-        print(f'            lilly.x = {self.x}')
-        print(f'            lilly.cx = {self.cx}')
-
+#        print(f'            lilly.x = {self.x}')
+#        print(f'            lilly.cx = {self.cx}')
+        if self.in_sky == 0:
+            self.in_sky = 1
 
 
     def handle_event(self, event):
@@ -129,13 +129,12 @@ class Lilly:
         draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
 
     # -----------------
-    def get_camera_position(self):
-        return self.x
-
+#    def get_camera_position(self):
+#        return self.x
     #-----------------
     def get_boundingbox(self):
-        return (self.cx-25, self.cy-40, self.cx+17, self.cy+35)
-
+        return (self.cx-17, self.cy-40, self.cx+17, self.cy+35)
+    # -----------------
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:community':
             pass
@@ -146,13 +145,22 @@ class Lilly:
 
         if crashgroup == 'lilly:tempground':
             self.state_machine.add_events(('Landed',0))
-            game_world.remove_a_collision_objt('lilly:tempground', self)
+#            game_world.remove_a_collision_objt('lilly:tempground', self)
             pass
-
         if crashgroup == 'lilly:water':
             game_world.remove_collision_objt(self)
             game_world.remove_objt(self)
             pass
+        if crashgroup == 'lilly:shift_1to2':
+            game_world.remove_collision_objt(self)
+            handle_framework.change_mode(mode_gameover)
+            pass
+        if crashgroup == 'lilly:pipe':
+            self.state_machine.add_events(('Landed',0))
+#            game_world.remove_collision_objt('lilly:pipe')
+#            game_world.remove_a_collision_objt('lilly:pipe', self)
+            self.in_sky = 0
+
 
         if crashgroup == 'lilly:eyelid':
             game_world.remove_a_collision_objt('lilly:eyelid', self)
@@ -160,10 +168,6 @@ class Lilly:
             self.state_machine.add_events(('Death',0))
 
 #-----------------------------------------------------
-    def get_BG_info(self, background_w, background_h):
-        self.background_w = background_w
-        self.background_h = background_h
-
     def get_GF_info(self, groundfoolr):
         self.ground = groundfoolr
 
@@ -186,7 +190,6 @@ class Idle:
 
         if landed(e):
             lilly.jump_vel = 0
-#            lilly.y = 120
             lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
             pass
 
@@ -202,7 +205,9 @@ class Idle:
     @staticmethod
     def do(lilly):
         lilly.frame = (lilly.frame + 5 * Idle_ACTION_per_TIME * handle_framework.frame_time) % 5
-        pass
+
+        if 110 < lilly.y and lilly.in_sky == 1:
+            lilly.y += GRAVITY * handle_framework.frame_time * JUMP_SPEED_PPS
 
     @staticmethod
     def draw(lilly):
@@ -251,9 +256,10 @@ class Walk:
     @staticmethod
     def do(lilly):
         lilly.frame = (lilly.frame+ 10 * Walk_ACTION_per_TIME * handle_framework.frame_time) % 10
-
         lilly.x += lilly.dir * WALK_SPEED_PPS * handle_framework.frame_time
-#        delay(0.04)
+
+        if 110 < lilly.y and lilly.in_sky == 1:
+            lilly.y += GRAVITY * handle_framework.frame_time * JUMP_SPEED_PPS
 
     @staticmethod
     def draw(lilly):

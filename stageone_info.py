@@ -48,7 +48,7 @@ class Ground_One:
                                 )
         pass
 
-    def handle_event(self, event):pass
+    def handle_event(self):pass
 
     def draw(self):
         self.image.clip_draw_to_origin(
@@ -80,39 +80,82 @@ class Background1:
 
     def draw(self):
         self.image.clip_draw(0,0,800,540,
-                             400,300)
+                             400,300,
+                             800,600)
 
 
     def update(self):pass
 
 
 #=============
-class ShiftObjt1:
-    image = None
-    def __init__(self):
-        game_world.add_collision_info("lilly:shiftobjt1", None, self)
+class PipeStrong:
+    def __init__(self, x, y, sizex,sizey):
+        self.x, self.y = x, y
+        self.sizex = sizex
+        self.sizey = sizey
+        self.cx, self.cy = 0, 0
 
-        self.x, self.y = 400,300
-        if ShiftObjt1.image == None:
-            ShiftObjt1.image = load_image("shift_objt1.png")
+        self.image = load_image('pipe-Sheet.png')
 
     def update(self):
-#        game_world.update()
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
         pass
 
-    def handle_event(self, event):pass
+    def handle_event(self):pass
 
     def draw(self):
-        self.image.draw(400, 200, 500,250)
+        self.image.clip_draw(0,0,128,128,
+                             self.cx,self.cy, self.sizex, self.sizey)
         draw_rectangle(*self.get_boundingbox())
 
     #------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam
+    #--------------------------
     def get_boundingbox(self):
-        return (self.x-250, self.y-110,self.x+250, self.y+115)
-    def get_aggrobox(self):
-        return (self.x-250, self.y-110,self.x+250, self.y+115)
+        return (self.cx - self.sizex/4 +10, self.cy + self.sizey/8,
+                self.cx + self.sizex//4 - 5, self.cy + self.sizey/7)
+
+#    def handle_self_collision(self, crashgroup, other):
+#        pass
+
+
+class PipeWeak:
+    def __init__(self, x, y, sizex,sizey):
+        self.x, self.y = x, y
+        self.sizex = sizex
+        self.sizey = sizey
+        self.cx, self.cy = 0, 0
+        self.collapse = 0
+
+        self.image = load_image('pipe-Sheet.png')
+
+    def update(self):
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
+
+    def handle_event(self):pass
+
+    def draw(self):
+        self.image.clip_draw(128,0,128,128,
+                             self.cx,self.cy, self.sizex, self.sizey)
+        draw_rectangle(*self.get_boundingbox())
+
+    #------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam
+    #--------------------------
+    def get_boundingbox(self):
+        return (self.cx - self.sizex/4 +10, self.cy + self.sizey/8,
+                self.cx + self.sizex//4 - 5, self.cy + self.sizey/7)
 
     def handle_self_collision(self, crashgroup, other):
+        if crashgroup == 'lilly:pipe':
+            self.collapse += 1
+            if self.collapse == 2:
+                pass
+            pass
         pass
 
 
@@ -136,7 +179,7 @@ class ObstacleWater:
 #        game_world.update()
         pass
 
-    def handle_event(self, event):pass
+    def handle_event(self):pass
 
     def draw(self):
         self.frame = (self.frame + 5 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 5
@@ -199,3 +242,31 @@ class Drown:
             self.image.clip_composite_draw(int(self.frame) * 128, 0, 128, 128, 0, 'h', self.lilly.cx+64, self.y,128,128)
         pass
 
+#=============
+class ShiftObjt1:
+    image = None
+    def __init__(self):
+        game_world.add_collision_info("lilly:shiftobjt1", None, self)
+
+        self.x, self.y = 400,300
+        if ShiftObjt1.image == None:
+            ShiftObjt1.image = load_image("shift_objt1.png")
+
+    def update(self):
+#        game_world.update()
+        pass
+
+    def handle_event(self, event):pass
+
+    def draw(self):
+        self.image.draw(400, 200, 500,250)
+        draw_rectangle(*self.get_boundingbox())
+
+    #------------------------
+    def get_boundingbox(self):
+        return (self.x-250, self.y-110,self.x+250, self.y+115)
+
+    def handle_self_collision(self, crashgroup, other):
+        if crashgroup == 'lilly:shift_1to2':
+            game_world.remove_collision_objt(self)
+            pass
