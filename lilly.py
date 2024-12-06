@@ -116,8 +116,8 @@ class Lilly:
         self.cy = self.y - self.ground.camera_bottom
 #        print(f'            lilly.x = {self.x}')
 #        print(f'            lilly.cx = {self.cx}')
-        if self.in_sky == 0:
-            self.in_sky = 1
+
+
 
 
     def handle_event(self, event):
@@ -129,9 +129,7 @@ class Lilly:
         draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
 
     # -----------------
-#    def get_camera_position(self):
-#        return self.x
-    #-----------------
+
     def get_boundingbox(self):
         return (self.cx-17, self.cy-40, self.cx+17, self.cy+35)
     # -----------------
@@ -157,9 +155,10 @@ class Lilly:
             pass
         if crashgroup == 'lilly:pipe':
             self.state_machine.add_events(('Landed',0))
-#            game_world.remove_collision_objt('lilly:pipe')
-#            game_world.remove_a_collision_objt('lilly:pipe', self)
+            game_world.remove_a_collision_objt('lilly:pipe', self)
             self.in_sky = 0
+        elif 120 < self.y:
+            self.in_sky = 1
 
 
         if crashgroup == 'lilly:eyelid':
@@ -190,7 +189,7 @@ class Idle:
 
         if landed(e):
             lilly.jump_vel = 0
-            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
+            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 5
             pass
 
         lilly.frame = 0
@@ -206,8 +205,9 @@ class Idle:
     def do(lilly):
         lilly.frame = (lilly.frame + 5 * Idle_ACTION_per_TIME * handle_framework.frame_time) % 5
 
-        if 110 < lilly.y and lilly.in_sky == 1:
+        if 120 < lilly.y and lilly.in_sky == 1:
             lilly.y += GRAVITY * handle_framework.frame_time * JUMP_SPEED_PPS
+#        lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 10
 
     @staticmethod
     def draw(lilly):
@@ -245,7 +245,7 @@ class Walk:
             lilly.dir = 0
 
         if landed(e):
-            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
+            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 5
 
     @staticmethod
     def exit(lilly,e):
@@ -258,7 +258,7 @@ class Walk:
         lilly.frame = (lilly.frame+ 10 * Walk_ACTION_per_TIME * handle_framework.frame_time) % 10
         lilly.x += lilly.dir * WALK_SPEED_PPS * handle_framework.frame_time
 
-        if 110 < lilly.y and lilly.in_sky == 1:
+        if 120 < lilly.y and lilly.in_sky == 1:
             lilly.y += GRAVITY * handle_framework.frame_time * JUMP_SPEED_PPS
 
     @staticmethod
@@ -288,7 +288,7 @@ class Run:
 
 
         if landed(e):
-            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 2
+            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 3
 
     @staticmethod
     def exit(lilly, e):
@@ -301,6 +301,11 @@ class Run:
         lilly.frame = (lilly.frame+ 8* Run_ACTION_per_TIME * handle_framework.frame_time) % 8
 
         lilly.x += lilly.dir * RUN_SPEED_PPS * handle_framework.frame_time
+
+        if 120 < lilly.y and lilly.in_sky == 1:
+            lilly.y += GRAVITY * handle_framework.frame_time * JUMP_SPEED_PPS
+
+
 
     @staticmethod
     def draw(lilly):
@@ -394,8 +399,10 @@ class Crawl:
     @staticmethod
     def do(lilly):
         lilly.frame = (lilly.frame + 7* Crawl_ACTION_per_TIME * handle_framework.frame_time) % 7
-
         lilly.x += lilly.dir * CRAWL_SPEED_PPS * handle_framework.frame_time
+
+        if 120 < lilly.y and lilly.in_sky == 1:
+            lilly.y += GRAVITY * handle_framework.frame_time * JUMP_SPEED_PPS
 
     @staticmethod
     def draw(lilly):

@@ -11,7 +11,7 @@ from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
 
-from stageone_info import Ground_One, ObstacleWater, Background1, ShiftObjt1, Pipe, PipeStrong, PipeWeak
+from stageone_info import Ground_One, ObstacleWater, Background1, ShiftObjt1, PipeStrong, PipeWeak
 
 
 #for parallax scrolling

@@ -15,6 +15,9 @@ SCROLL_SPEED_MIDDLE = 50
 TIME_per_WATER_ACTION = 2
 WATER_ACTION_per_TIME = 1.0 / TIME_per_WATER_ACTION
 
+TIME_per_PIPE_ACTION= 1.5
+PIPE_ACTION_per_TIME = 1.0 / TIME_per_PIPE_ACTION
+
 
 #=============
 class Ground_One:
@@ -114,14 +117,62 @@ class PipeStrong:
         self.groundcam = groundcam
     #--------------------------
     def get_boundingbox(self):
-        return (self.cx - self.sizex/4 +10, self.cy + self.sizey/8,
-                self.cx + self.sizex//4 - 5, self.cy + self.sizey/7)
+        return (self.cx - self.sizex/4 +10, self.cy+ self.sizey/8 ,
+                self.cx + self.sizex//4 - 5, self.cy + self.sizey/9)
 
-#    def handle_self_collision(self, crashgroup, other):
-#        pass
+    def handle_self_collision(self, crashgroup, other):pass
 
 
 class PipeWeak:
+    def __init__(self, x, y, sizex,sizey):
+        self.x, self.y = x, y
+        self.sizex = sizex
+        self.sizey = sizey
+        self.cx, self.cy = 0, 0
+        self.collapse = 0
+
+        self.image = load_image('weakpipe.png')
+        self.frame = 0
+
+    def update(self):
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
+
+        print(f'            pipecollapse 값 {self.collapse}')
+
+        if self.collapse == 1:
+            self.frame = (self.frame * 5 *PIPE_ACTION_per_TIME *handle_framework.frame_time) %5
+            pass
+
+    def handle_event(self):pass
+
+    def draw(self):
+        self.image.clip_draw(self.frame,0,128,128,
+                             self.cx,self.cy, self.sizex, self.sizey)
+        draw_rectangle(*self.get_boundingbox())
+
+    #------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam
+    #--------------------------
+    def get_boundingbox(self):
+        return (self.cx - self.sizex/4 +10, self.cy + self.sizey/8,
+                self.cx + self.sizex//4 - 5, self.cy + self.sizey/7)
+
+    def handle_self_collision(self, crashgroup, other):
+        if crashgroup == 'lilly:pipe':
+            self.collapse += 1
+            if self.collapse == 1:
+                self.image = load_image('weakpipe-Sheet.png')
+            elif self.collapse == 2:
+
+                pass
+        pass
+
+
+
+
+class PipeWeakRusting:
     def __init__(self, x, y, sizex,sizey):
         self.x, self.y = x, y
         self.sizex = sizex
@@ -157,6 +208,52 @@ class PipeWeak:
                 pass
             pass
         pass
+
+
+
+
+
+
+
+
+class PipeCollapse:
+    def __init__(self, x, y, sizex,sizey):
+        self.x, self.y = x, y
+        self.sizex = sizex
+        self.sizey = sizey
+        self.cx, self.cy = 0, 0
+
+        self.image = load_image('pipe-Sheet.png')
+
+    def update(self):
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
+
+
+    def handle_event(self):pass
+
+    def draw(self):
+        self.image.clip_draw(256,0,128,128,
+                             self.cx,self.cy, self.sizex, self.sizey)
+        draw_rectangle(*self.get_boundingbox())
+
+    #------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam
+    #--------------------------
+    def get_boundingbox(self):
+        return (self.cx - self.sizex/4 +10, self.cy + self.sizey/8,
+                self.cx + self.sizex//4 - 5, self.cy + self.sizey/7)
+
+    def handle_self_collision(self, crashgroup, other):
+        if crashgroup == 'lilly:pipe':
+            self.collapse += 1
+            if self.collapse == 2:
+                pass
+            pass
+        pass
+
+
 
 
 #=============
