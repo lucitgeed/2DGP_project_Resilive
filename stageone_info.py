@@ -138,7 +138,7 @@ class PipeWeak:
     def handle_event(self):pass
 
     def draw(self):
-        self.image.clip_draw(128,0,128,128,
+        self.image.clip_draw(256,0,128,128,
                              self.cx,self.cy, self.sizex, self.sizey)
         draw_rectangle(*self.get_boundingbox())
 
