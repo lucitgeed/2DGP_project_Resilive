@@ -51,13 +51,40 @@ def init_mode():
     lilly.get_GF_info(tempground)
 
 
-    water = ObstacleWater(lilly,3634,58)
-    water.get_GF_cam_info(tempground)
-    game_world.add_object(water,4)
-    game_world.add_collision_info('lilly:water', lilly, water)
+#    water = ObstacleWater(lilly,3634,58, 132)
+#    water.get_GF_cam_info(tempground)
+#    game_world.add_object(water,4)
+#    game_world.add_collision_info('lilly:water', lilly, water)
+
+    water2 = ObstacleWater(lilly, 5050-433, 58, 433)
+    water3 = ObstacleWater(lilly, 5050, 58, 433)
+    water4 = ObstacleWater(lilly, 5050 +433,58, 433)
+#    water5 = ObstacleWater(lilly, 4370 + 150*3, 58)
+#    water6 = ObstacleWater(lilly, 4370 + 150*4, 58)
+    watertemp = []
+    watertemp.append(water2)
+    watertemp.append(water3)
+    watertemp.append(water4)
+#    watertemp.append(water5)
+#    watertemp.append(water6)
+
+    water2.get_GF_cam_info(tempground)
+    water3.get_GF_cam_info(tempground)
+    water4.get_GF_cam_info(tempground)
+#    water5.get_GF_cam_info(tempground)
+#    water6.get_GF_cam_info(tempground)
+
+    game_world.add_objts(watertemp, 4)
+
+#    game_world.add_collision_info('lilly:water', lilly,water2)
+#    game_world.add_collision_info('lilly:water', lilly,water3)
+#    game_world.add_collision_info('lilly:water', lilly,water4)
+#    game_world.add_collision_info('lilly:water', lilly,water5)
+#    game_world.add_collision_info('lilly:water', lilly,water6)
 
 
-#    shiftobjt1 = ShiftObjt1()
+
+    #    shiftobjt1 = ShiftObjt1()
 #    game_world.add_object(shiftobjt1, 2)
     game_world.add_collision_info("lilly:shiftobjt1", lilly, None)
 

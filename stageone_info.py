@@ -148,10 +148,11 @@ class ShiftObjt1:
 #=============
 class ObstacleWater:
     image = None
-    def __init__(self, lilly, x, y):
+    def __init__(self, lilly, x, y, sizex):
         self.frame = 0
         self.x, self.y = x, y
         self.lilly = lilly
+        self.sizex = sizex
 
         self.cx, self.cy = 0,0
 
@@ -169,13 +170,13 @@ class ObstacleWater:
     def draw(self):
         self.frame = (self.frame + 5 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 5
 
-        self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.cx, self.cy, 132, 128)
+        self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.cx, self.cy, self.sizex, 128)
 
         draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
-        return (self.cx-64, self.cy-64,self.cx+64, self.cy+23)
+        return (self.cx-self.sizex/2+9, self.cy-64,self.cx+self.sizex//2-10, self.cy+23)
 
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:water':
@@ -216,6 +217,6 @@ class Drown:
         if self.lilly.face_dir == -1:
             self.image.clip_draw(int(self.frame)*128,0, 128,128, self.x, self.y)
         else:
-            self.image.clip_composite_draw(int(self.frame) * 128, 0, 128, 128, 0, 'h', self.x, self.y,128,128)
+            self.image.clip_composite_draw(int(self.frame) * 128, 0, 128, 128, 0, 'h', self.lilly.cx+64, self.y,128,128)
         pass
 
