@@ -70,49 +70,17 @@ class Ground_One:
 
 
 #=============
-class StageOne:
-    def __init__(self, lilly):
+class Background1:
+    def __init__(self):
         self.image = load_image('background1.png')
-
-        self.width, self.height = 920, 540
-
-        self.scroll_speed = SCROLL_SPEED_MIDDLE
-        self.lilly = lilly
-
-        ###
-        self.canvas_w = get_canvas_width()
-        self.canvas_h = get_canvas_height()
-
-        self.window_left = 0
-        self.window_bottom = 0
-        ###
         pass
 
     def draw(self):
-        camera_x = self.lilly.x * 0.5
-        clamp(0,
-              camera_x,
-              self.width)
+        self.image.clip_draw(0,0,800,540,
+                             400,300)
 
-        self.image.clip_draw_to_origin(int(camera_x), 0, 800, self.height,
-                                       0,128)
 
-#        self.image.clip_draw_to_origin(
-#            self.window_left, self.window_bottom,
-#            self.canvas_w, self.canvas_h,
-#            0,0
-#        )
-
-    def update(self):
-#        self.window_left = clamp(0,
-#                                 int(self.lilly.x) - self.canvas_w // 2,
-#                                 self.width - self.canvas_w - 1
-#                                 )
-#        self.window_bottom = clamp(0,
-#                                   int(self.lilly.y) - self.canvas_h // 2,
-#                                   self.height - self.canvas_h - 1
-#                                   )
-        pass
+    def update(self):pass
 
 
 #=============

@@ -11,7 +11,7 @@ from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
 
-from stageone_info import StageOne, Ground_One, ObstacleWater
+from stageone_info import Ground_One, ObstacleWater, Background1
 
 
 #for parallax scrolling
@@ -37,10 +37,8 @@ def init_mode():
     lilly = Lilly()
     game_world.add_object(lilly,3)
 
-
-#    stage_one = StageOne(lilly)
-#    game_world.add_object(stage_one,0)
-
+    background_one = Background1()
+    game_world.add_object(background_one, 0)
 
 
     tempground = Ground_One(lilly)
