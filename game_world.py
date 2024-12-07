@@ -30,9 +30,8 @@ def render():
         for objt in layer:
             objt.draw()
 #--------------------
-def collided(a,b):                          #aggro & aggro
+def collided(a,b):
     aleft, abottom, aright, atop = a.get_boundingbox()
-    
     bl, bb, br, bt = b.get_boundingbox()
 
     if br < aleft: return False
@@ -49,29 +48,45 @@ def handle_collisions():
     for crashgroup, pairs in collision_pairs.items():
         for a in pairs[0]:
             for b in pairs[1]:
-                if collided(a,b):
+                if a is None:
+                    pass
+                if b is None:
+                    pass
 
+                elif collided(a,b):
                     print(f'            {crashgroup} has collided')
-
                     a.handle_self_collision(crashgroup,b)
                     b.handle_self_collision(crashgroup,a)
     pass
 
 
 
+#def handle_collisions():
+#    for crashgroup, pairs in list(collision_pairs.items()):
+#        # 유효한 객체만 확인하기 위해 None을 제외한 필터링
+#        valid_pairs = [(a, b) for a in pairs[0] if a is not None for b in pairs[1] if b is not None]
+
+#        for a, b in valid_pairs:
+#            if collided(a, b):
+#                print(f'            {crashgroup} has collided')
+
+#                a.handle_self_collision(crashgroup, b)
+#                b.handle_self_collision(crashgroup, a)
+#    pass
+
+
 ######################
 def remove_objt(objt):
     for layer in world:
         if objt in layer:
-            print(f'            {objt} in layer')
+#            print(f'            {objt} in layer')
             remove_collision_objt(objt)
-            print(f'                remove {objt} in collision')
+#            print(f'                remove {objt} in collision')
             layer.remove(objt)
-
-            print(f'                remove {objt} from layer')
+#            print(f'                remove {objt} from layer')
 
             del objt
-            print(f'                오브젝트 메모리에서 삭제완료')
+#            print(f'                오브젝트 메모리에서 삭제완료')
 
             return
     raise ValueError('Cannot delete non existing object')

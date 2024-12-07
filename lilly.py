@@ -7,13 +7,12 @@ import game_world
 import handle_framework
 import mode_gameover
 from StateMachine import*
-from game_world import remove_collision_objt
 
 PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm  그러니까 가로800은 곧8000cm라는 거지?
 LILLY_SIZE = 80
 # set lilly speed
-RUN_SPEED_KM_per_H = 17.0
-#RUN_SPEED_KM_per_H = 700.0
+#RUN_SPEED_KM_per_H = 17.0
+RUN_SPEED_KM_per_H = 700.0
 RUN_SPEED_M_per_M = (RUN_SPEED_KM_per_H * 1000.0 / 60.0)
 RUN_SPEED_M_per_S = RUN_SPEED_M_per_M / 60.0
 RUN_SPEED_PPS = RUN_SPEED_M_per_S * PIXEL_per_METER
@@ -58,7 +57,7 @@ class Lilly:
     image = None
     def __init__(self):
         self.x, self.y = 50,110
-        self.x = 6900
+        self.x = 7000
 
         self.cx = 0
         self.face_dir = 1
@@ -143,35 +142,35 @@ class Lilly:
         if crashgroup == 'lilly:cmity_attack':
             pass
 
+
         if crashgroup == 'lilly:tempground':
             self.state_machine.add_events(('Landed',0))
-#            game_world.remove_a_collision_objt('lilly:tempground', self)
-            pass
         if crashgroup == 'lilly:water':
-            game_world.remove_collision_objt(self)
             game_world.remove_objt(self)
             pass
         if crashgroup == 'lilly:pipe':
             self.state_machine.add_events(('Landed',0))
             self.y += JUMP_TIME * handle_framework.frame_time
-            game_world.remove_a_collision_objt('lilly:pipe', self)
+#            game_world.remove_a_collision_objt('lilly:pipe', self)
             self.in_sky = 0
         if crashgroup == 'lilly:pipe_abouttoCOLLAPSE':
             self.state_machine.add_events(('Landed', 0))
             self.y += JUMP_TIME * handle_framework.frame_time + 2
             self.in_sky = 0
-
-
         if crashgroup == 'lilly:shift_1to2':
-            self.state_machine.start(Walk)
-            self.x += (JUMP_SPEED_PPS)* handle_framework.frame_time * 6
-            self.y += (JUMP_SPEED_PPS)* handle_framework.frame_time *13.5
-            pass
+            game_world.remove_objt(self)
+#            self.state_machine.start(Walk)
+#            self.x += (JUMP_SPEED_PPS)* handle_framework.frame_time * 6
+#            self.y += (JUMP_SPEED_PPS)* handle_framework.frame_time *13.5
+#            if 400 < self.y:
+#                self.in_sky = 0
+#dddd                game_world.remove_collision_objt(self)
+#                handle_framework.change_mode(mode_gameover)
 
 
 
         if crashgroup == 'lilly:eyelid':
-            game_world.remove_a_collision_objt('lilly:eyelid', self)
+#            game_world.remove_a_collision_objt('lilly:eyelid', self)
             game_world.remove_objt(self)
             self.state_machine.add_events(('Death',0))
 

@@ -10,19 +10,31 @@ global image, frame
 
 open_canvas()
 
-image = load_image("lilly_drown-Sheet.png")
+#image = load_image("test3.png")
 frame = 0
 
-while True:
-    clear_canvas()
-    frame = (frame + 15 * WATER_ACTION_per_TIME ) % 15
+#cnt = 0
 
-#    image.clip_draw(int(frame) * 128, 0,
-#                         128, 128,
-#                         400,300)
-    image.clip_composite_draw(int(frame) * 128, 0, 128, 128, 0, 'v', 400,300, 128, 128)
-    update_canvas()
+while True:
+    if 0<=self.cnt <10:
+        image = load_image("test1.png")
+    if 10<=cnt<20:
+        image = load_image("test2.png")
+    if 20<=cnt <30:
+        image = load_image("test3.png")
+
+
+    clear_canvas()
+    print(f'cnt = {cnt}')
+    print(f'cnt = {image}')
+
+#    cnt = cnt+1
+
+    image.clip_draw(int(frame) * 512, 0, 512,256, 400,300)
+    frame = (frame + 1 ) % 10
     delay(0.4)
+    update_canvas()
+#
     pass
 
 

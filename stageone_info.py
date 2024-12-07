@@ -1,15 +1,12 @@
 import math
 
+from pefile import RelocationData
 from pico2d import load_image, draw_rectangle, get_canvas_width, get_canvas_height, clamp, delay, load_music, load_wav
 
 import game_world
 import handle_framework
 import mode_gameover
-
-#set scroll speed
-SCROLL_SPEED_NEAR = 100
-SCROLL_SPEED_MIDDLE = 50
-
+import mode_title
 
 # set frame flip speed
 TIME_per_WATER_ACTION = 2
@@ -194,7 +191,6 @@ class PipeFragile:
             PIPEtemp = PipeCollapse(self.x,self.y,self.sizex,self.sizey)
             PIPEtemp.get_GF_cam_info(self.groundcam)
             game_world.add_object(PIPEtemp, 4)
-
             game_world.remove_objt(self)
         pass
 
@@ -306,7 +302,6 @@ class ObstacleWater:
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:water':
             game_world.remove_collision_objt(self)
-
             drowned = Drown(self.lilly,self.cy)
             game_world.add_object(drowned, 5)
         pass
@@ -368,17 +363,68 @@ class ShiftObjt1:
     def handle_event(self, event):pass
 
     def draw(self):
-        self.image.clip_composite_draw(0, 0, 256, 128, 0.15,'',
-                                                self.cx, self.cy,1080,490)
+        self.image.clip_composite_draw(0, 0, 256, 128, 0.15,'', self.cx, self.cy,1080,490)
         draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
-        return (self.cx-500, self.cy-250,self.cx+500, self.cy+250)
+        return (self.cx-500, self.cy-250,self.cx+500, self.cy+210)
 
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:shift_1to2':
+            shiftscene = RealShift1(self.cx, self.cy)
+            shiftscene.get_GF_cam_info(self.groundcam)
+            game_world.add_object(shiftscene,6)
             pass
+    #--------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam
+
+
+class RealShift1:
+    def __init__(self,x,y):
+        self.cntttt = 0
+        self.frame = 0
+        self.x,self.y = x,y
+        self.cx,self.cy = 0,0
+
+        self.images = [
+            load_image("test1.png"),  # cnt 0~9
+            load_image("test2.png"),  # cnt 10~19
+            load_image("test3.png"),  # cnt 20~29
+        ]
+        self.image = self.images[0]  # 초기 이미지를 설정
+
+    def update(self):
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
+        pass
+
+    def handle_event(self, event):pass
+
+    def draw(self):
+        if 0 <= self.cntttt < 10:
+            self.image = load_image("test1.png")
+        if 10 <= self.cntttt < 20:
+            self.image = load_image("test2.png")
+        if 20 <= self.cntttt < 30:
+            self.image = load_image("test3.png")
+
+        if self.cntttt == 29:
+            handle_framework.change_mode(mode_gameover)
+            pass
+
+        print(f'                       self.cnt = {self.cntttt} 그리고 self.image = {self.image}')
+
+        self.image.clip_composite_draw(int(self.frame)*512,0, 512,256,
+                                       0.15,'', self.x - 100, self.y+10,1080,490)
+        delay(0.05)
+
+        self.frame = (self.frame + 10 * handle_framework.frame_time) % 10
+        self.cntttt = (self.cntttt + 1) % 30  # 0~29로 반복
+
+
+
     #--------------------------
     def get_GF_cam_info(self, groundcam):
         self.groundcam = groundcam
