@@ -20,9 +20,8 @@ PIPE_ACTION_per_TIME = 1.0 / TIME_per_PIPE_ACTION
 class Ground_Two:
     image = None
     def __init__(self, lilly):
-        if Ground_One.image == None:
-#            Ground_One.image = load_image("stage1_ground-Sheet.png")
-            Ground_One.image = load_image("tg-Sheet.png")
+        if Ground_Two.image == None:
+            Ground_Two.image = load_image("stage2_ground.png")
 
         self.width, self.height = self.image.w, self.image.h
 

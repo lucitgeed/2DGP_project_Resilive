@@ -21,8 +21,7 @@ class Ground_One:
     image = None
     def __init__(self, lilly):
         if Ground_One.image == None:
-#            Ground_One.image = load_image("stage1_ground-Sheet.png")
-            Ground_One.image = load_image("tg-Sheet.png")
+            Ground_One.image = load_image("stage1_ground.png")
 
         self.width, self.height = self.image.w, self.image.h
 

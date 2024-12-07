@@ -13,18 +13,18 @@ def init_mode():
     global community
 
 
-#    lilly = Lilly()
-#    game_world.add_object(lilly,3)
+    lilly = Lilly()
+    game_world.add_object(lilly,3)
 
 #BACKGROUND-----
 #    background_two = Background2()
 #    game_world.add_object(background_two, 0)
 #GROUND-----
-#    tempground = Ground_Two(lilly)
-#    game_world.add_object(tempground,1)
-#    game_world.add_collision_info('lilly:tempground', None, tempground)
+    ground2 = Ground_Two(lilly)
+    game_world.add_object(ground2,1)
+    game_world.add_collision_info('lilly:tempground', None, ground2)
 
-#    lilly.get_GF_info(tempground)
+    lilly.get_GF_info(ground2)
 
 
 #SHIFTOBJT-----
