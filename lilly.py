@@ -57,7 +57,7 @@ class Lilly:
     image = None
     def __init__(self):
         self.x, self.y = 50,110
-        self.x = 7000
+
 
         self.cx = 0
         self.face_dir = 1

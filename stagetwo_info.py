@@ -17,7 +17,7 @@ PIPE_ACTION_per_TIME = 1.0 / TIME_per_PIPE_ACTION
 
 
 #=============
-class Ground_One:
+class Ground_Two:
     image = None
     def __init__(self, lilly):
         if Ground_One.image == None:
@@ -70,12 +70,12 @@ class Ground_One:
 
 
 #=============
-class Background1:
+class Background2:
     def __init__(self):
-        self.image = load_image('background1.png')
-        self.bgm = load_music('stage1_bgm.mp3')
-        self.bgm.set_volume(30)
-        self.bgm.repeat_play()
+        self.image = load_image('background2.png')
+#        self.bgm = load_music('stage2_bgm.mp3')
+#        self.bgm.set_volume(30)
+#        self.bgm.repeat_play()
         pass
 
     def draw(self):

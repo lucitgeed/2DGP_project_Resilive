@@ -1,20 +1,11 @@
-from pico2d import get_events, clear_canvas, update_canvas
-from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_KEYUP
+from pico2d import clear_canvas, update_canvas, get_events
+from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_ESCAPE, SDL_QUIT
 
 import game_world
 import handle_framework
-import lilly
 import mode_menu
-from community import Community
-from eyelid import Eyelid
-from eyepupil import Eyepupil
-from game_world import add_object
 from lilly import Lilly
-
-from stageone_info import Ground_One, ObstacleWater, Background1, ShiftObjt1, PipeStrong, PipeWeak, PipeFragile, \
-    RealShift1
-
-
+from stagetwo_info import Background2, Ground_Two
 
 
 def init_mode():
@@ -22,25 +13,25 @@ def init_mode():
     global community
 
 
-    lilly = Lilly()
-    game_world.add_object(lilly,3)
+#    lilly = Lilly()
+#    game_world.add_object(lilly,3)
 
 #BACKGROUND-----
-#    background_one = Background1()
-#    game_world.add_object(background_one, 0)
+    background_two = Background2()
+    game_world.add_object(background_two, 0)
 #GROUND-----
-    tempground = Ground_One(lilly)
-    game_world.add_object(tempground,1)
-    game_world.add_collision_info('lilly:tempground', None, tempground)
+#    tempground = Ground_Two(lilly)
+#    game_world.add_object(tempground,1)
+#    game_world.add_collision_info('lilly:tempground', None, tempground)
 
-    lilly.get_GF_info(tempground)
+#    lilly.get_GF_info(tempground)
 
 
 #SHIFTOBJT-----
-    shift_1to2 = ShiftObjt1(7650,290)
-    shift_1to2.get_GF_cam_info(tempground)
-    game_world.add_object(shift_1to2, 2)
-    game_world.add_collision_info("lilly:shift_1to2", lilly, shift_1to2)
+#    shift_1to2 = ShiftObjt2(7650,290)
+#    shift_1to2.get_GF_cam_info(tempground)
+#    game_world.add_object(shift_1to2, 2)
+#    game_world.add_collision_info("lilly:shift_1to2", lilly, shift_1to2)
 
 
 #    eyeLIDS = [Eyelid() for _ in range(5)]
