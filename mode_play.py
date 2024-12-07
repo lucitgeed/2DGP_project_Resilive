@@ -51,34 +51,36 @@ def init_mode():
     water = ObstacleWater(lilly,3634,58, 132)
     water.get_GF_cam_info(tempground)
 
-    game_world.add_object(water,4)
+    game_world.add_object(water,5)
 #    game_world.add_collision_info('lilly:water', lilly, water)
     #
-    water2 = ObstacleWater(lilly, 5050-433, 58, 433)
-    water3 = ObstacleWater(lilly, 5050, 58, 433)
-    water4 = ObstacleWater(lilly, 5050 +433,58, 433)
-    watertemp = []
-    watertemp.append(water2)
-    watertemp.append(water3)
-    watertemp.append(water4)
-    water2.get_GF_cam_info(tempground)
-    water3.get_GF_cam_info(tempground)
-    water4.get_GF_cam_info(tempground)
+#    water2 = ObstacleWater(lilly, 5050-433, 58, 433)
+#    water3 = ObstacleWater(lilly, 5050, 58, 433)
+#    water4 = ObstacleWater(lilly, 5050 +433,58, 433)
+#    watertemp = []
+#    watertemp.append(water2)
+#    watertemp.append(water3)
+#    watertemp.append(water4)
+#    water2.get_GF_cam_info(tempground)
+#    water3.get_GF_cam_info(tempground)
+#    water4.get_GF_cam_info(tempground)
 
-    game_world.add_objts(watertemp, 4)
+#    game_world.add_objts(watertemp, 5)
 #    game_world.add_collision_info('lilly:water', lilly,water2)
 #    game_world.add_collision_info('lilly:water', lilly,water3)
 #    game_world.add_collision_info('lilly:water', lilly,water4)
 
     pipe1 = PipeStrong(3710,150, 256,256)
     pipe1.get_GF_cam_info(tempground)
-    game_world.add_object(pipe1,5)
+    game_world.add_object(pipe1,4)
     game_world.add_collision_info('lilly:pipe', lilly, pipe1)
 
     pipe2 = PipeWeak(5000, 108, 512, 512)
     pipe2.get_GF_cam_info(tempground)
-    game_world.add_object(pipe2, 5)
+    game_world.add_object(pipe2, 4)
     game_world.add_collision_info('lilly:pipe', lilly, pipe2)
+
+    game_world.add_collision_info('lilly:pipe_abouttoCOLLAPSE',lilly, None)
 
 
 #    shift_1to2 = ShiftObjt1()

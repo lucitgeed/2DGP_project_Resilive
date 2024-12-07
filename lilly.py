@@ -153,12 +153,11 @@ class Lilly:
             game_world.remove_collision_objt(self)
             handle_framework.change_mode(mode_gameover)
             pass
-        if crashgroup == 'lilly:pipe':
+        if crashgroup == 'lilly:pipe' or crashgroup == 'lilly:pipe_abouttoCOLLAPSE':
             self.state_machine.add_events(('Landed',0))
+            self.y += JUMP_TIME * handle_framework.frame_time
             game_world.remove_a_collision_objt('lilly:pipe', self)
             self.in_sky = 0
-        elif 120 < self.y:
-            self.in_sky = 1
 
 
         if crashgroup == 'lilly:eyelid':
@@ -189,11 +188,11 @@ class Idle:
 
         if landed(e):
             lilly.jump_vel = 0
-            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 5
-            pass
+            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 3
 
         lilly.frame = 0
         lilly.dir = 0
+        lilly.in_sky = 1
 
     @staticmethod
     def exit(lilly, e):
@@ -205,7 +204,7 @@ class Idle:
     def do(lilly):
         lilly.frame = (lilly.frame + 5 * Idle_ACTION_per_TIME * handle_framework.frame_time) % 5
 
-        if 120 < lilly.y and lilly.in_sky == 1:
+        if 115 < lilly.y and lilly.in_sky == 1:
             lilly.y += GRAVITY * handle_framework.frame_time * JUMP_SPEED_PPS
 #        lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 10
 
@@ -244,8 +243,7 @@ class Walk:
         elif left_up(e):
             lilly.dir = 0
 
-        if landed(e):
-            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 5
+        lilly.in_sky = 1
 
     @staticmethod
     def exit(lilly,e):
@@ -258,7 +256,7 @@ class Walk:
         lilly.frame = (lilly.frame+ 10 * Walk_ACTION_per_TIME * handle_framework.frame_time) % 10
         lilly.x += lilly.dir * WALK_SPEED_PPS * handle_framework.frame_time
 
-        if 120 < lilly.y and lilly.in_sky == 1:
+        if 115 < lilly.y and lilly.in_sky == 1:
             lilly.y += GRAVITY * handle_framework.frame_time * JUMP_SPEED_PPS
 
     @staticmethod
@@ -286,9 +284,7 @@ class Run:
         elif left_up(e):
             lilly.dir = 0
 
-
-        if landed(e):
-            lilly.y += JUMP_SPEED_PPS * handle_framework.frame_time + 3
+        lilly.in_sky = 1
 
     @staticmethod
     def exit(lilly, e):
@@ -302,7 +298,7 @@ class Run:
 
         lilly.x += lilly.dir * RUN_SPEED_PPS * handle_framework.frame_time
 
-        if 120 < lilly.y and lilly.in_sky == 1:
+        if 115 < lilly.y and lilly.in_sky == 1:
             lilly.y += GRAVITY * handle_framework.frame_time * JUMP_SPEED_PPS
 
 
@@ -343,6 +339,7 @@ class Jump:
     @staticmethod
     def exit(lilly, e):
         lilly.jumping = 0
+        lilly.in_sky = 1
         pass
 
     @staticmethod
