@@ -11,7 +11,7 @@ from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
 
-from stageone_info import Ground_One, ObstacleWater, Background1, ShiftObjt1, PipeStrong, PipeWeak
+from stageone_info import Ground_One, ObstacleWater, Background1, ShiftObjt1, PipeStrong, PipeWeak, PipeFragile
 
 
 #for parallax scrolling
@@ -37,21 +37,21 @@ def init_mode():
     lilly = Lilly()
     game_world.add_object(lilly,3)
 
+#BACKGROUND-----
 #    background_one = Background1()
 #    game_world.add_object(background_one, 0)
-
-
+#GROUND-----
     tempground = Ground_One(lilly)
     game_world.add_object(tempground,1)
     game_world.add_collision_info('lilly:tempground', None, tempground)
 
     lilly.get_GF_info(tempground)
 
+#WATER-----
+#    water = ObstacleWater(lilly,3634,58, 132)
+#    water.get_GF_cam_info(tempground)
 
-    water = ObstacleWater(lilly,3634,58, 132)
-    water.get_GF_cam_info(tempground)
-
-    game_world.add_object(water,5)
+#    game_world.add_object(water,5)
 #    game_world.add_collision_info('lilly:water', lilly, water)
     #
 #    water2 = ObstacleWater(lilly, 5050-433, 58, 433)
@@ -70,19 +70,46 @@ def init_mode():
 #    game_world.add_collision_info('lilly:water', lilly,water3)
 #    game_world.add_collision_info('lilly:water', lilly,water4)
 
-    pipe1 = PipeStrong(3710,150, 256,256)
-    pipe1.get_GF_cam_info(tempground)
-    game_world.add_object(pipe1,4)
-    game_world.add_collision_info('lilly:pipe', lilly, pipe1)
+#PIPES-----
+#    pipe1 = PipeStrong(3710,150, 256,256)
+#    pipe1.get_GF_cam_info(tempground)
+#    game_world.add_object(pipe1,4)
+#    game_world.add_collision_info('lilly:pipe', lilly, pipe1)
 
-    pipe2 = PipeWeak(5000, 108, 512, 512)
+    pipe2 = PipeStrong(4540, 180, 300, 300)
     pipe2.get_GF_cam_info(tempground)
     game_world.add_object(pipe2, 4)
     game_world.add_collision_info('lilly:pipe', lilly, pipe2)
 
+    pipe3 = PipeWeak(4810, 295, 400, 400)
+    pipe3.get_GF_cam_info(tempground)
+    game_world.add_object(pipe3, 4)
+    game_world.add_collision_info('lilly:pipe', lilly, pipe3)
     game_world.add_collision_info('lilly:pipe_abouttoCOLLAPSE',lilly, None)
 
+    pipe4 = PipeFragile(5000, 150, 256, 256)
+    pipe4.get_GF_cam_info(tempground)
+    game_world.add_object(pipe4, 4)
+    game_world.add_collision_info('lilly:pipe', lilly, pipe4)
+#    game_world.add_collision_info('lilly:pipeFRAGILE', lilly, None)
 
+    pipe4 = PipeStrong(5100, 100, 128, 128)
+    pipe4.get_GF_cam_info(tempground)
+    game_world.add_object(pipe4, 4)
+    game_world.add_collision_info('lilly:pipe', lilly, pipe4)
+
+    pipe5 = PipeWeak(5300, 200, 350, 350)
+    pipe5.get_GF_cam_info(tempground)
+    game_world.add_object(pipe5, 4)
+    game_world.add_collision_info('lilly:pipe', lilly, pipe5)
+    game_world.add_collision_info('lilly:pipe_abouttoCOLLAPSE', lilly, None)
+
+    pipe6 = PipeStrong(5540, 295, 100, 100)
+    pipe6.get_GF_cam_info(tempground)
+    game_world.add_object(pipe6, 4)
+    game_world.add_collision_info('lilly:pipe', lilly, pipe6)
+
+    #SHIFTOBJT-----
 #    shift_1to2 = ShiftObjt1()
 #    game_world.add_object(shift_1to2, 2)
 #    game_world.add_collision_info("lilly:shift_1to2", lilly, None)
@@ -149,8 +176,6 @@ def update():
 
 def draw():
     clear_canvas()
-
-
     game_world.render()
     update_canvas()
     pass
