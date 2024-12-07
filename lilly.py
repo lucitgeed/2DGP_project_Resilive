@@ -115,10 +115,8 @@ class Lilly:
 
         self.cx = self.x - self.ground.camera_left
         self.cy = self.y - self.ground.camera_bottom
-#        print(f'            lilly.x = {self.x}')
+        print(f'            lilly.x = {self.x}')
 #        print(f'            lilly.cx = {self.cx}')
-
-
 
 
     def handle_event(self, event):

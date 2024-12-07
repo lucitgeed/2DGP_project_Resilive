@@ -5,7 +5,7 @@ import game_world
 import handle_framework
 import mode_menu
 from lilly import Lilly
-from stagetwo_info import Background2, Ground_Two, Bridge
+from stagetwo_info import Background2, Ground_Two, Bridge, CarBus, CarGreen
 
 
 def init_mode():
@@ -14,14 +14,14 @@ def init_mode():
 
 
     lilly = Lilly()
-    game_world.add_object(lilly,3)
+    game_world.add_object(lilly,5)
 
 #BACKGROUND-----
 #    background_two = Background2()
 #    game_world.add_object(background_two, 0)
 #GROUND-----
     ground2 = Ground_Two(lilly)
-    game_world.add_object(ground2,1)
+    game_world.add_object(ground2,2)
     game_world.add_collision_info('lilly:tempground', None, ground2)
 
     lilly.get_GF_info(ground2)
@@ -29,16 +29,26 @@ def init_mode():
 #BRIDGE-----
 #    bridge = Bridge(1500,180)
 #    bridge.get_GF_cam_info(ground2)
-#    game_world.add_object(bridge,2)
+#    game_world.add_object(bridge,1)
 
 
+#CARS-----
+    bus1 = CarBus(1700,140,330,330)
+    bus1.get_GF_cam_info(ground2)
+    game_world.add_object(bus1,3)
+    game_world.add_collision_info('lilly:car', lilly, bus1)
 
-
+    cargreen1 = CarGreen(2000, 120, 250,250)
+    cargreen1.get_GF_cam_info(ground2)
+    game_world.add_object(cargreen1, 3)
+    game_world.add_collision_info('lilly:car', lilly,cargreen1)
 
 #SHIFTOBJT-----
 #    shift_1to2 = ShiftObjt2(7650,290)
 #    shift_1to2.get_GF_cam_info(tempground)
-#    game_world.add_object(shift_1to2, 2)
+
+#    game_world.add_object(shift_1to2, 4)
+
 #    game_world.add_collision_info("lilly:shift_1to2", lilly, shift_1to2)
 
 

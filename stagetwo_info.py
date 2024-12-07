@@ -86,14 +86,76 @@ class Background2:
 
 
 #=============
-class PipeStrong:
+class CarBus:
     def __init__(self, x, y, sizex,sizey):
         self.x, self.y = x, y
         self.sizex = sizex
         self.sizey = sizey
         self.cx, self.cy = 0, 0
 
-        self.image = load_image('pipe-Sheet.png')
+        self.image = load_image('cars-Sheet.png')
+
+    def update(self):
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
+        pass
+
+    def handle_event(self):pass
+
+    def draw(self):
+        self.image.clip_draw(640,0,128,128,
+                             self.cx,self.cy, self.sizex, self.sizey)
+        draw_rectangle(*self.get_boundingbox())
+
+    #------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam
+    #--------------------------
+    def get_boundingbox(self):
+        return (self.cx - self.sizex/2, self.cy- self.sizey/4 ,
+                self.cx + self.sizex//2, self.cy + self.sizey/4)
+
+    def handle_self_collision(self, crashgroup, other):pass
+
+class CarGreen:
+    def __init__(self, x, y, sizex,sizey):
+        self.x, self.y = x, y
+        self.sizex = sizex
+        self.sizey = sizey
+        self.cx, self.cy = 0, 0
+
+        self.image = load_image('cars-Sheet.png')
+
+    def update(self):
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
+        pass
+
+    def handle_event(self):pass
+
+    def draw(self):
+        self.image.clip_draw(0,0,128,128,
+                             self.cx,self.cy, self.sizex, self.sizey)
+        draw_rectangle(*self.get_boundingbox())
+
+    #------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam
+    #--------------------------
+    def get_boundingbox(self):
+        return (self.cx - self.sizex/3, self.cy- self.sizey/4 ,
+                self.cx + self.sizex//3, self.cy + self.sizey/5)
+
+    def handle_self_collision(self, crashgroup, other):pass
+
+class CarRed:
+    def __init__(self, x, y, sizex,sizey):
+        self.x, self.y = x, y
+        self.sizex = sizex
+        self.sizey = sizey
+        self.cx, self.cy = 0, 0
+
+        self.image = load_image('cars-Sheet.png')
 
     def update(self):
         self.cx = self.x - self.groundcam.camera_left
@@ -112,48 +174,14 @@ class PipeStrong:
         self.groundcam = groundcam
     #--------------------------
     def get_boundingbox(self):
-        return (self.cx - self.sizex/4 +10, self.cy+ self.sizey/8 ,
-                self.cx + self.sizex//4 - 5, self.cy + self.sizey/9)
+        return (self.cx - self.sizex/2, self.cy- self.sizey/3 ,
+                self.cx + self.sizex//2, self.cy + self.sizey/3)
 
     def handle_self_collision(self, crashgroup, other):pass
 
-class PipeWeak:
-    def __init__(self, x, y, sizex,sizey):
-        self.x, self.y = x, y
-        self.sizex = sizex
-        self.sizey = sizey
-        self.cx, self.cy = 0, 0
-        self.collapse = 0
 
-        self.image = load_image('pipe-Sheet.png')
 
-    def update(self):
-        self.cx = self.x - self.groundcam.camera_left
-        self.cy = self.y - self.groundcam.camera_bottom
 
-    def handle_event(self):pass
-
-    def draw(self):
-        self.image.clip_draw(256,0,128,128,
-                             self.cx,self.cy, self.sizex, self.sizey)
-        draw_rectangle(*self.get_boundingbox())
-
-    #------------------------
-    def get_GF_cam_info(self, groundcam):
-        self.groundcam = groundcam
-    #--------------------------
-    def get_boundingbox(self):
-        return (self.cx - self.sizex/4 +10, self.cy + self.sizey/8,
-                self.cx + self.sizex//4 - 5, self.cy + self.sizey/7)
-
-    def handle_self_collision(self, crashgroup, other):
-        if crashgroup == 'lilly:pipe':
-            PIPE  = PipeAbouttoCollapse(self.x,self.y,self.sizex,self.sizey)
-            PIPE.get_GF_cam_info(self.groundcam)
-            game_world.add_object(PIPE,4)
-            game_world.add_collision_info('lilly:pipe_abouttoCOLLAPSE', None, PIPE)
-            game_world.remove_objt(self)
-        pass
 
 class PipeFragile:
     def __init__(self, x, y, sizex,sizey):

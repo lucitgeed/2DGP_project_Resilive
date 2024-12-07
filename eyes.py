@@ -10,7 +10,7 @@ IDLE_SPEED_PPS = IDLE_SPEED_MPS * PIXEL_per_METER
 
 
 
-class Eyelid:
+class Eyes:
     image = None
     def __init__(self):
         self.x, self.y = random.randint(50, 750), random.randint(350, 550)
