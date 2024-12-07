@@ -5,7 +5,7 @@ import game_world
 import handle_framework
 import mode_menu
 from lilly import Lilly
-from stagetwo_info import Background2, Ground_Two
+from stagetwo_info import Background2, Ground_Two, Bridge
 
 
 def init_mode():
@@ -25,6 +25,14 @@ def init_mode():
     game_world.add_collision_info('lilly:tempground', None, ground2)
 
     lilly.get_GF_info(ground2)
+
+#BRIDGE-----
+#    bridge = Bridge(1500,180)
+#    bridge.get_GF_cam_info(ground2)
+#    game_world.add_object(bridge,2)
+
+
+
 
 
 #SHIFTOBJT-----

@@ -346,12 +346,12 @@ class Drown:
         pass
 
 #=============
-class ShiftObjt1:
+class Bridge:
     image = None
     def __init__(self, x, y):
         self.x, self.y = x, y
-        if ShiftObjt1.image == None:
-            ShiftObjt1.image = load_image("shift_objt1.png")
+        if Bridge.image == None:
+            Bridge.image = load_image("bridge-Sheet.png")
 
     def update(self):
         self.cx = self.x - self.groundcam.camera_left
@@ -361,18 +361,14 @@ class ShiftObjt1:
     def handle_event(self, event):pass
 
     def draw(self):
-        self.image.clip_composite_draw(0, 0, 256, 128, 0.15,'', self.cx, self.cy,1080,490)
+        self.image.clip_draw(0, 0, 256, 128, self.cx, self.cy, 600,300)
         draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
-        return (self.cx-500, self.cy-250,self.cx+500, self.cy+210)
+        return (self.cx-5, self.cy-2,self.cx+5, self.cy)
 
     def handle_self_collision(self, crashgroup, other):
-        if crashgroup == 'lilly:shift_1to2':
-            shiftscene = RealShift1(self.cx, self.cy)
-            shiftscene.get_GF_cam_info(self.groundcam)
-            game_world.add_object(shiftscene,6)
             pass
     #--------------------------
     def get_GF_cam_info(self, groundcam):
