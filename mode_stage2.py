@@ -17,8 +17,8 @@ def init_mode():
 #    game_world.add_object(lilly,3)
 
 #BACKGROUND-----
-    background_two = Background2()
-    game_world.add_object(background_two, 0)
+#    background_two = Background2()
+#    game_world.add_object(background_two, 0)
 #GROUND-----
 #    tempground = Ground_Two(lilly)
 #    game_world.add_object(tempground,1)
