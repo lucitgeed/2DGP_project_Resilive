@@ -288,7 +288,6 @@ class ObstacleWater:
     def update(self):
         self.cx = self.x - self.groundcam.camera_left
         self.cy = self.y - self.groundcam.camera_bottom
-#        game_world.update()
         pass
 
     def handle_event(self):pass
@@ -344,9 +343,8 @@ class Drown:
         if int(self.frame) == 14:
             handle_framework.change_mode(mode_gameover)
             pass
-
         self.frame = (self.frame + 15 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 15
-        delay(0.02)
+        delay(0.1)
 
         if self.lilly.face_dir == -1:
             self.image.clip_draw(int(self.frame)*128,0, 128,128, self.lilly.cx+64, self.y)
@@ -357,28 +355,30 @@ class Drown:
 #=============
 class ShiftObjt1:
     image = None
-    def __init__(self):
-        game_world.add_collision_info("lilly:shiftobjt1", None, self)
-
-        self.x, self.y = 400,300
+    def __init__(self, x, y):
+        self.x, self.y = x, y
         if ShiftObjt1.image == None:
             ShiftObjt1.image = load_image("shift_objt1.png")
 
     def update(self):
-#        game_world.update()
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
         pass
 
     def handle_event(self, event):pass
 
     def draw(self):
-        self.image.draw(400, 200, 500,250)
+        self.image.clip_composite_draw(0, 0, 256, 128, 0.15,'',
+                                                self.cx, self.cy,1080,490)
         draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
-        return (self.x-250, self.y-110,self.x+250, self.y+115)
+        return (self.cx-500, self.cy-250,self.cx+500, self.cy+250)
 
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:shift_1to2':
-            game_world.remove_collision_objt(self)
             pass
+    #--------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam

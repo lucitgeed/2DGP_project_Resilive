@@ -76,22 +76,22 @@ def init_mode():
 #    game_world.add_object(pipe1,4)
 #    game_world.add_collision_info('lilly:pipe', lilly, pipe1)
 
-    pipe2 = PipeStrong(4540, 180, 300, 300)
-    pipe2.get_GF_cam_info(tempground)
-    game_world.add_object(pipe2, 4)
-    game_world.add_collision_info('lilly:pipe', lilly, pipe2)
+#    pipe2 = PipeStrong(4540, 180, 300, 300)
+#    pipe2.get_GF_cam_info(tempground)
+#    game_world.add_object(pipe2, 4)
+#    game_world.add_collision_info('lilly:pipe', lilly, pipe2)
 
-    pipe3 = PipeWeak(4810, 295, 400, 400)
-    pipe3.get_GF_cam_info(tempground)
-    game_world.add_object(pipe3, 4)
-    game_world.add_collision_info('lilly:pipe', lilly, pipe3)
-    game_world.add_collision_info('lilly:pipe_abouttoCOLLAPSE',lilly, None)
+#    pipe3 = PipeWeak(4810, 295, 400, 400)
+#    pipe3.get_GF_cam_info(tempground)
+#    game_world.add_object(pipe3, 4)
+#    game_world.add_collision_info('lilly:pipe', lilly, pipe3)
+#    game_world.add_collision_info('lilly:pipe_abouttoCOLLAPSE',lilly, None)
 
-    pipe4 = PipeFragile(5000, 150, 256, 256)
-    pipe4.get_GF_cam_info(tempground)
-    game_world.add_object(pipe4, 4)
-    game_world.add_collision_info('lilly:pipe', lilly, pipe4)
-#    game_world.add_collision_info('lilly:pipeFRAGILE', lilly, None)
+#    pipe4 = PipeFragile(5000, 150, 256, 256)
+#    pipe4.get_GF_cam_info(tempground)
+#    game_world.add_object(pipe4, 4)
+#    game_world.add_collision_info('lilly:pipe', lilly, pipe4)
+
 
     pipe4 = PipeStrong(5100, 100, 128, 128)
     pipe4.get_GF_cam_info(tempground)
@@ -109,13 +109,14 @@ def init_mode():
     game_world.add_object(pipe6, 4)
     game_world.add_collision_info('lilly:pipe', lilly, pipe6)
 
-    #SHIFTOBJT-----
-#    shift_1to2 = ShiftObjt1()
-#    game_world.add_object(shift_1to2, 2)
-#    game_world.add_collision_info("lilly:shift_1to2", lilly, None)
+#SHIFTOBJT-----
+    shift_1to2 = ShiftObjt1(7650,290)
+    shift_1to2.get_GF_cam_info(tempground)
+    game_world.add_object(shift_1to2, 2)
+    game_world.add_collision_info("lilly:shift_1to2", lilly, shift_1to2)
 
 
-    game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
+#    game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
 #    game_world.add_collision_info('lilly:cmity_attck', lilly, None)
 
 
@@ -125,7 +126,7 @@ def init_mode():
 
 
 
-    community = [Community() for _ in range(3)]
+#    community = [Community() for _ in range(3)]
 #    game_world.add_objts(community, 3)
 #    for c in community:
 #        game_world.add_collision_info('lilly:cmity_aggro', None, c)
@@ -162,15 +163,10 @@ def handle_events():
             if event.type in (SDL_KEYDOWN, SDL_KEYUP):
                 lilly.handle_event(event)
 
-                for c in community:
-                    c.handle_event()
-
 
 def update():
     game_world.update()
-
     game_world.handle_collisions()
-
     pass
 
 

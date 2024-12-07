@@ -18,8 +18,8 @@ RUN_SPEED_M_per_M = (RUN_SPEED_KM_per_H * 1000.0 / 60.0)
 RUN_SPEED_M_per_S = RUN_SPEED_M_per_M / 60.0
 RUN_SPEED_PPS = RUN_SPEED_M_per_S * PIXEL_per_METER
 
-WALK_SPEED_KM_per_H = 6.5
-#WALK_SPEED_KM_per_H = 100
+#WALK_SPEED_KM_per_H = 6.5
+WALK_SPEED_KM_per_H = 100
 WALK_SPEED_M_per_M = (WALK_SPEED_KM_per_H * 1000.0 / 60.0)
 WALK_SPEED_M_per_S = WALK_SPEED_M_per_M / 60.0
 WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
@@ -58,7 +58,7 @@ class Lilly:
     image = None
     def __init__(self):
         self.x, self.y = 50,110
-        self.x = 5000
+        self.x = 6900
 
         self.cx = 0
         self.face_dir = 1
@@ -151,10 +151,6 @@ class Lilly:
             game_world.remove_collision_objt(self)
             game_world.remove_objt(self)
             pass
-        if crashgroup == 'lilly:shift_1to2':
-            game_world.remove_collision_objt(self)
-            handle_framework.change_mode(mode_gameover)
-            pass
         if crashgroup == 'lilly:pipe':
             self.state_machine.add_events(('Landed',0))
             self.y += JUMP_TIME * handle_framework.frame_time
@@ -163,8 +159,16 @@ class Lilly:
         if crashgroup == 'lilly:pipe_abouttoCOLLAPSE':
             self.state_machine.add_events(('Landed', 0))
             self.y += JUMP_TIME * handle_framework.frame_time + 2
-#            game_world.remove_a_collision_objt('lilly:pipe_abouttoCOLLAPSE', self)
             self.in_sky = 0
+
+
+        if crashgroup == 'lilly:shift_1to2':
+            self.state_machine.start(Walk)
+            self.x += (JUMP_SPEED_PPS)* handle_framework.frame_time * 6
+            self.y += (JUMP_SPEED_PPS)* handle_framework.frame_time *13.5
+            pass
+
+
 
         if crashgroup == 'lilly:eyelid':
             game_world.remove_a_collision_objt('lilly:eyelid', self)
