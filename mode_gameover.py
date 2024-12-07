@@ -1,4 +1,4 @@
-from pico2d import get_events, clear_canvas, update_canvas, load_image
+from pico2d import get_events, clear_canvas, update_canvas, load_image, load_music, load_wav, delay
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_RETURN, SDLK_ESCAPE
 
 import handle_framework
@@ -7,6 +7,11 @@ import handle_framework
 def init_mode():
     global image
     image = load_image('gameover-Sheet.png')
+
+    sound = load_wav('gameover.wav')
+    sound.set_volume(100)
+    delay(0.5)
+    sound.play()
     pass
 
 

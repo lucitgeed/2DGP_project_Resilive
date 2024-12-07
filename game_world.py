@@ -60,21 +60,6 @@ def handle_collisions():
     pass
 
 
-
-#def handle_collisions():
-#    for crashgroup, pairs in list(collision_pairs.items()):
-#        # 유효한 객체만 확인하기 위해 None을 제외한 필터링
-#        valid_pairs = [(a, b) for a in pairs[0] if a is not None for b in pairs[1] if b is not None]
-
-#        for a, b in valid_pairs:
-#            if collided(a, b):
-#                print(f'            {crashgroup} has collided')
-
-#                a.handle_self_collision(crashgroup, b)
-#                b.handle_self_collision(crashgroup, a)
-#    pass
-
-
 ######################
 def remove_objt(objt):
     for layer in world:

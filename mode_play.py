@@ -3,28 +3,12 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDL_KEYUP
 
 import game_world
 import handle_framework
-import lilly
 import mode_menu
-from community import Community
-from eyelid import Eyelid
-from eyepupil import Eyepupil
 from game_world import add_object
 from lilly import Lilly
 
 from stageone_info import Ground_One, ObstacleWater, Background1, ShiftObjt1, PipeStrong, PipeWeak, PipeFragile, \
     RealShift1
-
-
-#for parallax scrolling
-#background_near = None
-#background_middle = None
-
-#camera_x = 0
-#camera_y = 0
-
-#set scroll speed
-#SCROLL_SPEED_NEAR = 100
-#SCROLL_SPEED_MIDDLE = 50
 
 
 
@@ -39,8 +23,8 @@ def init_mode():
     game_world.add_object(lilly,3)
 
 #BACKGROUND-----
-#    background_one = Background1()
-#    game_world.add_object(background_one, 0)
+    background_one = Background1()
+    game_world.add_object(background_one, 0)
 #GROUND-----
     tempground = Ground_One(lilly)
     game_world.add_object(tempground,1)
@@ -54,22 +38,22 @@ def init_mode():
 
     game_world.add_object(water,5)
     game_world.add_collision_info('lilly:water', lilly, water)
-    #
-#    water2 = ObstacleWater(lilly, 5050-433, 58, 433)
-#    water3 = ObstacleWater(lilly, 5050, 58, 433)
-#    water4 = ObstacleWater(lilly, 5050 +433,58, 433)
-#    watertemp = []
-#    watertemp.append(water2)
-#    watertemp.append(water3)
-#    watertemp.append(water4)
-#    water2.get_GF_cam_info(tempground)
-#    water3.get_GF_cam_info(tempground)
-#    water4.get_GF_cam_info(tempground)
 
-#    game_world.add_objts(watertemp, 5)
-#    game_world.add_collision_info('lilly:water', lilly,water2)
-#    game_world.add_collision_info('lilly:water', lilly,water3)
-#    game_world.add_collision_info('lilly:water', lilly,water4)
+    water2 = ObstacleWater(lilly, 5050-433, 58, 433)
+    water3 = ObstacleWater(lilly, 5050, 58, 433)
+    water4 = ObstacleWater(lilly, 5050 +433,58, 433)
+    watertemp = []
+    watertemp.append(water2)
+    watertemp.append(water3)
+    watertemp.append(water4)
+    water2.get_GF_cam_info(tempground)
+    water3.get_GF_cam_info(tempground)
+    water4.get_GF_cam_info(tempground)
+
+    game_world.add_objts(watertemp, 5)
+    game_world.add_collision_info('lilly:water', lilly,water2)
+    game_world.add_collision_info('lilly:water', lilly,water3)
+    game_world.add_collision_info('lilly:water', lilly,water4)
 
 #PIPES-----
     pipe1 = PipeStrong(3710,150, 256,256)
@@ -83,7 +67,7 @@ def init_mode():
     game_world.add_object(pipe2, 4)
     game_world.add_collision_info('lilly:pipe', lilly, pipe2)
 
-    pipe3 = PipeWeak(4810, 295, 400, 400)
+    pipe3 = PipeWeak(4810, 285, 400, 400)
     pipe3.get_GF_cam_info(tempground)
     game_world.add_object(pipe3, 4)
     game_world.add_collision_info('lilly:pipe', lilly, pipe3)
@@ -116,38 +100,6 @@ def init_mode():
     shift_1to2.get_GF_cam_info(tempground)
     game_world.add_object(shift_1to2, 2)
     game_world.add_collision_info("lilly:shift_1to2", lilly, shift_1to2)
-
-
-#    game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
-#    game_world.add_collision_info('lilly:cmity_attck', lilly, None)
-
-
-
-#    eyeLIDS = [Eyelid() for _ in range(5)]
-#    game_world.add_objts(eyeLIDS, 3)
-
-
-
-#    community = [Community() for _ in range(3)]
-#    game_world.add_objts(community, 3)
-#    for c in community:
-#        game_world.add_collision_info('lilly:cmity_aggro', None, c)
-
-
-#        game_world.add_collision_info('lilly:cmity_attck', None, c)
-
-
-
-#    eyePUPILS = [Eyepupil() for i in range(10)]
-#    game_world.add_objts(eyePUPILS, 4)
-
-
-    #collision info
-#    game_world.add_collision_info('lilly:community',lilly, None)
-#    game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
-#    for cmity in community:
-#        game_world.add_collision_info('lilly:community', None, cmity)
-#        game_world.add_collision_info('lilly:cmity_aggro', None, cmity)
     pass
 
 

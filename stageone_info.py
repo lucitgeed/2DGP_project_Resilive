@@ -323,13 +323,13 @@ class Drown:
         self.y = y
 
         if not Drown.water_sound:
-#            Drown.water_sound = load_wav('watersound.wav')
-#            Drown.water_sound.set_volume(20)
+            Drown.water_sound = load_wav('watersound.wav')
+            Drown.water_sound.set_volume(20)
             pass
 
 
     def update(self):
-#        self.water_sound.play()
+        self.water_sound.play()
         pass
 
     def handle_event(self, event):pass
@@ -417,7 +417,7 @@ class RealShift1:
         print(f'                       self.cnt = {self.cntttt} 그리고 self.image = {self.image}')
 
         self.image.clip_composite_draw(int(self.frame)*512,0, 512,256,
-                                       0.15,'', self.x - 100, self.y+10,1080,490)
+                                       0.15,'', self.x - 110, self.y+20,1140,570)
         delay(0.05)
 
         self.frame = (self.frame + 10 * handle_framework.frame_time) % 10
