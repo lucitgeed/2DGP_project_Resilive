@@ -70,9 +70,9 @@ class Ground_Two:
 class Background2:
     def __init__(self):
         self.image = load_image('background2.png')
-#        self.bgm = load_music('stage2_bgm.mp3')
-#        self.bgm.set_volume(30)
-#        self.bgm.repeat_play()
+        self.bgm = load_music('stage2_bgm.mp3')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
         pass
 
     def draw(self):
@@ -110,8 +110,8 @@ class CarBus:
         self.groundcam = groundcam
     #--------------------------
     def get_boundingbox(self):
-        return (self.cx - self.sizex/2, self.cy- self.sizey/4 ,
-                self.cx + self.sizex//2, self.cy + self.sizey/4)
+        return (self.cx -self.sizex//3, self.cy+ self.sizey/5.5,
+                self.cx + self.sizex//3, self.cy + self.sizey/5)
 
     def handle_self_collision(self, crashgroup, other):pass
 
@@ -141,7 +141,7 @@ class CarGreen:
         self.groundcam = groundcam
     #--------------------------
     def get_boundingbox(self):
-        return (self.cx - self.sizex/3, self.cy- self.sizey/4,
+        return (self.cx - self.sizex/9, self.cy+self.sizey/6.6,
                 self.cx + self.sizex//3, self.cy + self.sizey/6)
 
     def handle_self_collision(self, crashgroup, other):pass
@@ -172,8 +172,8 @@ class CarRed:
         self.groundcam = groundcam
     #--------------------------
     def get_boundingbox(self):
-        return (self.cx - self.sizex/3, self.cy- self.sizey/6,
-                self.cx + self.sizex//3, self.cy + self.sizey/20)
+        return (self.cx - self.sizex/3, self.cy+ self.sizey/16,
+                self.cx + self.sizex/3, self.cy + self.sizey/16.5)
 
     def handle_self_collision(self, crashgroup, other):pass
 
@@ -203,8 +203,8 @@ class CarWhiteStrange:
         self.groundcam = groundcam
     #--------------------------
     def get_boundingbox(self):
-        return (self.cx - self.sizex/3, self.cy- self.sizey/6,
-                self.cx + self.sizex//3, self.cy + self.sizey/7)
+        return (self.cx - self.sizex/3, self.cy+ self.sizey/3,
+                self.cx + self.sizex//5, self.cy + self.sizey/3.1)
 
     def handle_self_collision(self, crashgroup, other):pass
 
@@ -234,8 +234,8 @@ class CarWhite:
         self.groundcam = groundcam
     #--------------------------
     def get_boundingbox(self):
-        return (self.cx - self.sizex/3, self.cy- self.sizey/6,
-                self.cx + self.sizex//3, self.cy + self.sizey/7)
+        return (self.cx - self.sizex/3, self.cy- self.sizey/3,
+                self.cx + self.sizex//5, self.cy + self.sizey/3.1)
 
     def handle_self_collision(self, crashgroup, other):pass
 
@@ -353,6 +353,50 @@ class PipeCollapse:
 
 
 #=============
+class ObstacleThorn:
+    image = None
+    def __init__(self, lilly, x, y, sizex):
+        self.frame = 0
+        self.x, self.y = x, y
+        self.lilly = lilly
+        self.sizex = sizex
+
+        self.cx, self.cy = 0,0
+
+        if ObstacleThorn.image == None:
+            ObstacleThorn.image = load_image("thorn-Sheet.png")
+
+    def update(self):
+        self.cx = self.x - self.groundcam.camera_left
+        self.cy = self.y - self.groundcam.camera_bottom
+        pass
+
+    def handle_event(self):pass
+
+    def draw(self):
+        self.frame = (self.frame + 5 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 5
+
+        self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.cx, self.cy, self.sizex, 128)
+
+        draw_rectangle(*self.get_boundingbox())
+
+    #------------------------
+    def get_boundingbox(self):
+        return (self.cx-self.sizex/2+9, self.cy-64,self.cx+self.sizex//2-10, self.cy+23)
+
+    def handle_self_collision(self, crashgroup, other):
+        if crashgroup == 'lilly:water':
+            game_world.remove_collision_objt(self)
+            drowned = Drown(self.lilly,self.cy)
+            game_world.add_object(drowned, 5)
+        pass
+    #--------------------------
+    def get_GF_cam_info(self, groundcam):
+        self.groundcam = groundcam
+
+
+
+
 class ObstacleWater:
     image = None
     def __init__(self, lilly, x, y, sizex):
@@ -393,8 +437,6 @@ class ObstacleWater:
     #--------------------------
     def get_GF_cam_info(self, groundcam):
         self.groundcam = groundcam
-
-
 
 class Drown:
     image = None

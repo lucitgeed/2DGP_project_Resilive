@@ -1,4 +1,4 @@
-world = [ [] for _ in range(7)]
+world = [ [] for _ in range(8)]
 collision_pairs = {}
 
 

@@ -57,7 +57,7 @@ class Lilly:
     image = None
     def __init__(self):
         self.x, self.y = 50,110
-        self.x = 3000
+        self.x = 6600
 
         self.cx = 0
         self.face_dir = 1
@@ -117,7 +117,7 @@ class Lilly:
 
         self.cx = self.x - self.ground.camera_left
         self.cy = self.y - self.ground.camera_bottom
-#        print(f'            lilly.x = {self.x}')
+        print(f'            lilly.x = {self.x}')
 #        print(f'            lilly.cx = {self.cx}')
 
 
@@ -161,6 +161,9 @@ class Lilly:
             game_world.remove_objt(self)
 
         if crashgroup == 'lilly:car':
+            self.state_machine.add_events(('Landed', 0))
+            self.y += JUMP_TIME * handle_framework.frame_time
+            self.in_sky = 0
             pass
 
         if crashgroup == 'lilly:eye':

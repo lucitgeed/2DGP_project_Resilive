@@ -91,7 +91,7 @@ class Eyes:
         self.y += EYE_SPEED_PPS * handle_framework.frame_time  * math.sin(dir)
 
     def set_random_location(self):
-        self.tx, self.ty = random.randint(3500, 3900), random.randint(300, 400)
+        self.tx, self.ty = random.randint(3000, 6000), random.randint(200, 600)
         return BehaviorTree.SUCCESS
 
     def move_to(self):

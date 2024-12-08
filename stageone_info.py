@@ -6,6 +6,7 @@ from pico2d import load_image, draw_rectangle, get_canvas_width, get_canvas_heig
 import game_world
 import handle_framework
 import mode_gameover
+import mode_stage2
 import mode_title
 
 # set frame flip speed
@@ -409,7 +410,7 @@ class RealShift1:
             self.image = load_image("test3.png")
 
         if self.cntttt == 29:
-            handle_framework.change_mode(mode_gameover)
+            handle_framework.change_mode(mode_stage2)
             pass
 
         print(f'                       self.cnt = {self.cntttt} 그리고 self.image = {self.image}')

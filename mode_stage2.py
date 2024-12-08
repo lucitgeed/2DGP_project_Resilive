@@ -6,6 +6,7 @@ import handle_framework
 import mode_menu
 from eyes import Eyes
 from lilly import Lilly
+from stagetwo_info import ObstacleWater
 from stagetwo_info import Background2, Ground_Two, Bridge, CarBus, CarGreen, CarRed, CarWhiteStrange, CarWhite
 
 
@@ -39,31 +40,63 @@ def init_mode():
     game_world.add_object(bus1,3)
     game_world.add_collision_info('lilly:car', lilly, bus1)
 
-    cargreen1 = CarGreen(2000, 120, 250,250)
+    cargreen1 = CarGreen(2700, 120, 250,250)
     cargreen1.get_GF_cam_info(ground2)
     game_world.add_object(cargreen1, 3)
     game_world.add_collision_info('lilly:car', lilly,cargreen1)
 
-    carred1 = CarRed(2500, 120, 250,250)
+    carred1 = CarRed(2700, 120, 250,250)
     carred1.get_GF_cam_info(ground2)
     game_world.add_object(carred1, 3)
     game_world.add_collision_info('lilly:car', lilly,carred1)
 
-    carwhite1 = CarWhiteStrange(3000,120,250,250)
+    carwhite1 = CarWhiteStrange(6600,120,250,250)
     carwhite1.get_GF_cam_info(ground2)
     game_world.add_object(carwhite1, 3)
     game_world.add_collision_info('lilly:car', lilly,carwhite1)
 
-    carwhite2 = CarWhite(3500,120,250,250)
+    carwhite2 = CarWhite(6000,120,250,250)
     carwhite2.get_GF_cam_info(ground2)
     game_world.add_object(carwhite2, 3)
     game_world.add_collision_info('lilly:car', lilly, carwhite2)
 
 #EYES-----
-    eye1 = Eyes(lilly,3500, 500)
-    eye1.get_GF_cam_info(ground2)
-    game_world.add_object(eye1, 5)
-    game_world.add_collision_info('lilly:eye', lilly, eye1)
+#    eye1 = Eyes(lilly,3500, 500)
+#    eye1.get_GF_cam_info(ground2)
+#    game_world.add_object(eye1, 5)
+#    game_world.add_collision_info('lilly:eye', lilly, eye1)
+
+
+#    eye2 = Eyes(lilly,3500, 500)
+#    eye3 = Eyes(lilly,3500, 500)
+
+
+
+
+#    eye2.get_GF_cam_info(ground2)
+#    game_world.add_object(eye2, 5)
+#    game_world.add_collision_info('lilly:eye', lilly, eye2)
+
+
+#    eye1.get_GF_cam_info(ground2)
+#    game_world.add_object(eye1, 5)
+#    game_world.add_collision_info('lilly:eye', lilly, eye1)
+
+#    eye1 = Eyes(lilly,3500, 500)
+#    eye1.get_GF_cam_info(ground2)
+#    game_world.add_object(eye1, 5)
+#    game_world.add_collision_info('lilly:eye', lilly, eye1)
+
+#    eye1 = Eyes(lilly,3500, 500)
+#    eye1.get_GF_cam_info(ground2)
+#    game_world.add_object(eye1, 5)
+#    game_world.add_collision_info('lilly:eye', lilly, eye1)
+
+#OBST-----
+    water9 = ObstacleWater(lilly,6900,58, 132)
+    water9.get_GF_cam_info(ground2)
+    game_world.add_object(water9,7)
+    game_world.add_collision_info('lilly:water',lilly,water9)
 
 #SHIFTOBJT-----
 #    shift_1to2 = ShiftObjt2(7650,290)
