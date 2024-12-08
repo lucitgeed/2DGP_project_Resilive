@@ -1,18 +1,19 @@
 import math
 import random
 
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, load_wav
 
 import handle_framework
+import mode_gameover
 from behavior_tree import BehaviorTree, Action, Condition, Sequence, Selector
 
 PIXEL_per_METER = 10.0 / 1
 #set eye speed
-EYE_SPEED_MPS =5
+EYE_SPEED_MPS = 19
 EYE_SPEED_PPS = EYE_SPEED_MPS * PIXEL_per_METER
 
 
-TIME_per_EYE_ACTION = 2
+TIME_per_EYE_ACTION = 3.5
 EYE_ACTION_per_TIME = 1.0 / TIME_per_EYE_ACTION
 
 
@@ -31,6 +32,11 @@ class Eyes:
 #            Eyes.image = load_image('eyelid_blink_Sheet.png')
             Eyes.image = load_image('eyes-Sheet.png')
 
+        if not Eyes.eye_sound:
+            Eyes.eye_sound = load_wav('eyesound.wav')
+            Eyes.eye_sound.set_volume(20)
+            pass
+
 
         self.state = 'appear'
         self.tx,self.ty = 0,0
@@ -45,6 +51,8 @@ class Eyes:
     def update(self):
         self.cx = self.x - self.groundcam.camera_left
         self.cy = self.y - self.groundcam.camera_bottom
+        if int(self.frame) == 13:
+            self.frame = 13
         self.frame = (self.frame + 14 * EYE_ACTION_per_TIME * handle_framework.frame_time) % 14
 
         self.btree.run()
@@ -61,30 +69,19 @@ class Eyes:
     #=================
     #=================
     def build_behavior_tree(self):
-        # 랜덤 위치 설정 후 이동
-        # 랜덤 위치 설정 후 이동
         a1 = Action('Set target location', self.set_target_location)
         a3 =Action("Set Random Location", self.set_random_location)
         a2 = Action("Move to Location", self.move_to)
         Idle = Sequence('Move to random location', a3, a2)
 
-
-
-        # 릴리를 추격하는 동작 (거리가 100 이하일 때만 실행)
-        c1 = Condition('릴리와의 거리가 100이하?', self.lilly_is_near, 1000)
+        # 릴리를 추격하는 동작 (거리가 500 이하일 때만 실행)
+        c1 = Condition('릴리와의 거리가 500이하?', self.lilly_is_near, 500)
         a4 =Action('Chase Lilly', self.chase_lilly)
         chase_lilly = Sequence('CHASE LILLY', c1, a4)
 
-
         root = cha_or_Idle = Selector('Idle이나 추적', chase_lilly,Idle)
 
-
-
-        c2 = Condition('릴리와 충돌했는가?', self.check_collision_with_lilly)
-
-
         self.btree = BehaviorTree(root)
-        pass
         pass
     #=================
     # #=================
@@ -114,9 +111,11 @@ class Eyes:
     def chase_lilly(self):
         self.state = "Chase"
         self.move_slightly_to(self.lilly.x, self.lilly.y)
-        if self.distance_less_than(self.lilly.x, self.lilly.y, self.x, self.y, 10):
+        if self.distance_less_than(self.lilly.x, self.lilly.y, self.x, self.y, 250):
+            self.eye_sound.play()
             pass
-        if self.distance_less_than(self.lilly.x, self.lilly.y, self.x, self.y, 2):
+        if self.distance_less_than(self.lilly.x, self.lilly.y, self.x, self.y, 1):
+            handle_framework.change_mode(mode_gameover)
             return BehaviorTree.SUCCESS
         return BehaviorTree.RUNNING
 
@@ -124,21 +123,6 @@ class Eyes:
         if not x or not y:
             raise ValueError('Location should be given')
         self.tx, self.ty = x,y                          #이게 정해진 순간 해당 task 성공
-        return BehaviorTree.SUCCESS
-
-    def start_kill_timer(self):
-        if self.is_chasing:
-            self.kill_timer += handle_framework.frame_time
-            if self.kill_timer >= 3.0:  # 3초가 지나면 릴리 죽음
-                self.kill_lilly()
-                return BehaviorTree.SUCCESS
-        return BehaviorTree.RUNNING
-
-    def reset_to_idle(self):
-        self.state = "Idle"
-        self.kill_timer = 0
-        self.size = random.randint(100, 200)
-        self.is_chasing = False
         return BehaviorTree.SUCCESS
 
     def lilly_is_near(self, r):
@@ -149,26 +133,10 @@ class Eyes:
             self.is_chasing = False
             return BehaviorTree.FAIL
 
-
-
-
-    def kill_lilly(self):
-        print("릴리 사망!")
-
-    def check_lilly_collision(self):
-        # 충돌 처리 없이 'lilly:eye' 충돌 체크만 수행
-        if self.collide_lilly:  # 릴리와 충돌 시
-            print("릴리와 충돌 발생!")
-            # 추격 중인 상태에서 릴리와 충돌하면 추격을 중지하고 랜덤 배회 상태로 변경
-#            self.reset_to_idle()
-            return BehaviorTree.SUCCESS
-        return BehaviorTree.RUNNING
-
-
     #=================
     # =================
     def get_boundingbox(self):
-        return (self.cx-self.size/2, self.cy-self.size/2, self.cx+self.size/2,self.cy+self.size/2)
+        return (self.cx-self.size/4, self.cy+self.size/7, self.cx+self.size/4,self.cy+self.size/6)
         pass
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:eye':
