@@ -110,8 +110,8 @@ class CarBus:
         self.groundcam = groundcam
     #--------------------------
     def get_boundingbox(self):
-        return (self.cx -self.sizex//3, self.cy+ self.sizey/5.5,
-                self.cx + self.sizex//3, self.cy + self.sizey/5)
+        return (self.cx -self.sizex//2.5, self.cy+ self.sizey/5.5,
+                self.cx + self.sizex//2.5, self.cy + self.sizey/5)
 
     def handle_self_collision(self, crashgroup, other):pass
 
@@ -196,7 +196,7 @@ class CarWhiteStrange:
     def draw(self):
         self.image.clip_draw(256,0,128,128,
                              self.cx,self.cy, self.sizex, self.sizey)
-        draw_rectangle(*self.get_boundingbox())
+#        draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_GF_cam_info(self, groundcam):

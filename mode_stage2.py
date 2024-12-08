@@ -35,30 +35,29 @@ def init_mode():
 
 
 #CARS-----
-    bus1 = CarBus(1700,140,330,330)
+    bus1 = CarBus(1590,140,330,330)
     bus1.get_GF_cam_info(ground2)
     game_world.add_object(bus1,3)
     game_world.add_collision_info('lilly:car', lilly, bus1)
 
-    cargreen1 = CarGreen(2700, 120, 250,250)
+    cargreen1 = CarGreen(4000, 120, 250,250)
     cargreen1.get_GF_cam_info(ground2)
     game_world.add_object(cargreen1, 3)
     game_world.add_collision_info('lilly:car', lilly,cargreen1)
 
-    carred1 = CarRed(2700, 120, 250,250)
-    carred1.get_GF_cam_info(ground2)
-    game_world.add_object(carred1, 3)
-    game_world.add_collision_info('lilly:car', lilly,carred1)
+#    carred1 = CarRed(6600, 120, 250,250)
+#    carred1.get_GF_cam_info(ground2)
+#    game_world.add_object(carred1, 3)
+#    game_world.add_collision_info('lilly:car', lilly,carred1)
 
-    carwhite1 = CarWhiteStrange(6600,120,250,250)
+    carwhite1 = CarWhiteStrange(4400,120,250,250)
     carwhite1.get_GF_cam_info(ground2)
     game_world.add_object(carwhite1, 3)
-    game_world.add_collision_info('lilly:car', lilly,carwhite1)
 
-    carwhite2 = CarWhite(6000,120,250,250)
-    carwhite2.get_GF_cam_info(ground2)
-    game_world.add_object(carwhite2, 3)
-    game_world.add_collision_info('lilly:car', lilly, carwhite2)
+#    carwhite2 = CarWhite(6000,120,250,250)
+#    carwhite2.get_GF_cam_info(ground2)
+#    game_world.add_object(carwhite2, 3)
+#    game_world.add_collision_info('lilly:car', lilly, carwhite2)
 
 #EYES-----
 #    eye1 = Eyes(lilly,3500, 500)
