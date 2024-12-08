@@ -66,8 +66,6 @@ class Ground_Two:
         pass
 
 
-
-
 #=============
 class Background2:
     def __init__(self):
@@ -179,7 +177,6 @@ class CarRed:
 
     def handle_self_collision(self, crashgroup, other):pass
 
-
 class CarWhiteStrange:
     def __init__(self, x, y, sizex,sizey):
         self.x, self.y = x, y
@@ -211,7 +208,6 @@ class CarWhiteStrange:
 
     def handle_self_collision(self, crashgroup, other):pass
 
-
 class CarWhite:
     def __init__(self, x, y, sizex,sizey):
         self.x, self.y = x, y
@@ -229,7 +225,7 @@ class CarWhite:
     def handle_event(self):pass
 
     def draw(self):
-        self.image.clip_draw(512,0,128,128,
+        self.image.clip_draw(384,0,128,128,
                              self.cx,self.cy, self.sizex, self.sizey)
         draw_rectangle(*self.get_boundingbox())
 
@@ -245,8 +241,7 @@ class CarWhite:
 
 
 
-
-
+#=============
 class PipeFragile:
     def __init__(self, x, y, sizex,sizey):
         self.x, self.y = x, y
@@ -466,8 +461,9 @@ class Bridge:
     def get_GF_cam_info(self, groundcam):
         self.groundcam = groundcam
 
+#=============
 
-class RealShift1:
+class ShiftObjt2:
     def __init__(self,x,y):
         self.cntttt = 0
         self.frame = 0

@@ -5,7 +5,7 @@ import game_world
 import handle_framework
 import mode_menu
 from lilly import Lilly
-from stagetwo_info import Background2, Ground_Two, Bridge, CarBus, CarGreen, CarRed
+from stagetwo_info import Background2, Ground_Two, Bridge, CarBus, CarGreen, CarRed, CarWhiteStrange, CarWhite
 
 
 def init_mode():
@@ -48,9 +48,17 @@ def init_mode():
     game_world.add_object(carred1, 3)
     game_world.add_collision_info('lilly:car', lilly,carred1)
 
+    carwhite1 = CarWhiteStrange(3000,120,250,250)
+    carwhite1.get_GF_cam_info(ground2)
+    game_world.add_object(carwhite1, 3)
+    game_world.add_collision_info('lilly:car', lilly,carwhite1)
 
+    carwhite2 = CarWhite(3500,120,250,250)
+    carwhite2.get_GF_cam_info(ground2)
+    game_world.add_object(carwhite2, 3)
+    game_world.add_collision_info('lilly:car', lilly, carwhite2)
 
-#SHIFTOBJT-----
+    #SHIFTOBJT-----
 #    shift_1to2 = ShiftObjt2(7650,290)
 #    shift_1to2.get_GF_cam_info(tempground)
 
