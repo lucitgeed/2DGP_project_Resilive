@@ -5,13 +5,14 @@ from pico2d import load_image, draw_rectangle, load_wav
 
 import game_world
 import handle_framework
+import mode_clear
 import mode_gameover
 from behavior_tree import BehaviorTree, Action, Condition, Sequence, Selector
 from stagetwo_info import ThornDeath
 
 PIXEL_per_METER = 10.0 / 1
 #set eye speed
-EYE_SPEED_MPS = 19
+EYE_SPEED_MPS = 6
 EYE_SPEED_PPS = EYE_SPEED_MPS * PIXEL_per_METER
 
 
@@ -65,7 +66,7 @@ class Eyes:
     def draw(self):
         self.image.clip_draw(int(self.frame)*128,0,128,128,
                              self.cx,self.cy, self.size, self.size)
-        draw_rectangle(*self.get_boundingbox())
+#        draw_rectangle(*self.get_boundingbox())
         pass
 
     #=================
@@ -117,9 +118,10 @@ class Eyes:
             self.eye_sound.play()
             pass
         if self.distance_less_than(self.lilly.x, self.lilly.y, self.x, self.y, 1):
-            thornd = ThornDeath(self.lilly,self.cy)
-            game_world.add_object(thornd, 8)
-            handle_framework.change_mode(mode_gameover)
+            if self.lilly.x > 7900:
+                handle_framework.change_mode(mode_clear)
+            else:
+                handle_framework.change_mode(mode_gameover)
             return BehaviorTree.SUCCESS
         return BehaviorTree.RUNNING
 

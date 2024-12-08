@@ -1,4 +1,4 @@
-from pico2d import load_image, get_events, clear_canvas, update_canvas
+from pico2d import load_image, get_events, clear_canvas, update_canvas, load_music
 from sdl2 import SDL_KEYDOWN, SDL_QUIT, SDLK_ESCAPE, SDL_KEYUP, SDLK_KP_ENTER, SDLK_RETURN
 
 import game_world
@@ -8,8 +8,12 @@ import mode_play
 
 
 def init_mode():
-    global image
+    global image, sound
     image = load_image('title.png')
+
+
+    sound = load_music('titlebgm.mp3')
+    sound.set_volume(100)
     pass
 
 
@@ -26,7 +30,9 @@ def handle_events():
     pass
 
 
-def update():pass
+def update():
+    sound.play()
+    pass
 
 
 def draw():
@@ -37,7 +43,8 @@ def draw():
 
 
 def finish():
-    global image
+    global image, sound
+    del sound
     del image
 
 

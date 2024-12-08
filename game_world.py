@@ -64,14 +64,9 @@ def handle_collisions():
 def remove_objt(objt):
     for layer in world:
         if objt in layer:
-#            print(f'            {objt} in layer')
             remove_collision_objt(objt)
-#            print(f'                remove {objt} in collision')
             layer.remove(objt)
-#            print(f'                remove {objt} from layer')
-
             del objt
-#            print(f'                오브젝트 메모리에서 삭제완료')
 
             return
     raise ValueError('Cannot delete non existing object')

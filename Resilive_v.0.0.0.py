@@ -1,5 +1,5 @@
 from pico2d import*
-import mode_play as start_mode
+import mode_title as start_mode
 
 import handle_framework
 

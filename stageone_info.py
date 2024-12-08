@@ -57,7 +57,7 @@ class Ground_One:
             0, 0
             )
 
-        draw_rectangle(*self.get_boundingbox())
+#        draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
@@ -106,7 +106,7 @@ class PipeStrong:
     def draw(self):
         self.image.clip_draw(128,0,128,128,
                              self.cx,self.cy, self.sizex, self.sizey)
-        draw_rectangle(*self.get_boundingbox())
+#        draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_GF_cam_info(self, groundcam):
@@ -137,7 +137,7 @@ class PipeWeak:
     def draw(self):
         self.image.clip_draw(256,0,128,128,
                              self.cx,self.cy, self.sizex, self.sizey)
-        draw_rectangle(*self.get_boundingbox())
+#        draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_GF_cam_info(self, groundcam):
@@ -175,7 +175,7 @@ class PipeFragile:
     def draw(self):
         self.image.clip_draw(384,0,128,128,
                              self.cx,self.cy, self.sizex, self.sizey)
-        draw_rectangle(*self.get_boundingbox())
+#        draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_GF_cam_info(self, groundcam):
@@ -222,7 +222,7 @@ class PipeAbouttoCollapse:
 
         self.image.clip_draw(int(self.frame)*128,0,128,128,
                              self.cx,self.cy, self.sizex, self.sizey)
-        draw_rectangle(*self.get_boundingbox())
+#        draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_GF_cam_info(self, groundcam):
@@ -292,7 +292,7 @@ class ObstacleWater:
 
         self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.cx, self.cy, self.sizex, 128)
 
-        draw_rectangle(*self.get_boundingbox())
+#        draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
@@ -363,7 +363,7 @@ class ShiftObjt1:
 
     def draw(self):
         self.image.clip_composite_draw(0, 0, 256, 128, 0.15,'', self.cx, self.cy,1080,490)
-        draw_rectangle(*self.get_boundingbox())
+#        draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):

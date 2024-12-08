@@ -6,7 +6,7 @@ import handle_framework
 import mode_menu
 from eyes import Eyes
 from lilly import Lilly
-from stagetwo_info import ObstacleWater, ObstacleThorn
+from stagetwo_info import ObstacleWater, ObstacleThorn, ShiftObjt2
 from stagetwo_info import Background2, Ground_Two, Bridge, CarBus, CarGreen, CarRed, CarWhiteStrange, CarWhite
 
 
@@ -19,8 +19,8 @@ def init_mode():
     game_world.add_object(lilly,6)
 
 #BACKGROUND-----
-#    background_two = Background2()
-#    game_world.add_object(background_two, 0)
+    background_two = Background2()
+    game_world.add_object(background_two, 0)
 #GROUND-----
     ground2 = Ground_Two(lilly)
     game_world.add_object(ground2,2)
@@ -65,10 +65,10 @@ def init_mode():
     game_world.add_object(eye1, 5)
     game_world.add_collision_info('lilly:eye', lilly, eye1)
 
-    eye2 = Eyes(lilly,5000, 500)
+    eye2 = Eyes(lilly,4500, 500)
     eye3 = Eyes(lilly,5500, 500)
     eye4 = Eyes(lilly, 6000, 500)
-    eye5 = Eyes(lilly, 6500, 500)
+    eye5 = Eyes(lilly, 7500, 500)
 
     eye2.get_GF_cam_info(ground2)
     eye3.get_GF_cam_info(ground2)
@@ -101,39 +101,10 @@ def init_mode():
     game_world.add_collision_info('lilly:thorn', lilly, thorn2)
 
 #SHIFTOBJT-----
-#    shift_1to2 = ShiftObjt2(7650,290)
-#    shift_1to2.get_GF_cam_info(tempground)
-
-#    game_world.add_object(shift_1to2, 4)
-
-#    game_world.add_collision_info("lilly:shift_1to2", lilly, shift_1to2)
-
-
-#    eyeLIDS = [Eyelid() for _ in range(5)]
-#    game_world.add_objts(eyeLIDS, 3)
-
-
-
-#    community = [Community() for _ in range(3)]
-#    game_world.add_objts(community, 3)
-#    for c in community:
-#        game_world.add_collision_info('lilly:cmity_aggro', None, c)
-
-
-#        game_world.add_collision_info('lilly:cmity_attck', None, c)
-
-
-
-#    eyePUPILS = [Eyepupil() for i in range(10)]
-#    game_world.add_objts(eyePUPILS, 4)
-
-
-    #collision info
-#    game_world.add_collision_info('lilly:community',lilly, None)
-#    game_world.add_collision_info('lilly:cmity_aggro', lilly, None)
-#    for cmity in community:
-#        game_world.add_collision_info('lilly:community', None, cmity)
-#        game_world.add_collision_info('lilly:cmity_aggro', None, cmity)
+#    shift_2to3 = ShiftObjt2(7900,120)
+#    shift_2to3.get_GF_cam_info(ground2)
+#    game_world.add_object(shift_2to3, 4)
+#    game_world.add_collision_info('lilly:shift_2th3', lilly, shift_2to3)
     pass
 
 

@@ -5,20 +5,19 @@ from pico2d import load_image, get_time, SDL_KEYDOWN, SDL_KEYUP, SDLK_SPACE, SDL
 
 import game_world
 import handle_framework
+import mode_clear
 import mode_gameover
 from StateMachine import*
 
 PIXEL_per_METER = (10.0 / 1)
 LILLY_SIZE = 80
 # set lilly speed
-#RUN_SPEED_KM_per_H = 34.0
-RUN_SPEED_KM_per_H = 700.0
+RUN_SPEED_KM_per_H = 45.0
 RUN_SPEED_M_per_M = (RUN_SPEED_KM_per_H * 1000.0 / 60.0)
 RUN_SPEED_M_per_S = RUN_SPEED_M_per_M / 60.0
 RUN_SPEED_PPS = RUN_SPEED_M_per_S * PIXEL_per_METER
 
-#WALK_SPEED_KM_per_H = 13
-WALK_SPEED_KM_per_H = 100
+WALK_SPEED_KM_per_H = 20
 WALK_SPEED_M_per_M = (WALK_SPEED_KM_per_H * 1000.0 / 60.0)
 WALK_SPEED_M_per_S = WALK_SPEED_M_per_M / 60.0
 WALK_SPEED_PPS = WALK_SPEED_M_per_S * PIXEL_per_METER
@@ -56,8 +55,7 @@ Crawl_ACTION_per_TIME = 1.0 / TIME_per_Crawl_ACTION
 class Lilly:
     image = None
     def __init__(self):
-        self.x, self.y = 50,110
-        self.x = 6000
+        self.x, self.y = 3050,110
 
         self.cx = 0
         self.face_dir = 1
@@ -127,7 +125,7 @@ class Lilly:
     def draw(self):
         self.state_machine.draw()
 
-        draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
+#        draw_rectangle(*self.get_boundingbox())             # * 붙이는거 잊지말것!!!!
 
     # -----------------
 
@@ -161,6 +159,7 @@ class Lilly:
             game_world.remove_objt(self)
 
 
+
         if crashgroup == 'lilly:car':
             self.state_machine.add_events(('Landed', 0))
             self.y += JUMP_TIME * handle_framework.frame_time
@@ -169,8 +168,10 @@ class Lilly:
         if crashgroup == 'lilly:thorn':
             game_world.remove_objt(self)
         if crashgroup == 'lilly:eye':
-#            game_world.remove_objt(self)
             pass
+        if crashgroup == 'lilly:shift_2to3':
+            handle_framework.change_mode(mode_clear)
+            game_world.remove_objt(self)
 
 
 #-----------------------------------------------------
