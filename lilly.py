@@ -102,6 +102,8 @@ class Lilly:
             }
         )
 
+        self.hidden = 0
+
 
     def update(self):
         self.state_machine.update()
@@ -157,15 +159,9 @@ class Lilly:
             self.in_sky = 0
         if crashgroup == 'lilly:shift_1to2':
             game_world.remove_objt(self)
-#            self.state_machine.start(Walk)
-#            self.x += (JUMP_SPEED_PPS)* handle_framework.frame_time * 6
-#            self.y += (JUMP_SPEED_PPS)* handle_framework.frame_time *13.5
-#            if 400 < self.y:
-#                self.in_sky = 0
-#dddd                game_world.remove_collision_objt(self)
-#                handle_framework.change_mode(mode_gameover)
 
-
+        if crashgroup == 'lilly:car':
+            self.hidden = 1
 
         if crashgroup == 'lilly:eyelid':
 #            game_world.remove_a_collision_objt('lilly:eyelid', self)

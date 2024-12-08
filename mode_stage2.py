@@ -4,6 +4,7 @@ from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDLK_ESCAPE, SDL_QUIT
 import game_world
 import handle_framework
 import mode_menu
+from eyes import Eyes
 from lilly import Lilly
 from stagetwo_info import Background2, Ground_Two, Bridge, CarBus, CarGreen, CarRed, CarWhiteStrange, CarWhite
 
@@ -58,7 +59,13 @@ def init_mode():
     game_world.add_object(carwhite2, 3)
     game_world.add_collision_info('lilly:car', lilly, carwhite2)
 
-    #SHIFTOBJT-----
+#EYES-----
+    eye1 = Eyes(lilly,3500, 500)
+    eye1.get_GF_cam_info(ground2)
+    game_world.add_object(eye1, 5)
+    game_world.add_collision_info('lilly:eye', lilly, eye1)
+
+#SHIFTOBJT-----
 #    shift_1to2 = ShiftObjt2(7650,290)
 #    shift_1to2.get_GF_cam_info(tempground)
 
