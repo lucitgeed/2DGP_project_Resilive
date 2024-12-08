@@ -55,7 +55,7 @@ Crawl_ACTION_per_TIME = 1.0 / TIME_per_Crawl_ACTION
 class Lilly:
     image = None
     def __init__(self):
-        self.x, self.y = 3050,110
+        self.x, self.y = 50,110
 
         self.cx = 0
         self.face_dir = 1
