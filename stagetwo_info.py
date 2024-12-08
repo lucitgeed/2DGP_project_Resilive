@@ -240,126 +240,14 @@ class CarWhite:
     def handle_self_collision(self, crashgroup, other):pass
 
 
-
-#=============
-class PipeFragile:
-    def __init__(self, x, y, sizex,sizey):
-        self.x, self.y = x, y
-        self.sizex = sizex
-        self.sizey = sizey
-        self.cx, self.cy = 0, 0
-        self.collapse = 0
-
-        self.image = load_image('pipe-Sheet.png')
-
-    def update(self):
-        self.cx = self.x - self.groundcam.camera_left
-        self.cy = self.y - self.groundcam.camera_bottom
-
-    def handle_event(self):pass
-
-    def draw(self):
-        self.image.clip_draw(384,0,128,128,
-                             self.cx,self.cy, self.sizex, self.sizey)
-        draw_rectangle(*self.get_boundingbox())
-
-    #------------------------
-    def get_GF_cam_info(self, groundcam):
-        self.groundcam = groundcam
-    #--------------------------
-    def get_boundingbox(self):
-        return (self.cx - self.sizex/4 +10, self.cy + self.sizey/8,
-                self.cx + self.sizex//4 - 5, self.cy + self.sizey/7)
-
-    def handle_self_collision(self, crashgroup, other):
-        if crashgroup == 'lilly:pipe':
-            PIPEtemp = PipeCollapse(self.x,self.y,self.sizex,self.sizey)
-            PIPEtemp.get_GF_cam_info(self.groundcam)
-            game_world.add_object(PIPEtemp, 4)
-            game_world.remove_objt(self)
-        pass
-
-
-class PipeAbouttoCollapse:
-    def __init__(self, x, y, sizex,sizey):
-        self.x, self.y = x, y
-        self.sizex = sizex
-        self.sizey = sizey
-        self.cx, self.cy = 0, 0
-        self.frame = 0
-
-        self.image = load_image('weakpipe-Sheet.png')
-
-    def update(self):
-        self.cx = self.x - self.groundcam.camera_left
-        self.cy = self.y - self.groundcam.camera_bottom
-
-        self.frame = (self.frame + 9 * PIPE_ACTION_per_TIME * handle_framework.frame_time
-                      * 0.4) % 9
-
-    def handle_event(self):pass
-
-    def draw(self):
-        if int(self.frame) == 8:
-            PIPEtemp = PipeCollapse(self.x,self.y,self.sizex,self.sizey)
-            PIPEtemp.get_GF_cam_info(self.groundcam)
-            game_world.add_object(PIPEtemp, 4)
-            game_world.remove_objt(self)
-
-        self.image.clip_draw(int(self.frame)*128,0,128,128,
-                             self.cx,self.cy, self.sizex, self.sizey)
-        draw_rectangle(*self.get_boundingbox())
-
-    #------------------------
-    def get_GF_cam_info(self, groundcam):
-        self.groundcam = groundcam
-    #--------------------------
-    def get_boundingbox(self):
-        return (self.cx - self.sizex/4 +10, self.cy + self.sizey/8,
-                self.cx + self.sizex//4 - 5, self.cy + self.sizey/7)
-
-    def handle_self_collision(self, crashgroup, other):
-        pass
-
-class PipeCollapse:
-    def __init__(self, x, y, sizex,sizey):
-        self.x, self.y = x, y
-        self.sizex = sizex
-        self.sizey = sizey
-        self.cx, self.cy = 0, 0
-        self.frame = 0
-
-        self.image = load_image('pipecollapse-Sheet.png')
-
-    def update(self):
-        self.cx = self.x - self.groundcam.camera_left
-        self.cy = self.y - self.groundcam.camera_bottom
-        self.frame = (self.frame + 9 * PIPE_ACTION_per_TIME * handle_framework.frame_time
-                      *0.8) % 9
-
-    def handle_event(self):pass
-
-    def draw(self):
-        if int(self.frame) == 8:
-            game_world.remove_objt(self)
-
-        self.image.clip_draw(int(self.frame)*128,0,128,128,
-                             self.cx,self.cy, self.sizex, self.sizey)
-
-    #------------------------
-    def get_GF_cam_info(self, groundcam):
-        self.groundcam = groundcam
-    #--------------------------
-
-
 #=============
 class ObstacleThorn:
     image = None
-    def __init__(self, lilly, x, y, sizex):
+    def __init__(self, lilly, x, y, size):
         self.frame = 0
         self.x, self.y = x, y
         self.lilly = lilly
-        self.sizex = sizex
+        self.size = size
 
         self.cx, self.cy = 0,0
 
@@ -374,29 +262,54 @@ class ObstacleThorn:
     def handle_event(self):pass
 
     def draw(self):
-        self.frame = (self.frame + 5 * WATER_ACTION_per_TIME * handle_framework.frame_time) % 5
-
-        self.image.clip_draw(int(self.frame) * 128, 0, 128, 128, self.cx, self.cy, self.sizex, 128)
+        self.image.clip_draw(0, 0, 128, 128, self.cx, self.cy, self.size, self.size+50)
 
         draw_rectangle(*self.get_boundingbox())
 
     #------------------------
     def get_boundingbox(self):
-        return (self.cx-self.sizex/2+9, self.cy-64,self.cx+self.sizex//2-10, self.cy+23)
+        return (self.cx-self.size/3, self.cy-64,self.cx+self.size//3, self.cy+self.size//2.5)
 
     def handle_self_collision(self, crashgroup, other):
-        if crashgroup == 'lilly:water':
+        if crashgroup == 'lilly:thorn':
             game_world.remove_collision_objt(self)
-            drowned = Drown(self.lilly,self.cy)
-            game_world.add_object(drowned, 5)
+            thornd = ThornDeath(self.lilly,self.cy)
+            game_world.add_object(thornd, 5)
         pass
     #--------------------------
     def get_GF_cam_info(self, groundcam):
         self.groundcam = groundcam
 
+class ThornDeath:
+    image = None
+    def __init__(self,lilly,y):
+        if ThornDeath.image == None:
+            ThornDeath.image = load_image("lilly_death-Sheet.png")
+
+        self.frame = 0
+        self.lilly = lilly
+        self.y = y
+
+
+    def update(self):pass
+
+    def handle_event(self, event):pass
+
+    def draw(self):
+        if int(self.frame) == 6:
+            handle_framework.change_mode(mode_gameover)
+            pass
+        self.frame = (self.frame + 7 * WATER_ACTION_per_TIME * handle_framework.frame_time *2) % 7
+
+        if self.lilly.face_dir == -1:
+            self.image.clip_draw(int(self.frame)*128,0, 128,128, self.lilly.cx+64, self.y+20)
+        else:
+            self.image.clip_composite_draw(int(self.frame) * 128, 0, 128, 128, 0, 'h', self.lilly.cx+64, self.y+20,128,128)
+        pass
 
 
 
+#=============
 class ObstacleWater:
     image = None
     def __init__(self, lilly, x, y, sizex):

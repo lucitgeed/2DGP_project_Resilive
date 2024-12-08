@@ -8,16 +8,16 @@ import handle_framework
 import mode_gameover
 from StateMachine import*
 
-PIXEL_per_METER = (10.0 / 1)      # 1pixel = 10cm  그러니까 가로800은 곧8000cm라는 거지?
+PIXEL_per_METER = (10.0 / 1)
 LILLY_SIZE = 80
 # set lilly speed
-#RUN_SPEED_KM_per_H = 17.0
+#RUN_SPEED_KM_per_H = 34.0
 RUN_SPEED_KM_per_H = 700.0
 RUN_SPEED_M_per_M = (RUN_SPEED_KM_per_H * 1000.0 / 60.0)
 RUN_SPEED_M_per_S = RUN_SPEED_M_per_M / 60.0
 RUN_SPEED_PPS = RUN_SPEED_M_per_S * PIXEL_per_METER
 
-#WALK_SPEED_KM_per_H = 6.5
+#WALK_SPEED_KM_per_H = 13
 WALK_SPEED_KM_per_H = 100
 WALK_SPEED_M_per_M = (WALK_SPEED_KM_per_H * 1000.0 / 60.0)
 WALK_SPEED_M_per_S = WALK_SPEED_M_per_M / 60.0
@@ -28,7 +28,7 @@ JUMP_TIME = 4.5
 JUMP_SPEED_MPS = 6
 JUMP_SPEED_PPS  = JUMP_SPEED_MPS * PIXEL_per_METER
 
-CRAWL_SPEED_KM_per_H= 6
+CRAWL_SPEED_KM_per_H= 12
 CRAWL_SPEED_M_per_M = (CRAWL_SPEED_KM_per_H * 1000.0 / 60.0)
 CRAWL_SPEED_M_per_s = CRAWL_SPEED_M_per_M / 60.0
 CRAWL_SPEED_PPS = CRAWL_SPEED_M_per_s * PIXEL_per_METER
@@ -57,7 +57,7 @@ class Lilly:
     image = None
     def __init__(self):
         self.x, self.y = 50,110
-        self.x = 3900
+        self.x = 6000
 
         self.cx = 0
         self.face_dir = 1
@@ -160,16 +160,18 @@ class Lilly:
         if crashgroup == 'lilly:shift_1to2':
             game_world.remove_objt(self)
 
+
         if crashgroup == 'lilly:car':
             self.state_machine.add_events(('Landed', 0))
             self.y += JUMP_TIME * handle_framework.frame_time
             self.in_sky = 0
             pass
-
-        if crashgroup == 'lilly:eye':
-#            game_world.remove_a_collision_objt('lilly:eyelid', self)
+        if crashgroup == 'lilly:thorn':
             game_world.remove_objt(self)
-  #          self.state_machine.add_events(('Death',0))
+        if crashgroup == 'lilly:eye':
+#            game_world.remove_objt(self)
+            pass
+
 
 #-----------------------------------------------------
     def get_GF_info(self, groundfoolr):

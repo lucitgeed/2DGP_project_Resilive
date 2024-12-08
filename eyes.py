@@ -3,9 +3,11 @@ import random
 
 from pico2d import load_image, draw_rectangle, load_wav
 
+import game_world
 import handle_framework
 import mode_gameover
 from behavior_tree import BehaviorTree, Action, Condition, Sequence, Selector
+from stagetwo_info import ThornDeath
 
 PIXEL_per_METER = 10.0 / 1
 #set eye speed
@@ -115,6 +117,8 @@ class Eyes:
             self.eye_sound.play()
             pass
         if self.distance_less_than(self.lilly.x, self.lilly.y, self.x, self.y, 1):
+            thornd = ThornDeath(self.lilly,self.cy)
+            game_world.add_object(thornd, 8)
             handle_framework.change_mode(mode_gameover)
             return BehaviorTree.SUCCESS
         return BehaviorTree.RUNNING
