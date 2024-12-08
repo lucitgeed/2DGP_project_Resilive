@@ -89,6 +89,7 @@ def remove_collision_objt(objt):
 
 def remove_a_collision_objt(group, objt):
     if collision_pairs.keys() == group:
+
         collision_pairs.values()[0].remove(objt)
         pass
 

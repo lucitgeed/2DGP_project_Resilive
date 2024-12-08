@@ -161,11 +161,12 @@ class Lilly:
             game_world.remove_objt(self)
 
         if crashgroup == 'lilly:car':
+
             self.hidden = 1
 
-        if crashgroup == 'lilly:eyelid':
+        if crashgroup == 'lilly:eye':
 #            game_world.remove_a_collision_objt('lilly:eyelid', self)
-            game_world.remove_objt(self)
+#            game_world.remove_objt(self)
             self.state_machine.add_events(('Death',0))
 
 #-----------------------------------------------------

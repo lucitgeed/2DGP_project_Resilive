@@ -8,7 +8,7 @@ from behavior_tree import BehaviorTree, Action, Condition, Sequence, Selector
 
 PIXEL_per_METER = 10.0 / 1
 #set eye speed
-EYE_SPEED_MPS = 25
+EYE_SPEED_MPS =5
 EYE_SPEED_PPS = EYE_SPEED_MPS * PIXEL_per_METER
 
 
@@ -19,11 +19,13 @@ EYE_ACTION_per_TIME = 1.0 / TIME_per_EYE_ACTION
 
 class Eyes:
     image = None
+    eye_sound = None
     def __init__(self,lilly, x, y):
         self.lilly = lilly
         self.x, self.y = x, y
         self.frame = 0
         self.size = random.randint(100, 200)
+
         self.cx, self.cy = 0, 0
         if Eyes.image == None:
 #            Eyes.image = load_image('eyelid_blink_Sheet.png')
@@ -57,131 +59,125 @@ class Eyes:
         pass
 
     #=================
-    def set_target(self, x = None, y = None):
-        self.tx, self.ty = x, y
-        return BehaviorTree.SUCCESS
-        pass
-    def chase_target(self, r = 1):
-        self.dir = math.atan2(self.ty - self.cy,self.tx - self.cx)
-        distance = EYE_SPEED_PPS * handle_framework.frame_time
-        self.x += distance * math.cos(self.dir)
-        self.y += distance * math.sin(self.dir)
-
-        if self.distance_less_than(self.tx,self.ty, self.cx,self.cy, r):
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.RUNNING
-        pass
-
-    def distance_less_than(self, x1,x2,y1,y2,r):
-        distance2 = (x1 -x2) **2 + (y1-y2)**2
-        return distance2 < (PIXEL_per_METER * r)**2
-        pass
-
     #=================
     def build_behavior_tree(self):
-        # 1. Idle 상태
-        move_randomly = Action('Move Randomly', self.set_random_location)
-        check_collision = Condition('Check Collision with Lilly', self.check_coll_with_lilly)
-        idle_sequence = Sequence('Idle', move_randomly, check_collision)
+        # 랜덤 위치 설정 후 이동
+        # 랜덤 위치 설정 후 이동
+        a1 = Action('Set target location', self.set_target_location)
+        a3 =Action("Set Random Location", self.set_random_location)
+        a2 = Action("Move to Location", self.move_to)
+        Idle = Sequence('Move to random location', a3, a2)
 
-        # 2. Aggro 상태
-        follow_lilly = Action('Follow Lilly', self.chase_target)
-        is_hidden = Condition('Is Lilly Hidden?', self.is_lilly_hidden)
 
-        # 숨음 -> 1초 동안 릴리를 찾고 Idle로 복귀
-        search_lilly = Action('Search Lilly for 1 Second', self.search_lilly)
-        return_to_idle = Action('Return to Idle', self.return_to_idle)
-        hidden_sequence = Sequence('Hidden', search_lilly, return_to_idle)
 
-        # 숨지 못함 -> Kill 상태로 전환
-        enter_kill_state = Action('Enter Kill State', self.enter_kill_state)
-        not_hidden_selector = Selector('Not Hidden', hidden_sequence, enter_kill_state)
-        aggro_sequence = Sequence('Aggro', follow_lilly, is_hidden, not_hidden_selector)
+        # 릴리를 추격하는 동작 (거리가 100 이하일 때만 실행)
+        c1 = Condition('릴리와의 거리가 100이하?', self.lilly_is_near, 1000)
+        a4 =Action('Chase Lilly', self.chase_lilly)
+        chase_lilly = Sequence('CHASE LILLY', c1, a4)
 
-        # 3. Kill 상태
-        enlarge = Action('Enlarge Eyes', self.enlarge)
-        start_kill_timer = Action('Start Kill Timer', self.start_kill_timer)
-        lilly_dies = Action('Lilly Dies', self.lilly_dies)
-        kill_sequence = Sequence('Kill', enlarge, start_kill_timer, lilly_dies)
 
-        # 최상위 Selector
-        root = Selector('Root', idle_sequence, aggro_sequence, kill_sequence)
+        root = cha_or_Idle = Selector('Idle이나 추적', chase_lilly,Idle)
+
+
+
+        c2 = Condition('릴리와 충돌했는가?', self.check_collision_with_lilly)
+
 
         self.btree = BehaviorTree(root)
         pass
+        pass
     #=================
     # #=================
+    def move_slightly_to(self, tx, ty):
+        dir = math.atan2(ty - self.y, tx - self.x)
+        self.x += EYE_SPEED_PPS * handle_framework.frame_time  * math.cos(dir)
+        self.y += EYE_SPEED_PPS * handle_framework.frame_time  * math.sin(dir)
 
     def set_random_location(self):
-        self.tx, self.xy = random.randint(100,1280 - 100), random.randint(100, 1024 - 100)
+        self.tx, self.ty = random.randint(3500, 3900), random.randint(300, 400)
         return BehaviorTree.SUCCESS
-        pass
 
-    def check_coll_with_lilly(self):
-        if self.collide_lilly == 1:
-            return BehaviorTree.SUCCESS
-        return BehaviorTree.FAIL
-
-    def is_lilly_hidden(self):
-        if self.lilly.hidden == 1:
-            self.kill_timer = 0
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.FAIL
-
-
-    def search_lilly(self):
-        self.search_time += handle_framework.frame_time
-        if self.search_time >= 1.0:
-            self.search_time = 0
+    def move_to(self):
+        self.move_slightly_to(self.tx, self.ty)
+        if self.distance_less_than(self.tx, self.ty, self.x, self.y, 5):
             return BehaviorTree.SUCCESS
         return BehaviorTree.RUNNING
 
+    def distance_less_than(self, x1, y1, x2, y2, r):
+        return (x1 - x2) ** 2 + (y1 - y2) ** 2 < r ** 2
 
+    def check_collision_with_lilly(self):
+        if self.collide_lilly:
+            return BehaviorTree.SUCCESS
+        return BehaviorTree.FAIL
 
-    def return_to_idle(self):
-        self.state = 'Idle'
-        self.size = random.randint(100,200)
-        return BehaviorTree.SUCCESS
+    def chase_lilly(self):
+        self.state = "Chase"
+        self.move_slightly_to(self.lilly.x, self.lilly.y)
+        if self.distance_less_than(self.lilly.x, self.lilly.y, self.x, self.y, 10):
+            pass
+        if self.distance_less_than(self.lilly.x, self.lilly.y, self.x, self.y, 2):
+            return BehaviorTree.SUCCESS
+        return BehaviorTree.RUNNING
 
-    def enter_kill_state(self):
-        self.state = 'Kill'
-        return BehaviorTree.SUCCESS
-
-    def enlarge(self):
-        if self.size < 300:
-            self.size += 25 *handle_framework.frame_time
-            return BehaviorTree.RUNNING
+    def set_target_location(self, x=None, y=None):
+        if not x or not y:
+            raise ValueError('Location should be given')
+        self.tx, self.ty = x,y                          #이게 정해진 순간 해당 task 성공
         return BehaviorTree.SUCCESS
 
     def start_kill_timer(self):
-        if self.lilly.hidden == 0:
+        if self.is_chasing:
             self.kill_timer += handle_framework.frame_time
-            if self.kill_timer >= 3.0:
+            if self.kill_timer >= 3.0:  # 3초가 지나면 릴리 죽음
+                self.kill_lilly()
                 return BehaviorTree.SUCCESS
-            return BehaviorTree.RUNNING
+        return BehaviorTree.RUNNING
+
+    def reset_to_idle(self):
+        self.state = "Idle"
+        self.kill_timer = 0
+        self.size = random.randint(100, 200)
+        self.is_chasing = False
+        return BehaviorTree.SUCCESS
+
+    def lilly_is_near(self, r):
+        if self.distance_less_than(self.lilly.x, self.lilly.y, self.x, self.y, r):
+            self.is_chasing = True
+            return BehaviorTree.SUCCESS
         else:
-            self.kill_timer = 0
+            self.is_chasing = False
             return BehaviorTree.FAIL
 
 
-    def lilly_dies(self):
-        self.lilly.is_alive = False
-        return BehaviorTree.SUCCESS
 
 
+    def kill_lilly(self):
+        print("릴리 사망!")
+
+    def check_lilly_collision(self):
+        # 충돌 처리 없이 'lilly:eye' 충돌 체크만 수행
+        if self.collide_lilly:  # 릴리와 충돌 시
+            print("릴리와 충돌 발생!")
+            # 추격 중인 상태에서 릴리와 충돌하면 추격을 중지하고 랜덤 배회 상태로 변경
+#            self.reset_to_idle()
+            return BehaviorTree.SUCCESS
+        return BehaviorTree.RUNNING
 
 
     #=================
     # =================
     def get_boundingbox(self):
-        return (self.cx-200, self.cy-500, self.cx+200,self.cy+500)
+        return (self.cx-self.size/2, self.cy-self.size/2, self.cx+self.size/2,self.cy+self.size/2)
         pass
     def handle_self_collision(self, crashgroup, other):
         if crashgroup == 'lilly:eye':
-            self.collide_lilly = 1
+            self.collide_lilly = True
+        else:
+            self.collide_lilly = False
+        print(f'            colide_lilly = {self.collide_lilly}')
         pass
+
 
     #------------------------
     def get_GF_cam_info(self, groundcam):
