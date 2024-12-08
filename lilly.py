@@ -57,7 +57,7 @@ class Lilly:
     image = None
     def __init__(self):
         self.x, self.y = 50,110
-        self.x = 2000
+        self.x = 2300
 
         self.cx = 0
         self.face_dir = 1
@@ -115,7 +115,7 @@ class Lilly:
 
         self.cx = self.x - self.ground.camera_left
         self.cy = self.y - self.ground.camera_bottom
-        print(f'            lilly.x = {self.x}')
+#        print(f'            lilly.x = {self.x}')
 #        print(f'            lilly.cx = {self.cx}')
 
 
